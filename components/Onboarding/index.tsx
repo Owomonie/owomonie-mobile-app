@@ -41,7 +41,7 @@ const Onboarding = () => {
 
   const handleLogin = async () => {
     await AsyncStorage.setItem("completedOnboarding", "Done");
-    router.push("/(auth)");
+    router.push("/(auth)/(login)/(auth)");
   };
 
   return (

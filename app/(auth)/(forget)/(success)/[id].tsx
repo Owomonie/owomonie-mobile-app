@@ -1,8 +1,7 @@
+import ForgetSuccess from "@/components/Auth/Forget/success";
 import { Stack, useLocalSearchParams } from "expo-router";
 
-import RegisterSuccess from "@/components/Auth/CreateAccount/success";
-
-const RegisterSuccessScreen = () => {
+const ForgetSuccessScreen = () => {
   const { id: email } = useLocalSearchParams<{
     id: string;
   }>();
@@ -14,9 +13,9 @@ const RegisterSuccessScreen = () => {
           headerShown: false,
         }}
       />
-      <RegisterSuccess email={email} />
+      <ForgetSuccess email={email} />
     </>
   );
 };
 
-export default RegisterSuccessScreen;
+export default ForgetSuccessScreen;

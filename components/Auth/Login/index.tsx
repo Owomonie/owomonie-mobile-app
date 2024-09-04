@@ -5,6 +5,7 @@ import { ThemedText, ThemedText2, ThemedText3 } from "@/components/Themes/text";
 import { brandColor } from "@/constants/Colors";
 import { ThemedInput } from "@/components/Themes/textInput";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 
 const Login = ({ regEmail }: { regEmail?: string }) => {
   const [email, setEmail] = useState(
@@ -19,6 +20,7 @@ const Login = ({ regEmail }: { regEmail?: string }) => {
   };
 
   const handleLogin = () => {};
+
   return (
     <ThemedView style={styles.page}>
       <View>
@@ -67,13 +69,21 @@ const Login = ({ regEmail }: { regEmail?: string }) => {
                   color="#888"
                 />
               </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => router.push("(auth)/(forget)/send-token")}
+              >
+                <ThemedText style={styles.forget}>Forgot password ?</ThemedText>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
       </View>
-      <TouchableOpacity style={styles.loginBtnCont} onPress={handleLogin}>
-        <Text style={styles.loginBtn}>Login</Text>
-      </TouchableOpacity>
+      <View>
+        <Text style={styles.create}>Create new account</Text>
+        <TouchableOpacity style={styles.loginBtnCont} onPress={handleLogin}>
+          <Text style={styles.loginBtn}>Login</Text>
+        </TouchableOpacity>
+      </View>
     </ThemedView>
   );
 };
@@ -124,5 +134,22 @@ const styles = StyleSheet.create({
     fontFamily: "As600",
     fontSize: 13,
     borderRadius: 5,
+  },
+
+  forget: {
+    textAlign: "right",
+    marginVertical: 20,
+    fontFamily: "As450",
+    fontSize: 11,
+    textDecorationLine: "underline",
+    paddingBottom: 5,
+  },
+
+  create: {
+    color: brandColor,
+    fontFamily: "As550",
+    fontSize: 13,
+    textAlign: "center",
+    textDecorationLine: "underline",
   },
 });

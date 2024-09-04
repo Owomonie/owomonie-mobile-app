@@ -42,6 +42,8 @@ const Verification = ({
     // console.log(otp.join(""));
     if (endPoint === "create") {
       router.push(`/(auth)/(register)/(create-account)/${email}`);
+    } else if (endPoint === "forget") {
+      router.push(`/(auth)/(forget)/(reset-password)/${email}`);
     }
   };
 
