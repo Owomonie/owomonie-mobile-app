@@ -1,0 +1,382 @@
+{
+  "info": {
+    "_postman_id": "6282dc55-de37-4a75-981f-62e445f96a14",
+    "name": "Owomonie",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "24015438"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "New User Verification",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"owomonieapp@gmail.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/new-user-verification",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "new-user-verification"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"hydrokidb@gmail.com\",\r\n    \"OTP\": \"43313\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/new-user-verification/verify-otp",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "new-user-verification",
+                "verify-otp"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "RegisterUser",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"hydrokidb@gmail.com\",\r\n    \"password\": \"Prec1234#\",\r\n    \"userName\": \"Boluwatife\",\r\n    \"lastName\": \"Yomi\",\r\n    \"firstName\": \"Olugbodi\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/register-user",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "register-user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"hydrokidb@gmail.com\",\r\n    \"password\": \"Prec1234#\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ForgetOTP",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n        \"email\": \"hydrokidb@gmail.com\"\r\n        \r\n\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/forget-password/otp",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "forget-password",
+                "otp"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ForgetVerify",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n        \"email\": \"hydrokidb@gmail.com\",\r\n        \"OTP\": \"53451\"\r\n\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/forget-password/verify-otp",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "forget-password",
+                "verify-otp"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ResetPassword",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n        \"email\": \"hydrokidb@gmail.com\",\r\n         \"newPassword\": \"Procarious123#\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/forget-password/reset",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "forget-password",
+                "reset"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "GetUserDetails",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmQ1NzdiYTRhZGU5M2I1MTg0Y2Q3NzMiLCJlbWFpbCI6Imh5ZHJva2lkYkBnbWFpbC5jb20iLCJpYXQiOjE3MjUyOTc3MDcsImV4cCI6MTcyNTMwMTMwN30.WZy_HBa7SZ7p8gkU9iibhRH3VONtg9H2uudD_qVa5J8",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/get-user-details",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "get-user-details"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UpdateGender",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmQ2YTBkNTZkMzI4MjVlZTM1YTVkZDYiLCJlbWFpbCI6Imh5ZHJva2lkYkBnbWFpbC5jb20iLCJpYXQiOjE3MjUzNTA5MTksImV4cCI6MTcyNTM1NDUxOX0.XnFX8XEYZsIsUODGoxVC8vX76Ec-lYYzzVs4elLn49M",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"gender\": \"Male\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/update/gender",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "update",
+                "gender"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UpdateAgeRange",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmQ2YTBkNTZkMzI4MjVlZTM1YTVkZDYiLCJlbWFpbCI6Imh5ZHJva2lkYkBnbWFpbC5jb20iLCJpYXQiOjE3MjUzNTA5MTksImV4cCI6MTcyNTM1NDUxOX0.XnFX8XEYZsIsUODGoxVC8vX76Ec-lYYzzVs4elLn49M",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"ageRange\": \"21-30\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/update/age-range",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "update",
+                "age-range"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update WorkType",
+          "request": {
+            "method": "PATCH",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "UpdateIncomeRange",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmQ2YTBkNTZkMzI4MjVlZTM1YTVkZDYiLCJlbWFpbCI6Imh5ZHJva2lkYkBnbWFpbC5jb20iLCJpYXQiOjE3MjUzNTA5MTksImV4cCI6MTcyNTM1NDUxOX0.XnFX8XEYZsIsUODGoxVC8vX76Ec-lYYzzVs4elLn49M",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"incomeRange\": \"10000-200000\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/update/income-range",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "update",
+                "income-range"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UpdateAvatar",
+          "request": {
+            "method": "PATCH",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
