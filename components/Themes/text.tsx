@@ -17,3 +17,10 @@ export function ThemedText2(props: TextProps) {
 
   return <DefaultText style={[{ color }, style]} {...otherProps} />;
 }
+
+export function ThemedText3(props: TextProps) {
+  const { style, lightColor, darkColor, ...otherProps } = props;
+  const color = useThemeColor({ light: lightColor, dark: darkColor }, "text3");
+
+  return <DefaultText style={[{ color }, style]} {...otherProps} />;
+}

@@ -16,7 +16,10 @@ export default function RootLayout() {
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     As700: require("../assets/fonts/Aspekta/Aspekta-700.ttf"),
     As600: require("../assets/fonts/Aspekta/Aspekta-600.ttf"),
+    As550: require("../assets/fonts/Aspekta/Aspekta-550.ttf"),
     As500: require("../assets/fonts/Aspekta/Aspekta-500.ttf"),
+    As450: require("../assets/fonts/Aspekta/Aspekta-450.ttf"),
+    As350: require("../assets/fonts/Aspekta/Aspekta-350.ttf"),
     An700: Antonio_700Bold,
   });
 

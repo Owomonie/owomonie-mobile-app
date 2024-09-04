@@ -36,7 +36,7 @@ const Onboarding = () => {
 
   const handleCreate = async () => {
     await AsyncStorage.setItem("completedOnboarding", "Done");
-    router.push("/(auth)/create-account");
+    router.push("/(auth)/(register)/new-email");
   };
 
   const handleLogin = async () => {

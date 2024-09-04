@@ -15,7 +15,7 @@ const CreateVerificationScreen = () => {
   }>();
 
   return (
-    <ThemedScrollView style={{ flex: 1 }}>
+    <>
       <Stack.Screen
         options={{
           headerStyle: {
@@ -30,7 +30,7 @@ const CreateVerificationScreen = () => {
                   fontSize: 20,
                 }}
               >
-                Create Account
+                {/* Create Account */}
               </ThemedText>
             </View>
           ),
@@ -54,15 +54,15 @@ const CreateVerificationScreen = () => {
               }}
               source={
                 isDarkMode
-                  ? require("../../../assets/auth/darkCreateIcon.png")
-                  : require("../../../assets/auth/whiteCreateIcon.png")
+                  ? require("../../../../assets/auth/darkCreateIcon.png")
+                  : require("../../../../assets/auth/whiteCreateIcon.png")
               }
             />
           ),
         }}
       />
       <Verification email={email} endPoint="create" />
-    </ThemedScrollView>
+    </>
   );
 };
 

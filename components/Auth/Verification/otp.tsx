@@ -1,9 +1,13 @@
 import { useTheme } from "@/context/ThemeContext";
-import React, { useState, useRef, useEffect } from "react";
-import { View, TextInput, StyleSheet, Text } from "react-native";
+import React, { useRef, useEffect } from "react";
+import { View, TextInput, StyleSheet } from "react-native";
 
-const OTPInput = ({}) => {
-  const [otp, setOtp] = useState(Array(6).fill(""));
+interface OTPInputProps {
+  otp: string[];
+  setOtp: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+const OTPInput = ({ otp, setOtp }: OTPInputProps) => {
   const inputRefs = useRef<(TextInput | null)[]>([]);
 
   const { isDarkMode } = useTheme();
@@ -21,7 +25,7 @@ const OTPInput = ({}) => {
     setOtp(newOtp);
 
     // Focus next input
-    if (text && index < 6 - 1) {
+    if (text && index < 5 - 1) {
       inputRefs.current[index + 1]?.focus();
     }
   };
@@ -67,6 +71,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     justifyContent: "space-between",
+    paddingHorizontal: 10,
   },
   input: {
     width: 50,

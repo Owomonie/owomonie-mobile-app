@@ -1,15 +1,14 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
-import { ThemedView } from "@/components/Themes/view";
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedText, ThemedText2 } from "@/components/Themes/text";
 import { ThemedInput } from "@/components/Themes/textInput";
 import { brandColor } from "@/constants/Colors";
 import { router } from "expo-router";
 import Toast from "react-native-toast-message";
+import { ThemedScrollView } from "@/components/Themes/scrollview";
 
-const CreateAccount = () => {
-  const [email, setEmail] = useState("");
+const CreateAccount = ({ email }: { email: string }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
@@ -42,121 +41,119 @@ const CreateAccount = () => {
         visibilityTime: 5000,
       });
     } else {
-      //@ts-ignore
-      router.push(`/(auth)/(create-verification)/${email}`);
+      // @ts-ignore
+      router.push(`/(auth)/(register)/(success)/${email}`);
     }
   };
 
   return (
-    <ThemedView style={styles.page}>
-      <View>
-        <ThemedText style={styles.bigTitle}>Let’s get you started</ThemedText>
-        <ThemedText2 style={styles.smallTitle}>
-          Fill in your details below
-        </ThemedText2>
-      </View>
+    <ThemedScrollView style={styles.page}>
+      <View style={styles.pageContent}>
+        <View>
+          <ThemedText style={styles.bigTitle}>Profile Information</ThemedText>
+          <ThemedText2 style={styles.smallTitle}>
+            Fill in your details below
+          </ThemedText2>
+        </View>
 
-      <View style={styles.nameContainer}>
-        <View style={{ flex: 1, gap: 10 }}>
-          <ThemedText2 style={styles.label}>First Name</ThemedText2>
+        <View style={styles.nameContainer}>
+          <View style={{ flex: 1, gap: 10 }}>
+            <ThemedText2 style={styles.label}>First Name</ThemedText2>
+            <ThemedInput
+              style={styles.input}
+              value={firstName}
+              onChangeText={setFirstName}
+            />
+          </View>
+          <View style={{ flex: 1, gap: 10 }}>
+            <ThemedText2 style={styles.label}>Last Name</ThemedText2>
+            <ThemedInput
+              style={styles.input}
+              value={lastName}
+              onChangeText={setLastName}
+            />
+          </View>
+        </View>
+
+        <View style={{ gap: 10 }}>
+          <ThemedText2 style={styles.label}>Username</ThemedText2>
           <ThemedInput
             style={styles.input}
-            value={firstName}
-            onChangeText={setFirstName}
+            value={userName}
+            onChangeText={setUserName}
           />
         </View>
-        <View style={{ flex: 1, gap: 10 }}>
-          <ThemedText2 style={styles.label}>Last Name</ThemedText2>
-          <ThemedInput
-            style={styles.input}
-            value={lastName}
-            onChangeText={setLastName}
-          />
+
+        <View style={{ gap: 10, marginVertical: 10 }}>
+          <ThemedText2 style={styles.label}>Email Addresss</ThemedText2>
+          <ThemedText style={styles.input}>{email}</ThemedText>
         </View>
-      </View>
 
-      <View style={{ gap: 10 }}>
-        <ThemedText2 style={styles.label}>Username</ThemedText2>
-        <ThemedInput
-          style={styles.input}
-          value={userName}
-          onChangeText={setUserName}
-        />
-      </View>
-
-      <View style={{ gap: 10 }}>
-        <ThemedText2 style={styles.label}>Email Addresss</ThemedText2>
-        <ThemedInput
-          style={styles.input}
-          value={email}
-          onChangeText={setEmail}
-        />
-      </View>
-
-      <View style={{ gap: 10 }}>
-        <ThemedText2 style={styles.label}>Password</ThemedText2>
-        <View>
-          <ThemedInput
-            style={[
-              styles.input,
-              {
-                paddingRight: 50,
-              },
-            ]}
-            secureTextEntry={secureTextEntry}
-            value={password}
-            onChangeText={setPassword}
-          />
-          <TouchableOpacity
-            onPress={toggleSecureEntry}
-            style={{
-              position: "absolute",
-              right: 8,
-              top: 6,
-            }}
-          >
-            <Ionicons
-              name={secureTextEntry ? "eye-off-outline" : "eye-outline"}
-              size={24}
-              color="#888"
+        <View style={{ gap: 10 }}>
+          <ThemedText2 style={styles.label}>Password</ThemedText2>
+          <View>
+            <ThemedInput
+              style={[
+                styles.input,
+                {
+                  paddingRight: 50,
+                },
+              ]}
+              secureTextEntry={secureTextEntry}
+              value={password}
+              onChangeText={setPassword}
             />
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={toggleSecureEntry}
+              style={{
+                position: "absolute",
+                right: 8,
+                top: 6,
+              }}
+            >
+              <Ionicons
+                name={secureTextEntry ? "eye-off-outline" : "eye-outline"}
+                size={24}
+                color="#888"
+              />
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-      <View style={{ gap: 10 }}>
-        <ThemedText2 style={styles.label}>Confirm Password</ThemedText2>
-        <View>
-          <ThemedInput
-            style={[
-              styles.input,
-              {
-                paddingRight: 50,
-              },
-            ]}
-            secureTextEntry={secureTextEntry}
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-          />
-          <TouchableOpacity
-            onPress={toggleSecureEntry}
-            style={{
-              position: "absolute",
-              right: 8,
-              top: 6,
-            }}
-          >
-            <Ionicons
-              name={secureTextEntry ? "eye-off-outline" : "eye-outline"}
-              size={24}
-              color="#888"
+        <View style={{ gap: 10 }}>
+          <ThemedText2 style={styles.label}>Confirm Password</ThemedText2>
+          <View>
+            <ThemedInput
+              style={[
+                styles.input,
+                {
+                  paddingRight: 50,
+                },
+              ]}
+              secureTextEntry={secureTextEntry}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
             />
-          </TouchableOpacity>
+            {/* <TouchableOpacity
+              onPress={toggleSecureEntry}
+              style={{
+                position: "absolute",
+                right: 8,
+                top: 6,
+              }}
+            >
+              <Ionicons
+                name={secureTextEntry ? "eye-off-outline" : "eye-outline"}
+                size={24}
+                color="#888"
+              />
+            </TouchableOpacity> */}
+          </View>
         </View>
       </View>
       <TouchableOpacity style={styles.nextCont} onPress={handleNextBtn}>
-        <Text style={styles.nextText}>Next</Text>
+        <Text style={styles.nextText}>Register</Text>
       </TouchableOpacity>
-    </ThemedView>
+    </ThemedScrollView>
   );
 };
 
@@ -167,8 +164,11 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 20,
     paddingHorizontal: 20,
+    paddingBottom: 50,
+  },
+
+  pageContent: {
     gap: 20,
-    justifyContent: "flex-start",
   },
 
   bigTitle: {
@@ -198,13 +198,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     fontFamily: "As600",
     fontSize: 13,
+    borderRadius: 5,
   },
 
   nextCont: {
     paddingVertical: 15,
     backgroundColor: brandColor,
     borderRadius: 50,
-    marginVertical: 30,
+    marginTop: 100,
+    marginBottom: 30,
   },
 
   nextText: {

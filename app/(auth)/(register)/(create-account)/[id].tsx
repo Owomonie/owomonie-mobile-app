@@ -9,15 +9,18 @@ import {
   View,
 } from "react-native";
 import React, { useCallback } from "react";
-import { Stack, useFocusEffect } from "expo-router";
+import { Stack, useFocusEffect, useLocalSearchParams } from "expo-router";
 import CreateAccount from "@/components/Auth/CreateAccount";
-import { ThemedScrollView } from "@/components/Themes/scrollview";
 import { useTheme } from "@/context/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedText } from "@/components/Themes/text";
 
 const CreateAccountScreen = () => {
   const { isDarkMode } = useTheme();
+
+  const { id: email } = useLocalSearchParams<{
+    id: string;
+  }>();
   // const handleBackPress = () => {
   //   Alert.alert(
   //     "OwoMonie",
@@ -45,7 +48,7 @@ const CreateAccountScreen = () => {
   // );
 
   return (
-    <ThemedScrollView style={{ flex: 1 }}>
+    <>
       <Stack.Screen
         options={{
           headerStyle: {
@@ -60,7 +63,7 @@ const CreateAccountScreen = () => {
                   fontSize: 20,
                 }}
               >
-                Create Account
+                {/* Create Account */}
               </ThemedText>
             </View>
           ),
@@ -84,15 +87,15 @@ const CreateAccountScreen = () => {
               }}
               source={
                 isDarkMode
-                  ? require("../../assets/auth/darkCreateIcon.png")
-                  : require("../../assets/auth/whiteCreateIcon.png")
+                  ? require("../../../../assets/auth/darkCreateIcon.png")
+                  : require("../../../../assets/auth/whiteCreateIcon.png")
               }
             />
           ),
         }}
       />
-      <CreateAccount />
-    </ThemedScrollView>
+      <CreateAccount email={email} />
+    </>
   );
 };
 
