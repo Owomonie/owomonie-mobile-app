@@ -1,23 +1,23 @@
-import { Image, TouchableOpacity, View } from "react-native";
+import { Image, View } from "react-native";
 import React from "react";
-import { ThemedScrollView } from "@/components/Themes/scrollview";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { Stack } from "expo-router";
 import { useTheme } from "@/context/ThemeContext";
 import { ThemedText } from "@/components/Themes/text";
-import { Ionicons } from "@expo/vector-icons";
 import CreateNewEmail from "@/components/Auth/CreateAccount/email";
+import Spinner from "@/components/Spinner";
 
 const CreateVerificationScreen = () => {
   const { isDarkMode } = useTheme();
 
   return (
     <>
+      {/* <Spinner /> */}
       <Stack.Screen
         options={{
           headerStyle: {
             backgroundColor: isDarkMode ? "#0E0E0E" : "#F6F5FF",
           },
-          headerBackVisible: false,
+          headerTintColor: isDarkMode ? "#ffffff" : "#000000",
           headerTitle: () => (
             <View>
               <ThemedText
@@ -25,23 +25,10 @@ const CreateVerificationScreen = () => {
                   fontFamily: "As700",
                   fontSize: 20,
                 }}
-              >
-                {/* Create Account */}
-              </ThemedText>
+              ></ThemedText>
             </View>
           ),
-          headerLeft: () => (
-            <TouchableOpacity
-              // onPress={handleBackPress}
-              style={{ marginRight: 30 }}
-            >
-              <Ionicons
-                name="arrow-back"
-                size={24}
-                color={isDarkMode ? "#F6F5FF" : "#000000"}
-              />
-            </TouchableOpacity>
-          ),
+
           headerRight: () => (
             <Image
               style={{

@@ -97,6 +97,22 @@ const Reset = ({ email }: { email: string }) => {
             />
           </View>
         </View>
+        <TouchableOpacity
+          onPress={() => router.push(`(auth)/(login)/${email}`)}
+          style={styles.loginCont}
+        >
+          <ThemedText style={styles.login}>Remeber Password?</ThemedText>
+          <Text
+            style={[
+              styles.login,
+              {
+                color: brandColor,
+              },
+            ]}
+          >
+            Login
+          </Text>
+        </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.nextCont} onPress={handleNextBtn}>
         <Text style={styles.nextText}>Reset Password</Text>
@@ -154,5 +170,17 @@ const styles = StyleSheet.create({
     fontFamily: "As700",
     color: "#FFFFFF",
     fontSize: 16,
+  },
+
+  loginCont: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    gap: 5,
+    paddingRight: 10,
+  },
+
+  login: {
+    fontFamily: "As450",
+    fontSize: 11,
   },
 });

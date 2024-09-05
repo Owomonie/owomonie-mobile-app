@@ -1,6 +1,12 @@
-import { Image, TouchableOpacity, View } from "react-native";
-import React from "react";
-import { Stack, useLocalSearchParams } from "expo-router";
+import {
+  Alert,
+  BackHandler,
+  Image,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useCallback } from "react";
+import { Stack, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useTheme } from "@/context/ThemeContext";
 import { ThemedText } from "@/components/Themes/text";
 import { Ionicons } from "@expo/vector-icons";
@@ -12,6 +18,28 @@ const ResetPasswordScreen = () => {
   const { id: email } = useLocalSearchParams<{
     id: string;
   }>();
+
+  const handleBackPress = () => {
+    Alert.alert("OwoMonie", "Kindly Input Password", [
+      {
+        text: "Back",
+        onPress: () => null,
+        style: "cancel",
+      },
+      { text: "QUIT APP", onPress: () => BackHandler.exitApp() },
+    ]);
+    return true;
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      BackHandler.addEventListener("hardwareBackPress", handleBackPress);
+
+      return () => {
+        BackHandler.removeEventListener("hardwareBackPress", handleBackPress);
+      };
+    }, [])
+  );
 
   return (
     <>
@@ -33,18 +61,7 @@ const ResetPasswordScreen = () => {
               </ThemedText>
             </View>
           ),
-          headerLeft: () => (
-            <TouchableOpacity
-              // onPress={handleBackPress}
-              style={{ marginRight: 30 }}
-            >
-              <Ionicons
-                name="arrow-back"
-                size={24}
-                color={isDarkMode ? "#F6F5FF" : "#000000"}
-              />
-            </TouchableOpacity>
-          ),
+
           headerRight: () => (
             <Image
               style={{

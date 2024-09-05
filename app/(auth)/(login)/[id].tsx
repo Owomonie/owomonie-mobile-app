@@ -1,17 +1,10 @@
-import {
-  Alert,
-  BackHandler,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, BackHandler, Image, View } from "react-native";
 import React, { useCallback } from "react";
 import { Stack, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { ThemedText } from "@/components/Themes/text";
-import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@/context/ThemeContext";
 import Login from "@/components/Auth/Login";
+import Spinner from "@/components/Spinner";
 
 const LoginScreen = () => {
   const { isDarkMode } = useTheme();
@@ -20,30 +13,31 @@ const LoginScreen = () => {
     id: string;
   }>();
 
-  // const handleBackPress = () => {
-  //   Alert.alert("OwoMonie", "Are you sure you want to quit the app?", [
-  //     {
-  //       text: "Cancel",
-  //       onPress: () => null,
-  //       style: "cancel",
-  //     },
-  //     { text: "YES", onPress: () => BackHandler.exitApp() },
-  //   ]);
-  //   return true;
-  // };
+  const handleBackPress = () => {
+    Alert.alert("OwoMonie", "Are you sure you want to quit?", [
+      {
+        text: "Cancel",
+        onPress: () => null,
+        style: "cancel",
+      },
+      { text: "YES", onPress: () => BackHandler.exitApp() },
+    ]);
+    return true;
+  };
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     BackHandler.addEventListener("hardwareBackPress", handleBackPress);
+  useFocusEffect(
+    useCallback(() => {
+      BackHandler.addEventListener("hardwareBackPress", handleBackPress);
 
-  //     return () => {
-  //       BackHandler.removeEventListener("hardwareBackPress", handleBackPress);
-  //     };
-  //   }, [])
-  // );
+      return () => {
+        BackHandler.removeEventListener("hardwareBackPress", handleBackPress);
+      };
+    }, [])
+  );
 
   return (
     <>
+      {/* <Spinner /> */}
       <Stack.Screen
         options={{
           headerStyle: {
@@ -57,23 +51,10 @@ const LoginScreen = () => {
                   fontFamily: "As700",
                   fontSize: 20,
                 }}
-              >
-                {/* Create Account */}
-              </ThemedText>
+              ></ThemedText>
             </View>
           ),
-          // headerLeft: () => (
-          //   <TouchableOpacity
-          //     // onPress={handleBackPress}
-          //     style={{ marginRight: 30 }}
-          //   >
-          //     <Ionicons
-          //       name="arrow-back"
-          //       size={24}
-          //       color={isDarkMode ? "#F6F5FF" : "#000000"}
-          //     />
-          //   </TouchableOpacity>
-          // ),
+
           headerRight: () => (
             <Image
               style={{
