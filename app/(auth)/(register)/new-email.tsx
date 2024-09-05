@@ -5,13 +5,19 @@ import { useTheme } from "@/context/ThemeContext";
 import { ThemedText } from "@/components/Themes/text";
 import CreateNewEmail from "@/components/Auth/CreateAccount/email";
 import Spinner from "@/components/Spinner";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const CreateVerificationScreen = () => {
   const { isDarkMode } = useTheme();
 
+  const loading = useSelector(
+    (state: RootState) => state.createAccount.loading
+  );
+
   return (
     <>
-      {/* <Spinner /> */}
+      {loading && <Spinner />}
       <Stack.Screen
         options={{
           headerStyle: {

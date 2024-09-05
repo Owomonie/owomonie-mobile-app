@@ -6,6 +6,8 @@ import { brandColor } from "@/constants/Colors";
 import { router, useFocusEffect } from "expo-router";
 import { formatTime } from "@/utils/formatTime";
 import { ThemedView } from "@/components/Themes/view";
+import { useAppDispatch } from "@/redux/store";
+import { newUserVerify } from "@/redux/slice/create-account";
 
 const Verification = ({
   email,
@@ -17,6 +19,8 @@ const Verification = ({
   const [otp, setOtp] = useState(Array(5).fill(""));
   const [countdown, setCountdown] = useState(120);
   const [isResendEnabled, setIsResendEnabled] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   useFocusEffect(
     useCallback(() => {
@@ -34,6 +38,15 @@ const Verification = ({
   );
 
   const handleResendCode = () => {
+    if (endPoint === "create") {
+      dispatch(
+        newUserVerify({
+          email,
+          resend: true,
+        })
+      );
+    } else if (endPoint === "forget") {
+    }
     setCountdown(120);
     setIsResendEnabled(false);
   };

@@ -6,6 +6,9 @@ import { useTheme } from "@/context/ThemeContext";
 import { ThemedText } from "@/components/Themes/text";
 import { Ionicons } from "@expo/vector-icons";
 import Verification from "@/components/Auth/Verification";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
+import Spinner from "@/components/Spinner";
 
 const CreateVerificationScreen = () => {
   const { isDarkMode } = useTheme();
@@ -14,14 +17,19 @@ const CreateVerificationScreen = () => {
     id: string;
   }>();
 
+  const loading = useSelector(
+    (state: RootState) => state.createAccount.loading
+  );
+
   return (
     <>
+      {loading && <Spinner />}
+
       <Stack.Screen
         options={{
           headerStyle: {
             backgroundColor: isDarkMode ? "#0E0E0E" : "#F6F5FF",
           },
-          headerBackVisible: false,
           headerTitle: () => (
             <View>
               <ThemedText
@@ -29,23 +37,10 @@ const CreateVerificationScreen = () => {
                   fontFamily: "As700",
                   fontSize: 20,
                 }}
-              >
-                {/* Create Account */}
-              </ThemedText>
+              ></ThemedText>
             </View>
           ),
-          headerLeft: () => (
-            <TouchableOpacity
-              // onPress={handleBackPress}
-              style={{ marginRight: 30 }}
-            >
-              <Ionicons
-                name="arrow-back"
-                size={24}
-                color={isDarkMode ? "#F6F5FF" : "#000000"}
-              />
-            </TouchableOpacity>
-          ),
+          headerTintColor: isDarkMode ? "#ffffff" : "#000000",
           headerRight: () => (
             <Image
               style={{

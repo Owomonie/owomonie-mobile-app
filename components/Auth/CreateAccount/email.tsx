@@ -4,13 +4,15 @@ import { ThemedView } from "@/components/Themes/view";
 import { ThemedText, ThemedText2 } from "@/components/Themes/text";
 import { ThemedInput } from "@/components/Themes/textInput";
 import { brandColor } from "@/constants/Colors";
-import { router } from "expo-router";
 import Toast from "react-native-toast-message";
+import { useAppDispatch } from "@/redux/store";
+import { newUserVerify } from "@/redux/slice/create-account";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const CreateNewEmail = () => {
   const [email, setEmail] = useState("");
+  const dispatch = useAppDispatch();
 
   const handleSendOTP = () => {
     if (!email) {
@@ -26,7 +28,11 @@ const CreateNewEmail = () => {
         visibilityTime: 5000,
       });
     } else {
-      router.push(`/(auth)/(register)/(new-email-verification)/${email}`);
+      dispatch(
+        newUserVerify({
+          email,
+        })
+      );
     }
   };
 

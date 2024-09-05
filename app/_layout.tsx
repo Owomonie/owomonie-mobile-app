@@ -7,6 +7,8 @@ import { Antonio_700Bold } from "@expo-google-fonts/antonio";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "@/config/Toast";
+import { Provider } from "react-redux";
+import store from "@/redux/store";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -35,13 +37,15 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <Toast config={toastConfig} />
+      <Provider store={store}>
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <Toast config={toastConfig} />
+      </Provider>
     </ThemeProvider>
   );
 }
