@@ -4,9 +4,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { ThemedText, ThemedText2 } from "@/components/Themes/text";
 import { ThemedInput } from "@/components/Themes/textInput";
 import { brandColor } from "@/constants/Colors";
-import { router } from "expo-router";
 import Toast from "react-native-toast-message";
 import { ThemedScrollView } from "@/components/Themes/scrollview";
+import { useAppDispatch } from "@/redux/store";
+import { registerNewUser } from "@/redux/slice/create-account";
+import { isPasswordValid } from "@/utils/passwordValidate";
 
 const CreateAccount = ({ email }: { email: string }) => {
   const [firstName, setFirstName] = useState("");
@@ -15,6 +17,8 @@ const CreateAccount = ({ email }: { email: string }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [secureTextEntry, setSecureTextEntry] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   const toggleSecureEntry = () => {
     setSecureTextEntry((prev) => !prev);
@@ -34,6 +38,12 @@ const CreateAccount = ({ email }: { email: string }) => {
         text1: "Input All fields",
         visibilityTime: 5000,
       });
+    } else if (!isPasswordValid(password)) {
+      Toast.show({
+        type: "info",
+        text1: "Invalid Password",
+        visibilityTime: 5000,
+      });
     } else if (password !== confirmPassword) {
       Toast.show({
         type: "info",
@@ -41,8 +51,15 @@ const CreateAccount = ({ email }: { email: string }) => {
         visibilityTime: 5000,
       });
     } else {
-      // @ts-ignore
-      router.push(`/(auth)/(register)/(success)/${email}`);
+      dispatch(
+        registerNewUser({
+          email,
+          userName,
+          lastName,
+          firstName,
+          password,
+        })
+      );
     }
   };
 
@@ -133,20 +150,6 @@ const CreateAccount = ({ email }: { email: string }) => {
               value={confirmPassword}
               onChangeText={setConfirmPassword}
             />
-            {/* <TouchableOpacity
-              onPress={toggleSecureEntry}
-              style={{
-                position: "absolute",
-                right: 8,
-                top: 6,
-              }}
-            >
-              <Ionicons
-                name={secureTextEntry ? "eye-off-outline" : "eye-outline"}
-                size={24}
-                color="#888"
-              />
-            </TouchableOpacity> */}
           </View>
         </View>
       </View>

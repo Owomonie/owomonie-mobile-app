@@ -3,33 +3,33 @@ import { AxiosError, AxiosJSON } from "../axios";
 import Toast from "react-native-toast-message";
 import { router } from "expo-router";
 
-interface CreateAccountError {
+interface ForgetPasswordError {
   message: string;
 }
 
-interface CreateAccountState {
+interface ForgetPasswordState {
   loading: boolean;
 }
 
 const axios = AxiosJSON();
 
-export const newUserVerify = createAsyncThunk(
-  "auth/createAccountAsync",
+export const forgetUserVerify = createAsyncThunk(
+  "auth/forgetPasswordAsync",
   async (
     { email, resend }: { email: string; resend?: boolean },
     { dispatch, rejectWithValue }
   ) => {
     try {
-      dispatch(createAccountRequest());
+      dispatch(forgetPasswordRequest());
 
-      const { data } = await axios.post("new-user-verification", {
+      const { data } = await axios.post("forget-password/otp", {
         email,
       });
 
-      dispatch(createAccountComplete());
+      dispatch(forgetPasswordComplete());
 
       if (!resend) {
-        router.push(`/(auth)/(register)/(new-email-verification)/${email}`);
+        router.push(`/(auth)/(forget)/(email-verification)/${email}`);
       }
 
       Toast.show({
@@ -38,15 +38,15 @@ export const newUserVerify = createAsyncThunk(
         visibilityTime: 5000,
       });
     } catch (error) {
-      console.log("New User Verify", error);
+      console.log("Forget User Verify", error);
       let errorMessage = "Network Error";
 
-      const axiosError = error as AxiosError<CreateAccountError>;
+      const axiosError = error as AxiosError<ForgetPasswordError>;
       if (axiosError.response && axiosError.response.data) {
         errorMessage = axiosError.response.data.message;
       }
 
-      dispatch(createAccountComplete());
+      dispatch(forgetPasswordComplete());
 
       Toast.show({
         type: "error",
@@ -59,23 +59,23 @@ export const newUserVerify = createAsyncThunk(
   }
 );
 
-export const newUserVerifyOTP = createAsyncThunk(
-  "auth/createAccountAsync",
+export const forgetVerifyOTP = createAsyncThunk(
+  "auth/forgetPasswordAsync",
   async (
     { email, OTP }: { email: string; OTP: string },
     { dispatch, rejectWithValue }
   ) => {
     try {
-      dispatch(createAccountRequest());
+      dispatch(forgetPasswordRequest());
 
-      const { data } = await axios.post("new-user-verification/verify-otp", {
+      const { data } = await axios.post("forget-password/verify-otp", {
         email,
         OTP,
       });
 
-      dispatch(createAccountComplete());
+      dispatch(forgetPasswordComplete());
 
-      router.push(`/(auth)/(register)/(create-account)/${email}`);
+      router.push(`/(auth)/(forget)/(reset-password)/${email}`);
 
       Toast.show({
         type: "success",
@@ -83,15 +83,15 @@ export const newUserVerifyOTP = createAsyncThunk(
         visibilityTime: 5000,
       });
     } catch (error) {
-      console.log("New User Verify OTP", error);
+      console.log("Forget User Verify OTP", error);
       let errorMessage = "Network Error";
 
-      const axiosError = error as AxiosError<CreateAccountError>;
+      const axiosError = error as AxiosError<ForgetPasswordError>;
       if (axiosError.response && axiosError.response.data) {
         errorMessage = axiosError.response.data.message;
       }
 
-      dispatch(createAccountComplete());
+      dispatch(forgetPasswordComplete());
 
       Toast.show({
         type: "error",
@@ -104,38 +104,29 @@ export const newUserVerifyOTP = createAsyncThunk(
   }
 );
 
-export const registerNewUser = createAsyncThunk(
-  "auth/createAccountAsync",
+export const resetPassword = createAsyncThunk(
+  "auth/forgetPasswordAsync",
   async (
     {
       email,
-      userName,
-      firstName,
-      lastName,
       password,
     }: {
       email: string;
-      userName: string;
-      firstName: string;
-      lastName: string;
       password: string;
     },
     { dispatch, rejectWithValue }
   ) => {
     try {
-      dispatch(createAccountRequest());
+      dispatch(forgetPasswordRequest());
 
-      const { data } = await axios.patch("register-user", {
+      const { data } = await axios.patch("forget-password/reset", {
         email,
-        userName,
-        lastName,
-        password,
-        firstName,
+        newPassword: password,
       });
 
-      dispatch(createAccountComplete());
+      dispatch(forgetPasswordComplete());
 
-      router.push(`/(auth)/(register)/(success)/${email}`);
+      router.push(`/(auth)/(forget)/(success)/${email}`);
 
       Toast.show({
         type: "success",
@@ -143,15 +134,15 @@ export const registerNewUser = createAsyncThunk(
         visibilityTime: 5000,
       });
     } catch (error) {
-      console.log("Register New User", error);
+      console.log("Reset Password", error);
       let errorMessage = "Network Error";
 
-      const axiosError = error as AxiosError<CreateAccountError>;
+      const axiosError = error as AxiosError<ForgetPasswordError>;
       if (axiosError.response && axiosError.response.data) {
         errorMessage = axiosError.response.data.message;
       }
 
-      dispatch(createAccountComplete());
+      dispatch(forgetPasswordComplete());
 
       Toast.show({
         type: "error",
@@ -164,25 +155,25 @@ export const registerNewUser = createAsyncThunk(
   }
 );
 
-const initialState: CreateAccountState = {
+const initialState: ForgetPasswordState = {
   loading: false,
 };
 
-const createAccountSlice = createSlice({
-  name: "createAccount",
+const forgetPasswordSlice = createSlice({
+  name: "forgetPassword",
   initialState,
   reducers: {
-    createAccountRequest: (state) => {
+    forgetPasswordRequest: (state) => {
       state.loading = true;
     },
 
-    createAccountComplete: (state) => {
+    forgetPasswordComplete: (state) => {
       state.loading = false;
     },
   },
 });
 
-export const { createAccountComplete, createAccountRequest } =
-  createAccountSlice.actions;
+export const { forgetPasswordComplete, forgetPasswordRequest } =
+  forgetPasswordSlice.actions;
 
-export default createAccountSlice;
+export default forgetPasswordSlice;

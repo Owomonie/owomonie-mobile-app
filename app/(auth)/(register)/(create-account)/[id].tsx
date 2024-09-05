@@ -14,6 +14,9 @@ import CreateAccount from "@/components/Auth/CreateAccount";
 import { useTheme } from "@/context/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedText } from "@/components/Themes/text";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
+import Spinner from "@/components/Spinner";
 
 const CreateAccountScreen = () => {
   const { isDarkMode } = useTheme();
@@ -21,34 +24,41 @@ const CreateAccountScreen = () => {
   const { id: email } = useLocalSearchParams<{
     id: string;
   }>();
-  // const handleBackPress = () => {
-  //   Alert.alert(
-  //     "OwoMonie",
-  //     "Are you sure you want to cancel registration and quit the app?",
-  //     [
-  //       {
-  //         text: "Cancel",
-  //         onPress: () => null,
-  //         style: "cancel",
-  //       },
-  //       { text: "YES", onPress: () => BackHandler.exitApp() },
-  //     ]
-  //   );
-  //   return true;
-  // };
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     BackHandler.addEventListener("hardwareBackPress", handleBackPress);
+  const loading = useSelector(
+    (state: RootState) => state.createAccount.loading
+  );
 
-  //     return () => {
-  //       BackHandler.removeEventListener("hardwareBackPress", handleBackPress);
-  //     };
-  //   }, [])
-  // );
+  const handleBackPress = () => {
+    Alert.alert(
+      "OwoMonie",
+      "Are you sure you want to cancel registration and quit the app?",
+      [
+        {
+          text: "Back",
+          onPress: () => null,
+          style: "cancel",
+        },
+        { text: "YES", onPress: () => BackHandler.exitApp() },
+      ]
+    );
+    return true;
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      BackHandler.addEventListener("hardwareBackPress", handleBackPress);
+
+      return () => {
+        BackHandler.removeEventListener("hardwareBackPress", handleBackPress);
+      };
+    }, [])
+  );
 
   return (
     <>
+      {loading && <Spinner />}
+
       <Stack.Screen
         options={{
           headerStyle: {
@@ -69,7 +79,7 @@ const CreateAccountScreen = () => {
           ),
           headerLeft: () => (
             <TouchableOpacity
-              // onPress={handleBackPress}
+              onPress={handleBackPress}
               style={{ marginRight: 30 }}
             >
               <Ionicons

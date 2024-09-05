@@ -7,11 +7,16 @@ import { brandColor } from "@/constants/Colors";
 import { router } from "expo-router";
 import Toast from "react-native-toast-message";
 import { ThemedView } from "@/components/Themes/view";
+import { useAppDispatch } from "@/redux/store";
+import { resetPassword } from "@/redux/slice/forgot-passord";
+import { isPasswordValid } from "@/utils/passwordValidate";
 
 const Reset = ({ email }: { email: string }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [secureTextEntry, setSecureTextEntry] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   const toggleSecureEntry = () => {
     setSecureTextEntry((prev) => !prev);
@@ -24,6 +29,12 @@ const Reset = ({ email }: { email: string }) => {
         text1: "Input All fields",
         visibilityTime: 5000,
       });
+    } else if (!isPasswordValid(password)) {
+      Toast.show({
+        type: "info",
+        text1: "Invalid Password",
+        visibilityTime: 5000,
+      });
     } else if (password !== confirmPassword) {
       Toast.show({
         type: "info",
@@ -31,8 +42,12 @@ const Reset = ({ email }: { email: string }) => {
         visibilityTime: 5000,
       });
     } else {
-      // @ts-ignore
-      router.push(`/(auth)/(forget)/(success)/${email}`);
+      dispatch(
+        resetPassword({
+          email,
+          password,
+        })
+      );
     }
   };
 
@@ -98,6 +113,7 @@ const Reset = ({ email }: { email: string }) => {
           </View>
         </View>
         <TouchableOpacity
+          // @ts-ignore
           onPress={() => router.push(`(auth)/(login)/${email}`)}
           style={styles.loginCont}
         >
@@ -107,6 +123,7 @@ const Reset = ({ email }: { email: string }) => {
               styles.login,
               {
                 color: brandColor,
+                marginBottom: 20,
               },
             ]}
           >

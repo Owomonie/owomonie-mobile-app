@@ -6,6 +6,9 @@ import { brandColor } from "@/constants/Colors";
 import { ThemedInput } from "@/components/Themes/textInput";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import Toast from "react-native-toast-message";
+import { useAppDispatch } from "@/redux/store";
+import { loginUser } from "@/redux/slice/login";
 
 const Login = ({ regEmail }: { regEmail?: string }) => {
   const [email, setEmail] = useState(
@@ -15,11 +18,28 @@ const Login = ({ regEmail }: { regEmail?: string }) => {
   const [password, setPassword] = useState("");
   const [secureTextEntry, setSecureTextEntry] = useState(false);
 
+  const dispatch = useAppDispatch();
+
   const toggleSecureEntry = () => {
     setSecureTextEntry((prev) => !prev);
   };
 
-  const handleLogin = () => {};
+  const handleLogin = () => {
+    if (!email || !password) {
+      Toast.show({
+        type: "info",
+        text1: "Input All fields",
+        visibilityTime: 5000,
+      });
+    } else {
+      dispatch(
+        loginUser({
+          email,
+          password,
+        })
+      );
+    }
+  };
 
   return (
     <ThemedView style={styles.page}>
@@ -70,6 +90,7 @@ const Login = ({ regEmail }: { regEmail?: string }) => {
                 />
               </TouchableOpacity>
               <TouchableOpacity
+                // @ts-ignore
                 onPress={() => router.push("(auth)/(forget)/send-token")}
               >
                 <ThemedText style={styles.forget}>Forgot password ?</ThemedText>
@@ -80,6 +101,7 @@ const Login = ({ regEmail }: { regEmail?: string }) => {
       </View>
       <View>
         <TouchableOpacity
+          // @ts-ignore
           onPress={() => router.push("(auth)/(register)/new-email")}
         >
           <Text style={styles.create}>Create new account</Text>

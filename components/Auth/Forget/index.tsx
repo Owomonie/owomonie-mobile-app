@@ -4,13 +4,15 @@ import { ThemedView } from "@/components/Themes/view";
 import { ThemedText, ThemedText2 } from "@/components/Themes/text";
 import { ThemedInput } from "@/components/Themes/textInput";
 import { brandColor } from "@/constants/Colors";
-import { router } from "expo-router";
 import Toast from "react-native-toast-message";
+import { useAppDispatch } from "@/redux/store";
+import { forgetUserVerify } from "@/redux/slice/forgot-passord";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const ForgetEmail = () => {
   const [email, setEmail] = useState("");
+  const dispatch = useAppDispatch();
 
   const handleSendOTP = () => {
     if (!email) {
@@ -26,7 +28,11 @@ const ForgetEmail = () => {
         visibilityTime: 5000,
       });
     } else {
-      router.push(`/(auth)/(forget)/(email-verification)/${email}`);
+      dispatch(
+        forgetUserVerify({
+          email,
+        })
+      );
     }
   };
 

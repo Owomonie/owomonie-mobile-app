@@ -4,12 +4,21 @@ import { useTheme } from "@/context/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedText } from "@/components/Themes/text";
 import ForgetEmail from "@/components/Auth/Forget";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
+import Spinner from "@/components/Spinner";
 
 const ForgetEmailScreen = () => {
   const { isDarkMode } = useTheme();
 
+  const loading = useSelector(
+    (state: RootState) => state.forgetPassword.loading
+  );
+
   return (
     <>
+      {loading && <Spinner />}
+
       <Stack.Screen
         options={{
           headerStyle: {

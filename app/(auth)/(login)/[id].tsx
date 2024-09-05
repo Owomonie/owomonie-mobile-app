@@ -5,6 +5,8 @@ import { ThemedText } from "@/components/Themes/text";
 import { useTheme } from "@/context/ThemeContext";
 import Login from "@/components/Auth/Login";
 import Spinner from "@/components/Spinner";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
 
 const LoginScreen = () => {
   const { isDarkMode } = useTheme();
@@ -12,6 +14,8 @@ const LoginScreen = () => {
   const { id: email } = useLocalSearchParams<{
     id: string;
   }>();
+
+  const loading = useSelector((state: RootState) => state.login.loading);
 
   const handleBackPress = () => {
     Alert.alert("OwoMonie", "Are you sure you want to quit?", [
@@ -37,7 +41,7 @@ const LoginScreen = () => {
 
   return (
     <>
-      {/* <Spinner /> */}
+      {loading && <Spinner />}
       <Stack.Screen
         options={{
           headerStyle: {

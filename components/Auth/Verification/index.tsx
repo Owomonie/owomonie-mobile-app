@@ -1,5 +1,7 @@
+import Toast from "react-native-toast-message";
 import { StyleSheet, Text, TouchableOpacity, View, Button } from "react-native";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
+
 import { ThemedText, ThemedText2, ThemedText3 } from "@/components/Themes/text";
 import OTPInput from "./otp";
 import { brandColor } from "@/constants/Colors";
@@ -7,7 +9,11 @@ import { router, useFocusEffect } from "expo-router";
 import { formatTime } from "@/utils/formatTime";
 import { ThemedView } from "@/components/Themes/view";
 import { useAppDispatch } from "@/redux/store";
-import { newUserVerify } from "@/redux/slice/create-account";
+import { newUserVerify, newUserVerifyOTP } from "@/redux/slice/create-account";
+import {
+  forgetUserVerify,
+  forgetVerifyOTP,
+} from "@/redux/slice/forgot-passord";
 
 const Verification = ({
   email,
@@ -46,17 +52,38 @@ const Verification = ({
         })
       );
     } else if (endPoint === "forget") {
+      dispatch(
+        forgetUserVerify({
+          email,
+          resend: true,
+        })
+      );
     }
     setCountdown(120);
     setIsResendEnabled(false);
   };
 
   const handleVerifyEmail = () => {
-    // console.log(otp.join(""));
-    if (endPoint === "create") {
-      router.push(`/(auth)/(register)/(create-account)/${email}`);
+    if (!otp.join("")) {
+      Toast.show({
+        type: "info",
+        text1: "Incomplete OTP Input",
+        visibilityTime: 5000,
+      });
+    } else if (endPoint === "create") {
+      dispatch(
+        newUserVerifyOTP({
+          email,
+          OTP: otp.join(""),
+        })
+      );
     } else if (endPoint === "forget") {
-      router.push(`/(auth)/(forget)/(reset-password)/${email}`);
+      dispatch(
+        forgetVerifyOTP({
+          email,
+          OTP: otp.join(""),
+        })
+      );
     }
   };
 

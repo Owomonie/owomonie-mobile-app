@@ -5,6 +5,9 @@ import { useTheme } from "@/context/ThemeContext";
 import { ThemedText } from "@/components/Themes/text";
 import { Ionicons } from "@expo/vector-icons";
 import Verification from "@/components/Auth/Verification";
+import Spinner from "@/components/Spinner";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
 
 const ForgetVerificationScreen = () => {
   const { isDarkMode } = useTheme();
@@ -13,8 +16,14 @@ const ForgetVerificationScreen = () => {
     id: string;
   }>();
 
+  const loading = useSelector(
+    (state: RootState) => state.forgetPassword.loading
+  );
+
   return (
     <>
+      {loading && <Spinner />}
+
       <Stack.Screen
         options={{
           headerStyle: {
@@ -28,16 +37,11 @@ const ForgetVerificationScreen = () => {
                   fontFamily: "As700",
                   fontSize: 20,
                 }}
-              >
-                {/* Create Account */}
-              </ThemedText>
+              ></ThemedText>
             </View>
           ),
           headerLeft: () => (
-            <TouchableOpacity
-              // onPress={handleBackPress}
-              style={{ marginRight: 30 }}
-            >
+            <TouchableOpacity style={{ marginRight: 30 }}>
               <Ionicons
                 name="arrow-back"
                 size={24}
