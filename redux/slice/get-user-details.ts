@@ -30,7 +30,7 @@ export const getUserDetails = createAsyncThunk(
         router.push("/(predetails)/gender");
       } else {
         // @ts-ignore
-        router.push("/(home)/home");
+        router.push("/(user)/(home)");
       }
     } catch (error) {
       console.log("getUserDetails Error", error);

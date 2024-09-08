@@ -280,7 +280,7 @@ export const updateUserAvatar = createAsyncThunk(
 
         dispatch(updateUserDetailsComplete());
 
-        router.push("/(home)/home");
+        router.push("/(user)/(home)");
 
         Toast.show({
           type: "success",
