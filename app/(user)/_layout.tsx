@@ -17,8 +17,8 @@ export default function UserLayout() {
     <Tabs
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: isDarkMode ? "#0F0F0F" : "#F7F7F7",
-          borderBlockColor: isDarkMode ? "#0F0F0F" : "#F7F7F7",
+          backgroundColor: isDarkMode ? "#0F0F0F" : "#F6F5FF",
+          borderBlockColor: isDarkMode ? "#0F0F0F" : "#F6F5FF",
         },
       }}
     >

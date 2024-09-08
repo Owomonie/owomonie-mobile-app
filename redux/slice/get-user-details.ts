@@ -8,7 +8,7 @@ interface GetUserDetailsError {
 
 interface GetUserDetailsState {
   loading: boolean;
-  userDetails: object;
+  data: object;
 }
 
 const axios = AxiosJSON();
@@ -58,7 +58,7 @@ export const getUserDetails = createAsyncThunk(
 
 const initialState: GetUserDetailsState = {
   loading: false,
-  userDetails: [],
+  data: [],
 };
 
 const getUserDetailsSlice = createSlice({
@@ -71,7 +71,7 @@ const getUserDetailsSlice = createSlice({
 
     getUserDetailsSuccess: (state, action) => {
       state.loading = false;
-      state.userDetails = action.payload;
+      state.data = action.payload;
     },
 
     getUserDetailsComplete: (state) => {

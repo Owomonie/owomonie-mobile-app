@@ -16,7 +16,7 @@ const CreateAccount = ({ email }: { email: string }) => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [secureTextEntry, setSecureTextEntry] = useState(false);
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   const dispatch = useAppDispatch();
 

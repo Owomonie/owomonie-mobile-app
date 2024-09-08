@@ -16,7 +16,7 @@ const Login = ({ regEmail }: { regEmail?: string }) => {
   );
 
   const [password, setPassword] = useState("");
-  const [secureTextEntry, setSecureTextEntry] = useState(false);
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   const dispatch = useAppDispatch();
 

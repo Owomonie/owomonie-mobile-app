@@ -4,7 +4,7 @@ export const Colors = {
   light: {
     text: "#000000",
     text2: "#030C12",
-    text3: "##0F0F0F",
+    text3: "#0F0F0F",
     background: "#F6F5FF",
     inputBackground: "#EDEDED",
     inputText: "#030C12",
