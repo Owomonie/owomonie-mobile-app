@@ -33,7 +33,6 @@ export const loginUser = createAsyncThunk(
       await dispatch(
         getUserDetails({
           token: data?.token,
-          login: true,
         })
       );
 

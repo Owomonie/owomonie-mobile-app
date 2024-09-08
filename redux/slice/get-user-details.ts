@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError, AxiosJSON } from "../axios";
-import Toast from "react-native-toast-message";
 import { router } from "expo-router";
 
 interface GetUserDetailsError {
@@ -16,10 +15,7 @@ const axios = AxiosJSON();
 
 export const getUserDetails = createAsyncThunk(
   "auth/getUserDetailsAsync",
-  async (
-    { token, login }: { token: string; login?: boolean },
-    { dispatch, rejectWithValue }
-  ) => {
+  async ({ token }: { token: string }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(getUserDetailsRequest());
 
@@ -29,7 +25,7 @@ export const getUserDetails = createAsyncThunk(
 
       dispatch(getUserDetailsSuccess(data.user));
 
-      if (!data?.gender) {
+      if (!data.user.gender) {
         // @ts-ignore
         router.push("/(predetails)/gender");
       } else {
@@ -41,14 +37,19 @@ export const getUserDetails = createAsyncThunk(
       let errorMessage = "Network Error";
 
       const axiosError = error as AxiosError<GetUserDetailsError>;
-      if (axiosError.response && axiosError.response.data) {
-        errorMessage = axiosError.response.data.message;
+      if (axiosError.response) {
+        if (axiosError.response.status === 403) {
+          // Handle 403 Forbidden error
+          // @ts-ignore
+          router.push("/(auth)/(login)/(auth)"); // Redirect to login
+          errorMessage = "Access denied. Please log in again.";
+        } else if (axiosError.response.data) {
+          // Handle other errors
+          errorMessage = axiosError.response.data.message;
+        }
       }
 
       dispatch(getUserDetailsComplete());
-
-      // @ts-ignore
-      router.push("/(auth)/login/(auth)");
 
       return rejectWithValue({ message: errorMessage });
     }

@@ -1,14 +1,40 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { Alert, BackHandler } from "react-native";
+import React, { useCallback } from "react";
+import { Stack, useFocusEffect } from "expo-router";
+import HomePage from "@/components/Home";
 
 const Home = () => {
+  const handleBackPress = () => {
+    Alert.alert("OwoMonie", "Are you sure you want to quit?", [
+      {
+        text: "Cancel",
+        onPress: () => null,
+        style: "cancel",
+      },
+      { text: "YES", onPress: () => BackHandler.exitApp() },
+    ]);
+    return true;
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      BackHandler.addEventListener("hardwareBackPress", handleBackPress);
+      return () => {
+        BackHandler.removeEventListener("hardwareBackPress", handleBackPress);
+      };
+    }, [])
+  );
+
   return (
-    <View>
-      <Text>Home</Text>
-    </View>
+    <>
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+      />
+      <HomePage />
+    </>
   );
 };
 
 export default Home;
-
-const styles = StyleSheet.create({});
