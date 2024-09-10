@@ -13,6 +13,7 @@ export default function UserLayout() {
         tabBarStyle: {
           backgroundColor: isDarkMode ? "#0F0F0F" : "#F6F5FF",
           borderBlockColor: isDarkMode ? "#0F0F0F" : "#F6F5FF",
+          paddingBottom: 10,
         },
       }}
     >
