@@ -68,7 +68,7 @@ const OnboardingGestures = ({
             style={[
               styles.title,
               {
-                color: isDarkMode ? "#ffffff" : brandColor,
+                color: isDarkMode ? "#ffffff" : "#000000",
               },
             ]}
           >
@@ -80,7 +80,7 @@ const OnboardingGestures = ({
             style={[
               styles.description,
               {
-                color: isDarkMode ? "#ffffff" : brandColor,
+                color: isDarkMode ? "#ffffff" : "#000000",
               },
             ]}
           >
