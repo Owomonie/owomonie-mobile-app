@@ -50,7 +50,7 @@ export const newUserVerify = createAsyncThunk(
 
       Toast.show({
         type: "error",
-        text1: errorMessage,
+        text1: errorMessage ? errorMessage : "Network Error",
         visibilityTime: 5000,
       });
 

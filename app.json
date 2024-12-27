@@ -13,7 +13,8 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.owomonie.owomonie"
     },
     "android": {
       "adaptiveIcon": {
@@ -38,9 +39,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "2c9a782e-9b52-4383-b174-d668ba18769b"
+        "projectId": "994f7f58-c991-44ae-867b-935b0eecc4a6"
       }
     },
-    "owner": "owomonie"
+    "owner": "yommexg"
   }
 }

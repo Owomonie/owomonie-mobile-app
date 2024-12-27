@@ -9,6 +9,7 @@ import Toast from "react-native-toast-message";
 import { toastConfig } from "@/config/Toast";
 import { Provider } from "react-redux";
 import store from "@/redux/store";
+import { StatusBar } from "expo-status-bar";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -38,6 +39,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider>
       <Provider store={store}>
+        <StatusBar style="auto" />
         <Stack>
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />

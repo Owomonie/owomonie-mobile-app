@@ -30,8 +30,8 @@ const OnboardingGestures = ({
   const { isDarkMode } = useTheme();
 
   const swipes = Gesture.Simultaneous(
-    Gesture.Fling().direction(Directions.LEFT).onEnd(onContinue),
-    Gesture.Fling().direction(Directions.RIGHT).onEnd(onBack)
+    Gesture.Fling().runOnJS(true).direction(Directions.LEFT).onEnd(onContinue),
+    Gesture.Fling().runOnJS(true).direction(Directions.RIGHT).onEnd(onBack)
   );
 
   return (
