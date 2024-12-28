@@ -46,6 +46,39 @@ export const saveUserExpoPushToken = createAsyncThunk(
     }
   }
 );
+export const saveUnauthenticatedUserExpoPushToken = createAsyncThunk(
+  "auth/pushNotificationAsync",
+  async (
+    { pushToken }: { pushToken: string },
+    { dispatch, rejectWithValue }
+  ) => {
+    try {
+      dispatch(pushNotificationRequest());
+
+      const { data } = await axios.post(
+        "/unauth-notifications/save-push-token",
+        {
+          pushToken,
+        }
+      );
+      console.log(data?.message);
+
+      dispatch(pushNotificationComplete());
+    } catch (error) {
+      console.log("pushNotification Error", error);
+      let errorMessage = "Network Error";
+
+      const axiosError = error as AxiosError<PushNotificationError>;
+      if (axiosError.response && axiosError.response.data) {
+        errorMessage = axiosError.response.data.message;
+      }
+
+      dispatch(pushNotificationComplete());
+
+      return rejectWithValue({ message: errorMessage });
+    }
+  }
+);
 
 const initialState: PushNotificationState = {
   loading: false,

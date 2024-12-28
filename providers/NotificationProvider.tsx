@@ -4,7 +4,10 @@ import { registerForPushNotificationsAsync } from "@/config/notification";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "@/redux/store";
 import { UserDetails } from "@/utils/types";
-import { saveUserExpoPushToken } from "@/redux/slice/push-notification";
+import {
+  saveUnauthenticatedUserExpoPushToken,
+  saveUserExpoPushToken,
+} from "@/redux/slice/push-notification";
 
 type NotificationContextType = {
   pushToken: string | null;
@@ -31,6 +34,10 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
           if (userID) {
             setPushToken(token);
             dispatch(saveUserExpoPushToken({ pushToken: token }));
+          } else {
+            dispatch(
+              saveUnauthenticatedUserExpoPushToken({ pushToken: token })
+            );
           }
         }
       } catch (error) {
@@ -40,6 +47,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
 
     getPushToken();
   }, [dispatch, userID]);
+  console.log(pushToken);
 
   return (
     <NotificationContext.Provider value={{ pushToken }}>
