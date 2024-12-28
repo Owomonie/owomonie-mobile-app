@@ -10,6 +10,7 @@ import { toastConfig } from "@/config/Toast";
 import { Provider } from "react-redux";
 import store from "@/redux/store";
 import { StatusBar } from "expo-status-bar";
+import { NotificationProvider } from "@/providers/NotificationProvider";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -38,17 +39,22 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider>
-      <Provider store={store}>
-        <StatusBar style="auto" />
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="(user)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <Toast config={toastConfig} />
-      </Provider>
+      <NotificationProvider>
+        <Provider store={store}>
+          <StatusBar style="auto" />
+          <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="(onboarding)"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="(user)" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+          <Toast config={toastConfig} />
+        </Provider>
+      </NotificationProvider>
     </ThemeProvider>
   );
 }

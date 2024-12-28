@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "989996049116",
+    "project_id": "owomonie-c3b99",
+    "storage_bucket": "owomonie-c3b99.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:989996049116:android:54880f69aa39483a7cca19",
+        "android_client_info": {
+          "package_name": "com.owomonie.owomonie"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAb_S0CztRQaJ2OiI9ItDtrEJY0FWSB6W8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
