@@ -6,6 +6,7 @@ import forgetPasswordSlice from "./slice/forgot-passord";
 import loginSlice from "./slice/login";
 import getUserDetailsSlice from "./slice/get-user-details";
 import updateUserDetailsSlice from "./slice/update-user-details";
+import pushNotificationSlice from "./slice/push-notification";
 
 const rootReducer = combineReducers({
   createAccount: createAccountSlice.reducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   login: loginSlice.reducer,
   userDetails: getUserDetailsSlice.reducer,
   updateUser: updateUserDetailsSlice.reducer,
+  pushNotifications: pushNotificationSlice.reducer,
 });
 
 const store = configureStore({

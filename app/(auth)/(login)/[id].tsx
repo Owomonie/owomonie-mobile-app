@@ -16,6 +16,9 @@ const LoginScreen = () => {
   }>();
 
   const loading = useSelector((state: RootState) => state.login.loading);
+  const loading2 = useSelector(
+    (state: RootState) => state.pushNotifications.loading
+  );
 
   const handleBackPress = () => {
     Alert.alert("OwoMonie", "Are you sure you want to quit?", [
@@ -41,7 +44,7 @@ const LoginScreen = () => {
 
   return (
     <>
-      {loading && <Spinner />}
+      {(loading || loading2) && <Spinner />}
       <Stack.Screen
         options={{
           headerStyle: {

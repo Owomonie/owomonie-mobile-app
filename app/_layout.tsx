@@ -39,8 +39,8 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider>
-      <NotificationProvider>
-        <Provider store={store}>
+      <Provider store={store}>
+        <NotificationProvider>
           <StatusBar style="auto" />
           <Stack>
             <Stack.Screen name="index" options={{ headerShown: false }} />
@@ -53,8 +53,8 @@ export default function RootLayout() {
             <Stack.Screen name="+not-found" />
           </Stack>
           <Toast config={toastConfig} />
-        </Provider>
-      </NotificationProvider>
+        </NotificationProvider>
+      </Provider>
     </ThemeProvider>
   );
 }
