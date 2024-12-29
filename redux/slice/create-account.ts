@@ -62,7 +62,11 @@ export const newUserVerify = createAsyncThunk(
 export const newUserVerifyOTP = createAsyncThunk(
   "auth/createAccountAsync",
   async (
-    { email, OTP }: { email: string; OTP: string },
+    {
+      email,
+      OTP,
+      pushToken,
+    }: { email: string; OTP: string; pushToken: string | null },
     { dispatch, rejectWithValue }
   ) => {
     try {
@@ -71,6 +75,7 @@ export const newUserVerifyOTP = createAsyncThunk(
       const { data } = await axios.post("new-user-verification/verify-otp", {
         email,
         OTP,
+        pushToken,
       });
 
       dispatch(createAccountComplete());

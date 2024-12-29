@@ -14,6 +14,7 @@ import {
   forgetUserVerify,
   forgetVerifyOTP,
 } from "@/redux/slice/forgot-passord";
+import { usePushNotification } from "@/providers/NotificationProvider";
 
 const Verification = ({
   email,
@@ -27,6 +28,7 @@ const Verification = ({
   const [isResendEnabled, setIsResendEnabled] = useState(false);
 
   const dispatch = useAppDispatch();
+  const { pushUnauthToken } = usePushNotification();
 
   useFocusEffect(
     useCallback(() => {
@@ -75,6 +77,7 @@ const Verification = ({
         newUserVerifyOTP({
           email,
           OTP: otp.join(""),
+          pushToken: pushUnauthToken,
         })
       );
     } else if (endPoint === "forget") {

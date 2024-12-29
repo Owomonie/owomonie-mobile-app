@@ -28,7 +28,7 @@ export const saveUserExpoPushToken = createAsyncThunk(
       const { data } = await axios.patch("/notifications/save-push-token", {
         pushToken,
       });
-      console.log(data?.message);
+      // console.log(data?.message);
 
       dispatch(pushNotificationComplete());
     } catch (error) {
@@ -61,7 +61,7 @@ export const saveUnauthenticatedUserExpoPushToken = createAsyncThunk(
           pushToken,
         }
       );
-      console.log(data?.message);
+      // console.log(data?.message);
 
       dispatch(pushNotificationComplete());
     } catch (error) {

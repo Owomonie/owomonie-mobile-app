@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import React from "react";
 import { ThemedView } from "../Themes/view";
 import HomeHeader from "./header";

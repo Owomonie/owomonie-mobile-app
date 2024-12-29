@@ -17,4 +17,5 @@ export interface UserDetails {
   status: number;
   userName: string;
   workType: string;
+  pushToken: string;
 }

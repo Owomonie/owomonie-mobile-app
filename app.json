@@ -12,13 +12,17 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "notification": {
+      "icon": "./assets/images/icon.png",
+      "color": "#000000"
+    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.owomonie.owomonie"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adpative-icon.png",
+        "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.owomonie.owomonie",

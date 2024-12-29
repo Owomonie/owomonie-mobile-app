@@ -1,8 +1,15 @@
 import { ThemedText } from "@/components/Themes/text";
 import { ThemedView } from "@/components/Themes/view";
-import { Stack } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router, Stack } from "expo-router";
+import { TouchableOpacity } from "react-native";
 
 const More = () => {
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem("token");
+    router.push("/(auth)/(login)/(auth)");
+  };
+
   return (
     <>
       <Stack.Screen
@@ -17,7 +24,9 @@ const More = () => {
           justifyContent: "center",
         }}
       >
-        <ThemedText>More</ThemedText>
+        <TouchableOpacity onPress={handleLogout}>
+          <ThemedText>Logout</ThemedText>
+        </TouchableOpacity>
       </ThemedView>
     </>
   );
