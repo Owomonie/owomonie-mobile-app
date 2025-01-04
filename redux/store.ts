@@ -7,11 +7,13 @@ import loginSlice from "./slice/login";
 import getUserDetailsSlice from "./slice/get-user-details";
 import updateUserDetailsSlice from "./slice/update-user-details";
 import pushNotificationSlice from "./slice/push-notification";
+import logOutSlice from "./slice/logout";
 
 const rootReducer = combineReducers({
   createAccount: createAccountSlice.reducer,
   forgetPassword: forgetPasswordSlice.reducer,
   login: loginSlice.reducer,
+  logout: logOutSlice.reducer,
   userDetails: getUserDetailsSlice.reducer,
   updateUser: updateUserDetailsSlice.reducer,
   pushNotifications: pushNotificationSlice.reducer,

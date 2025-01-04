@@ -12,7 +12,7 @@ interface PushNotificationState {
 
 const axios = AxiosJSON();
 
-export const saveUserExpoPushToken = createAsyncThunk(
+export const saveExpoPushToken = createAsyncThunk(
   "auth/pushNotificationAsync",
   async (
     { pushToken }: { pushToken: string },
@@ -21,14 +21,9 @@ export const saveUserExpoPushToken = createAsyncThunk(
     try {
       dispatch(pushNotificationRequest());
 
-      const token = await AsyncStorage.getItem("token");
-
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-      const { data } = await axios.patch("/notifications/save-push-token", {
+      await axios.post("/save-push-token", {
         pushToken,
       });
-      // console.log(data?.message);
 
       dispatch(pushNotificationComplete());
     } catch (error) {
@@ -36,41 +31,14 @@ export const saveUserExpoPushToken = createAsyncThunk(
       let errorMessage = "Network Error";
 
       const axiosError = error as AxiosError<PushNotificationError>;
-      if (axiosError.response && axiosError.response.data) {
-        errorMessage = axiosError.response.data.message;
-      }
 
-      dispatch(pushNotificationComplete());
-
-      return rejectWithValue({ message: errorMessage });
-    }
-  }
-);
-export const saveUnauthenticatedUserExpoPushToken = createAsyncThunk(
-  "auth/pushNotificationAsync",
-  async (
-    { pushToken }: { pushToken: string },
-    { dispatch, rejectWithValue }
-  ) => {
-    try {
-      dispatch(pushNotificationRequest());
-
-      const { data } = await axios.post(
-        "/unauth-notifications/save-push-token",
-        {
-          pushToken,
+      if (axiosError.response) {
+        if (axiosError.response.status === 409) {
+          return;
+        } else if (axiosError.response.data) {
+          // Handle other errors
+          errorMessage = axiosError.response.data.message;
         }
-      );
-      // console.log(data?.message);
-
-      dispatch(pushNotificationComplete());
-    } catch (error) {
-      console.log("pushNotification Error", error);
-      let errorMessage = "Network Error";
-
-      const axiosError = error as AxiosError<PushNotificationError>;
-      if (axiosError.response && axiosError.response.data) {
-        errorMessage = axiosError.response.data.message;
       }
 
       dispatch(pushNotificationComplete());

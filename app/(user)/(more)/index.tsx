@@ -1,13 +1,21 @@
-import { ThemedText } from "@/components/Themes/text";
-import { ThemedView } from "@/components/Themes/view";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { router, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import { TouchableOpacity } from "react-native";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { ThemedText } from "@/components/Themes/text";
+import { ThemedView } from "@/components/Themes/view";
+import { logOut } from "@/redux/slice/logout";
+import { useAppDispatch } from "@/redux/store";
+
 const More = () => {
+  const dispatch = useAppDispatch();
+
   const handleLogout = async () => {
+    await AsyncStorage.removeItem("email");
+    await AsyncStorage.removeItem("password");
+    await dispatch(logOut());
     await AsyncStorage.removeItem("token");
-    router.push("/(auth)/(login)/(auth)");
   };
 
   return (

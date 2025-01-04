@@ -3,6 +3,7 @@ import { AxiosError, AxiosJSON } from "../axios";
 import Toast from "react-native-toast-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getUserDetails } from "./get-user-details";
+import { registerForPushNotificationsAsync } from "@/config/notification";
 
 interface LoginError {
   message: string;
@@ -23,12 +24,22 @@ export const loginUser = createAsyncThunk(
     try {
       dispatch(loginRequest());
 
-      const { data } = await axios.post("login", {
+      const pushToken = await registerForPushNotificationsAsync();
+
+      const loginData: any = {
         email,
         password,
-      });
+      };
+
+      if (pushToken) {
+        loginData.pushToken = pushToken;
+      }
+
+      const { data } = await axios.post("login", loginData);
 
       await AsyncStorage.setItem("token", data?.token);
+      await AsyncStorage.setItem("email", email);
+      await AsyncStorage.setItem("password", password);
 
       await dispatch(
         getUserDetails({

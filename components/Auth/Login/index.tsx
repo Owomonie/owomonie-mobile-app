@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ThemedView } from "@/components/Themes/view";
 import { ThemedText, ThemedText2, ThemedText3 } from "@/components/Themes/text";
 import { brandColor } from "@/constants/Colors";
@@ -9,16 +9,32 @@ import { router } from "expo-router";
 import Toast from "react-native-toast-message";
 import { useAppDispatch } from "@/redux/store";
 import { loginUser } from "@/redux/slice/login";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = ({ regEmail }: { regEmail?: string }) => {
-  const [email, setEmail] = useState(
-    !regEmail || regEmail === "(auth)" ? "" : regEmail
-  );
-
-  const [password, setPassword] = useState("");
-  const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
 
   const dispatch = useAppDispatch();
+
+  // Get the stored email from AsyncStorage if no regEmail is passed
+  useEffect(() => {
+    const getStorageEmail = async () => {
+      const email = await AsyncStorage.getItem("email");
+      if (email) {
+        setEmail(email);
+      } else if (regEmail) {
+        if (regEmail === "(auth)") {
+          setEmail("");
+        } else {
+          setEmail(regEmail);
+        }
+      }
+    };
+
+    getStorageEmail();
+  }, [regEmail]);
 
   const toggleSecureEntry = () => {
     setSecureTextEntry((prev) => !prev);
@@ -32,12 +48,7 @@ const Login = ({ regEmail }: { regEmail?: string }) => {
         visibilityTime: 5000,
       });
     } else {
-      dispatch(
-        loginUser({
-          email,
-          password,
-        })
-      );
+      dispatch(loginUser({ email, password }));
     }
   };
 
@@ -65,23 +76,14 @@ const Login = ({ regEmail }: { regEmail?: string }) => {
             <ThemedText3 style={styles.label}>Password</ThemedText3>
             <View>
               <ThemedInput
-                style={[
-                  styles.input,
-                  {
-                    paddingRight: 50,
-                  },
-                ]}
+                style={[styles.input, { paddingRight: 50 }]}
                 secureTextEntry={secureTextEntry}
                 value={password}
                 onChangeText={setPassword}
               />
               <TouchableOpacity
                 onPress={toggleSecureEntry}
-                style={{
-                  position: "absolute",
-                  right: 8,
-                  top: 6,
-                }}
+                style={{ position: "absolute", right: 8, top: 6 }}
               >
                 <Ionicons
                   name={secureTextEntry ? "eye-off-outline" : "eye-outline"}
@@ -93,12 +95,13 @@ const Login = ({ regEmail }: { regEmail?: string }) => {
                 // @ts-ignore
                 onPress={() => router.push("(auth)/(forget)/send-token")}
               >
-                <ThemedText style={styles.forget}>Forgot password ?</ThemedText>
+                <ThemedText style={styles.forget}>Forgot password?</ThemedText>
               </TouchableOpacity>
             </View>
           </View>
         </View>
       </View>
+
       <View>
         <TouchableOpacity
           // @ts-ignore
