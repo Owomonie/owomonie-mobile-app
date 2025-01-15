@@ -35,11 +35,6 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   // useEffect(() => {
   //   const getPushToken = async () => {
   //     try {
-  //       const token = await registerForPushNotificationsAsync();
-  //       if (token) {
-  //         setPushToken(token);
-  //         await dispatch(saveExpoPushToken({ pushToken: token }));
-  //       }
 
   //       notificationListener.current =
   //         Notifications.addNotificationReceivedListener((notification) => {

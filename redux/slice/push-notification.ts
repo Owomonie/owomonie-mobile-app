@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError, AxiosJSON } from "../axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface PushNotificationError {
   message: string;

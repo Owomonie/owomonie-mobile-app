@@ -35,7 +35,7 @@ const Spinner = () => {
     <View style={styles.overlay}>
       <View style={styles.container}>
         <Animated.Image
-          source={require("../../assets/images/logo.png")}
+          source={require("../../assets/images/icon.png")}
           style={[styles.logo, { transform: [{ rotate }] }]}
           resizeMode="contain"
         />

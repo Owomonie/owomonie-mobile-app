@@ -6,6 +6,8 @@ import Spinner from "@/components/Spinner";
 import { RootState, useAppDispatch } from "@/redux/store";
 import { getUserDetails } from "@/redux/slice/get-user-details";
 import { useSelector } from "react-redux";
+import { registerForPushNotificationsAsync } from "@/config/notification";
+import { saveExpoPushToken } from "@/redux/slice/push-notification";
 
 const Home = () => {
   const [tokenExist, setTokenExist] = useState<boolean | null>(null);
@@ -15,6 +17,9 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const loading = useSelector((state: RootState) => state.userDetails.loading);
+  const loading1 = useSelector(
+    (state: RootState) => state.pushNotifications.loading
+  );
 
   const dispatch = useAppDispatch();
 
@@ -40,7 +45,19 @@ const Home = () => {
     checkTokenAndOnboarding();
   }, []);
 
-  if (isLoading || loading) {
+  useEffect(() => {
+    if (!isOnboardingComplete) {
+      const saveNewDevicePushToken = async () => {
+        const token = await registerForPushNotificationsAsync();
+        if (token) {
+          await dispatch(saveExpoPushToken({ pushToken: token }));
+        }
+      };
+      saveNewDevicePushToken();
+    }
+  }, []);
+
+  if (isLoading || loading || loading1) {
     return <Spinner />;
   }
 
