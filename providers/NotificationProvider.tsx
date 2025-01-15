@@ -8,10 +8,10 @@ import {
 } from "react";
 import * as Notifications from "expo-notifications";
 
-import { registerForPushNotificationsAsync } from "@/config/notification";
-
-import { useAppDispatch } from "@/redux/store";
-import { saveExpoPushToken } from "@/redux/slice/push-notification";
+import { RootState, useAppDispatch } from "@/redux/store";
+import { router } from "expo-router";
+import { useSelector } from "react-redux";
+import { UserDetails } from "@/utils/types";
 
 type NotificationContextType = {
   pushToken: string | null;
@@ -32,37 +32,49 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const notificationListener = useRef<Notifications.EventSubscription>();
   const responseListener = useRef<Notifications.EventSubscription>();
 
-  // useEffect(() => {
-  //   const getPushToken = async () => {
-  //     try {
+  const user = useSelector(
+    (state: RootState) => state.userDetails.data as UserDetails
+  );
 
-  //       notificationListener.current =
-  //         Notifications.addNotificationReceivedListener((notification) => {
-  //           setNotification(notification);
-  //         });
+  useEffect(() => {
+    const getNotifications = async () => {
+      try {
+        notificationListener.current =
+          Notifications.addNotificationReceivedListener((notification) => {
+            setNotification(notification);
+          });
 
-  //       responseListener.current =
-  //         Notifications.addNotificationResponseReceivedListener((response) => {
-  //           // const { notification, actionIdentifier } = response;
-  //           // console.log("Notification Response:", notification);
-  //           // console.log("Action Identifier:", actionIdentifier);
-  //         });
-  //     } catch (error) {
-  //       console.error("Error getting push token:", error);
-  //     }
-  //   };
+        responseListener.current =
+          Notifications.addNotificationResponseReceivedListener((response) => {
+            const { notification } = response;
 
-  //   getPushToken();
+            if (!user._id) {
+              router.push("/(auth)/(login)/(auth)");
+            } else {
+              if (!user.gender) {
+                router.push("/(predetails)/gender");
+              } else {
+                router.push("/(user)/(home)");
+                // Navigate user to any screen based on the notification.
+              }
+            }
+          });
+      } catch (error) {
+        console.error("Error getting Notification", error);
+      }
+    };
 
-  //   return () => {
-  //     notificationListener.current &&
-  //       Notifications.removeNotificationSubscription(
-  //         notificationListener.current
-  //       );
-  //     responseListener.current &&
-  //       Notifications.removeNotificationSubscription(responseListener.current);
-  //   };
-  // }, [dispatch]);
+    getNotifications();
+
+    return () => {
+      notificationListener.current &&
+        Notifications.removeNotificationSubscription(
+          notificationListener.current
+        );
+      responseListener.current &&
+        Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, [dispatch]);
 
   return (
     <NotificationContext.Provider value={{ pushToken, notification }}>

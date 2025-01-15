@@ -11,7 +11,6 @@ import Login from "@/components/Auth/Login";
 import Spinner from "@/components/Spinner";
 import { RootState, useAppDispatch } from "@/redux/store";
 import { loginUser } from "@/redux/slice/login";
-import { registerForPushNotificationsAsync } from "@/config/notification";
 
 const LoginScreen = () => {
   const { isDarkMode } = useTheme();
@@ -22,9 +21,6 @@ const LoginScreen = () => {
   }>();
 
   const loading = useSelector((state: RootState) => state.login.loading);
-  const loading2 = useSelector(
-    (state: RootState) => state.pushNotifications.loading
-  );
 
   const handleBackPress = () => {
     Alert.alert("OwoMonie", "Are you sure you want to quit?", [
@@ -41,6 +37,7 @@ const LoginScreen = () => {
   useFocusEffect(
     useCallback(() => {
       const loginWithFingerPrint = async () => {
+        await AsyncStorage.setItem("completedOnboarding", "Done");
         const email = await AsyncStorage.getItem("email");
         const password = await AsyncStorage.getItem("password");
         if (!email || !password) {
@@ -94,7 +91,7 @@ const LoginScreen = () => {
 
   return (
     <>
-      {(loading || loading2) && <Spinner />}
+      {loading && <Spinner />}
       <Stack.Screen
         options={{
           headerStyle: {
