@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: "As350",
     marginVertical: 5,
+    minHeight: 15,
   },
 
   iconCont: {

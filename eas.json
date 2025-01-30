@@ -1,3 +1,4 @@
+// Development
 {
   "cli": {
     "version": ">= 14.2.0",
@@ -20,6 +21,7 @@
   }
 }
 
+// Production
 // {
 //   "build": {
 //     "preview": {
