@@ -1,7 +1,17 @@
 import Svg, { Path } from "react-native-svg";
 import { StyleSheet, Text, View } from "react-native";
 
-const HomeBalanceCard = () => {
+type HomeBalanceType = {
+  activeTitle: string;
+  // balance: string;
+  // bankLogo: string;
+};
+
+const HomeBalanceCard = ({
+  activeTitle,
+}: // balance,
+// bankLogo,
+HomeBalanceType) => {
   return (
     <View style={styles.card}>
       {/* SVG Background Effect */}
@@ -30,12 +40,6 @@ const HomeBalanceCard = () => {
           fill="#EBF73E"
         />
       </Svg>
-
-      {/* Content */}
-      <View style={styles.content}>
-        <Text style={styles.text}>Total Balance</Text>
-        <Text style={styles.amount}>₦134,623,896.00</Text>
-      </View>
     </View>
   );
 };
@@ -49,7 +53,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: "hidden",
     position: "relative",
-    marginHorizontal: 10,
+    marginHorizontal: 5,
   },
   svgBackground1: {
     position: "absolute",
@@ -60,19 +64,5 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     left: 0,
-  },
-  content: {
-    flex: 1,
-    padding: 15,
-    justifyContent: "center",
-  },
-  text: {
-    color: "white",
-    fontSize: 14,
-  },
-  amount: {
-    color: "white",
-    fontSize: 22,
-    fontWeight: "bold",
   },
 });
