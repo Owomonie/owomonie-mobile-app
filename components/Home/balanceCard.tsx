@@ -1,17 +1,24 @@
 import Svg, { Path } from "react-native-svg";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import HomeAllAccounts from "./allAccount";
-import HomeIndividualAccounts from "./individualAccount";
+import { BankDetails } from "@/utils/types";
+import { RenderIndividualAccounts } from "./individualAccount";
 
 type HomeBalanceType = {
   activeTitle: string;
-  // balance: string;
-  // bankLogo: string;
+  item?: BankDetails;
 };
 
-const HomeBalanceCard = ({ activeTitle }: HomeBalanceType) => {
+const HomeBalanceCard = ({ activeTitle, item }: HomeBalanceType) => {
   return (
-    <View style={styles.card}>
+    <View
+      style={[
+        styles.card,
+        {
+          width: activeTitle === "individual" ? 350 : "100%",
+        },
+      ]}
+    >
       {/* SVG Background Effect */}
       <Svg
         width="112"
@@ -39,7 +46,9 @@ const HomeBalanceCard = ({ activeTitle }: HomeBalanceType) => {
         />
       </Svg>
       {activeTitle === "all" && <HomeAllAccounts />}
-      {activeTitle === "individual" && <HomeIndividualAccounts />}
+      {activeTitle === "individual" && item && (
+        <RenderIndividualAccounts item={item} />
+      )}
     </View>
   );
 };

@@ -5,6 +5,7 @@ import { ThemedView } from "../Themes/view";
 import HomeHeader from "./header";
 import HomeBalanceCard from "./balanceCard";
 import HomeAcccountTitle from "./acccountTitle";
+import HomeIndividualAccounts from "./individualAccount";
 
 const HomePage = () => {
   const [activeTitle, setActiveTitle] = useState("all");
@@ -16,7 +17,8 @@ const HomePage = () => {
         activeTitle={activeTitle}
         setActiveTitle={setActiveTitle}
       />
-      <HomeBalanceCard activeTitle={activeTitle} />
+      {activeTitle === "all" && <HomeBalanceCard activeTitle={activeTitle} />}
+      {activeTitle === "individual" && <HomeIndividualAccounts />}
     </ThemedView>
   );
 };
