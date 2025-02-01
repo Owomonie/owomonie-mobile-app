@@ -8,6 +8,7 @@ import { getUserDetails } from "@/redux/slice/get-user-details";
 import { useSelector } from "react-redux";
 import { registerForPushNotificationsAsync } from "@/config/notification";
 import { saveExpoPushToken } from "@/redux/slice/push-notification";
+import { getAllBanks } from "@/redux/slice/bank";
 
 const Home = () => {
   const [tokenExist, setTokenExist] = useState<boolean | null>(null);
@@ -16,10 +17,13 @@ const Home = () => {
   >(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const loading = useSelector((state: RootState) => state.userDetails.loading);
-  const loading1 = useSelector(
+  const loadingUserDetails = useSelector(
+    (state: RootState) => state.userDetails.loading
+  );
+  const loadingPushNotification = useSelector(
     (state: RootState) => state.pushNotifications.loading
   );
+  const loadingBanks = useSelector((state: RootState) => state.banks.loading);
 
   const dispatch = useAppDispatch();
 
@@ -31,6 +35,7 @@ const Home = () => {
 
         if (token) {
           dispatch(getUserDetails({ token }));
+          dispatch(getAllBanks({ token }));
         }
 
         const status = await AsyncStorage.getItem("completedOnboarding");
@@ -57,7 +62,12 @@ const Home = () => {
     }
   }, []);
 
-  if (isLoading || loading || loading1) {
+  if (
+    isLoading ||
+    loadingPushNotification ||
+    loadingUserDetails ||
+    loadingBanks
+  ) {
     return <Spinner />;
   }
 

@@ -8,6 +8,7 @@ import getUserDetailsSlice from "./slice/get-user-details";
 import updateUserDetailsSlice from "./slice/update-user-details";
 import pushNotificationSlice from "./slice/push-notification";
 import logOutSlice from "./slice/logout";
+import banksSlice from "./slice/bank";
 
 const rootReducer = combineReducers({
   createAccount: createAccountSlice.reducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   userDetails: getUserDetailsSlice.reducer,
   updateUser: updateUserDetailsSlice.reducer,
   pushNotifications: pushNotificationSlice.reducer,
+  banks: banksSlice.reducer,
 });
 
 const store = configureStore({

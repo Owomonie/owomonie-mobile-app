@@ -26,7 +26,6 @@ export const saveExpoPushToken = createAsyncThunk(
 
       dispatch(pushNotificationComplete());
     } catch (error) {
-      console.log("pushNotification Error", error);
       let errorMessage = "Network Error";
 
       const axiosError = error as AxiosError<PushNotificationError>;
@@ -35,6 +34,7 @@ export const saveExpoPushToken = createAsyncThunk(
         if (axiosError.response.status === 409) {
           return;
         } else if (axiosError.response.data) {
+          console.log("pushNotification Error", error);
           // Handle other errors
           errorMessage = axiosError.response.data.message;
         }
