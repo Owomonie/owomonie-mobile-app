@@ -23,7 +23,7 @@ export const getAllBanks = createAsyncThunk(
 
       const { data } = await axios.get("banks");
 
-      dispatch(banksSuccess(data.user));
+      dispatch(banksSuccess(data.banks));
     } catch (error) {
       console.log("banks Error", error);
       let errorMessage = "Network Error";

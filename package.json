@@ -49,7 +49,8 @@
     "react-native-toast-message": "^2.2.1",
     "react-native-web": "~0.19.10",
     "react-redux": "^9.2.0",
-    "redux-thunk": "^3.1.0"
+    "redux-thunk": "^3.1.0",
+    "@shopify/flash-list": "1.7.1"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",

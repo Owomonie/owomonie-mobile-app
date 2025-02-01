@@ -19,3 +19,11 @@ export interface UserDetails {
   workType: string;
   pushToken: string;
 }
+
+export interface BankDetails {
+  _id: string;
+  bankLogo: string;
+  bankName: string;
+  bankSortCode: string;
+  createdAt: string;
+}

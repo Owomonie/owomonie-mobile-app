@@ -25,7 +25,12 @@ const HomeAcccountTitle = ({
         </Text>
       </TouchableOpacity>
 
-      <Entypo name="dot-single" size={20} color="#898989" />
+      <Entypo
+        name="dot-single"
+        size={20}
+        color="#898989"
+        style={{ marginTop: 4 }}
+      />
 
       {/* Individual Accounts Button */}
       <TouchableOpacity onPress={() => setActiveTitle("individual")}>
@@ -46,7 +51,7 @@ export default HomeAcccountTitle;
 
 const styles = StyleSheet.create({
   container: {
-    borderColor: "#898989",
+    borderColor: "#EAEAEA",
     borderWidth: 1,
     borderRadius: 20,
     marginVertical: 20,
@@ -55,8 +60,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     gap: 5,
-    paddingVertical: 5,
+    paddingBottom: 5,
     paddingHorizontal: 10,
+    backgroundColor: "white",
   },
 
   text: {

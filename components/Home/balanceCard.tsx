@@ -1,5 +1,7 @@
 import Svg, { Path } from "react-native-svg";
 import { StyleSheet, Text, View } from "react-native";
+import HomeAllAccounts from "./allAccount";
+import HomeIndividualAccounts from "./individualAccount";
 
 type HomeBalanceType = {
   activeTitle: string;
@@ -7,11 +9,7 @@ type HomeBalanceType = {
   // bankLogo: string;
 };
 
-const HomeBalanceCard = ({
-  activeTitle,
-}: // balance,
-// bankLogo,
-HomeBalanceType) => {
+const HomeBalanceCard = ({ activeTitle }: HomeBalanceType) => {
   return (
     <View style={styles.card}>
       {/* SVG Background Effect */}
@@ -40,6 +38,8 @@ HomeBalanceType) => {
           fill="#EBF73E"
         />
       </Svg>
+      {activeTitle === "all" && <HomeAllAccounts />}
+      {activeTitle === "individual" && <HomeIndividualAccounts />}
     </View>
   );
 };
@@ -49,8 +49,8 @@ export default HomeBalanceCard;
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "black",
-    height: 150,
-    borderRadius: 10,
+    height: 180,
+    borderRadius: 12,
     overflow: "hidden",
     position: "relative",
     marginHorizontal: 5,
