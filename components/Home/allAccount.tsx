@@ -4,6 +4,7 @@ import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
+import HomeBalanceCard from "./balanceCard";
 
 const HomeAllAccounts = () => {
   const [showBalance, setShowBalance] = useState(false);
@@ -17,44 +18,46 @@ const HomeAllAccounts = () => {
   const firstEightBanks = banks?.slice(0, 8);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Total Balance</Text>
-      <View style={styles.logoContainer}>
-        {firstEightBanks?.map((bank) => (
-          <Image
-            key={bank._id}
-            source={{ uri: bank.bankLogo }}
-            style={styles.logos}
-          />
-        ))}
-        {banks?.length > 8 && (
-          <MaterialCommunityIcons
-            name="dots-horizontal"
-            size={20}
-            color="white"
-          />
+    <HomeBalanceCard activeTitle="all">
+      <View style={styles.container}>
+        <Text style={styles.title}>Total Balance</Text>
+        <View style={styles.logoContainer}>
+          {firstEightBanks?.map((bank) => (
+            <Image
+              key={bank._id}
+              source={{ uri: bank.bankLogo }}
+              style={styles.logos}
+            />
+          ))}
+          {banks?.length > 8 && (
+            <MaterialCommunityIcons
+              name="dots-horizontal"
+              size={20}
+              color="white"
+            />
+          )}
+        </View>
+        {showBalance ? (
+          <Text style={styles.balance}>₦134,623,896.00</Text>
+        ) : (
+          <View style={styles.balanceHiddenContainer}>
+            <Text style={styles.balance}>₦</Text>
+            <View style={styles.starsContainer}>
+              <Text style={styles.balance}>******</Text>
+            </View>
+          </View>
+        )}
+        {showBalance ? (
+          <TouchableOpacity style={styles.showIcon} onPress={handleShowBalance}>
+            <Ionicons name="eye-off-outline" size={24} color="white" />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.showIcon} onPress={handleShowBalance}>
+            <Ionicons name="eye-outline" size={24} color="white" />
+          </TouchableOpacity>
         )}
       </View>
-      {showBalance ? (
-        <Text style={styles.balance}>₦134,623,896.00</Text>
-      ) : (
-        <View style={styles.balanceHiddenContainer}>
-          <Text style={styles.balance}>₦</Text>
-          <View style={styles.starsContainer}>
-            <Text style={styles.balance}>******</Text>
-          </View>
-        </View>
-      )}
-      {showBalance ? (
-        <TouchableOpacity style={styles.showIcon} onPress={handleShowBalance}>
-          <Ionicons name="eye-off-outline" size={24} color="white" />
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity style={styles.showIcon} onPress={handleShowBalance}>
-          <Ionicons name="eye-outline" size={24} color="white" />
-        </TouchableOpacity>
-      )}
-    </View>
+    </HomeBalanceCard>
   );
 };
 
@@ -94,7 +97,7 @@ const styles = StyleSheet.create({
 
   showIcon: {
     position: "absolute",
-    bottom: -10,
+    bottom: 10,
     right: 20,
   },
 

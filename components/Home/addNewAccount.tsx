@@ -35,11 +35,13 @@ const HomeAddNewAccount = () => {
 
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.bg2, { opacity: fadeAnim }]}>
-        <TouchableOpacity style={styles.bg1}>
-          <AntDesign name="plus" size={50} color="white" />
-        </TouchableOpacity>
-      </Animated.View>
+      <TouchableOpacity>
+        <Animated.View style={[styles.bg2, { opacity: fadeAnim }]}>
+          <View style={styles.bg1}>
+            <AntDesign name="plus" size={50} color="white" />
+          </View>
+        </Animated.View>
+      </TouchableOpacity>
       <ThemedText style={styles.text}>Tap to link new account</ThemedText>
     </View>
   );
@@ -61,13 +63,13 @@ const styles = StyleSheet.create({
   },
 
   bg1: {
-    padding: 20,
+    padding: 10,
     backgroundColor: brandColor,
     borderRadius: 50,
   },
 
   bg2: {
-    padding: 30,
+    padding: 15,
     backgroundColor: "#DEEEFD",
     borderRadius: 100,
   },

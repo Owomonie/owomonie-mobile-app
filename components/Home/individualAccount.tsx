@@ -8,7 +8,7 @@ import { RootState } from "@/redux/store";
 import { BankDetails } from "@/utils/types";
 import HomeBalanceCard from "./balanceCard";
 
-export const RenderIndividualAccounts = ({ item }: { item: BankDetails }) => {
+const RenderIndividualAccounts = ({ item }: { item: BankDetails }) => {
   const [showBalance, setShowBalance] = useState(false);
 
   const handleShowBalance = () => setShowBalance(!showBalance);
@@ -54,7 +54,9 @@ const HomeIndividualAccounts = () => {
       <FlashList
         data={banks}
         renderItem={({ item }) => (
-          <HomeBalanceCard activeTitle="individual" item={item} />
+          <HomeBalanceCard activeTitle="individual">
+            <RenderIndividualAccounts item={item} />
+          </HomeBalanceCard>
         )}
         estimatedItemSize={200}
         keyExtractor={(item, index) => item._id?.toString() || index.toString()}

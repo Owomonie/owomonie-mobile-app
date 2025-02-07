@@ -4,18 +4,15 @@ import { StyleSheet, View } from "react-native";
 import { Skeleton } from "moti/skeleton";
 
 import { useTheme } from "@/context/ThemeContext";
-import HomeAllAccounts from "./allAccount";
-import { BankDetails } from "@/utils/types";
-import { RenderIndividualAccounts } from "./individualAccount";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
 type HomeBalanceType = {
+  children: React.ReactNode;
   activeTitle: string;
-  item?: BankDetails;
 };
 
-const HomeBalanceCard = ({ activeTitle, item }: HomeBalanceType) => {
+const HomeBalanceCard = ({ children, activeTitle }: HomeBalanceType) => {
   const { isDarkMode } = useTheme();
 
   const [skeletalLoading, setSkeletalLoading] = useState<boolean>(true);
@@ -49,7 +46,8 @@ const HomeBalanceCard = ({ activeTitle, item }: HomeBalanceType) => {
           style={[
             styles.card,
             {
-              width: activeTitle === "individual" ? 350 : undefined,
+              width: activeTitle === "individual" ? 280 : undefined,
+              height: activeTitle === "individual" ? 180 : undefined,
             },
           ]}
         >
@@ -79,10 +77,7 @@ const HomeBalanceCard = ({ activeTitle, item }: HomeBalanceType) => {
               fill="#EBF73E"
             />
           </Svg>
-          {activeTitle === "all" && <HomeAllAccounts />}
-          {activeTitle === "individual" && item && (
-            <RenderIndividualAccounts item={item} />
-          )}
+          {children}
         </View>
       </Skeleton>
     </View>
@@ -94,7 +89,6 @@ export default HomeBalanceCard;
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "black",
-    height: 180,
     borderRadius: 12,
     overflow: "hidden",
     position: "relative",

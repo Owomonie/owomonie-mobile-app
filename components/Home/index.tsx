@@ -3,13 +3,13 @@ import { useState } from "react";
 
 import { ThemedView } from "../Themes/view";
 import HomeHeader from "./header";
-import HomeBalanceCard from "./balanceCard";
 import HomeAcccountTitle from "./acccountTitle";
 import HomeIndividualAccounts from "./individualAccount";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { BankDetails } from "@/utils/types";
 import HomeAddNewAccount from "./addNewAccount";
+import HomeAllAccounts from "./allAccount";
 
 const HomePage = () => {
   const [activeTitle, setActiveTitle] = useState("all");
@@ -26,9 +26,7 @@ const HomePage = () => {
             activeTitle={activeTitle}
             setActiveTitle={setActiveTitle}
           />
-          {activeTitle === "all" && (
-            <HomeBalanceCard activeTitle={activeTitle} />
-          )}
+          {activeTitle === "all" && <HomeAllAccounts />}
           {activeTitle === "individual" && <HomeIndividualAccounts />}
         </>
       ) : (
