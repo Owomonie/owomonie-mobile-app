@@ -3,8 +3,12 @@ import { AntDesign } from "@expo/vector-icons";
 import { useEffect, useRef } from "react";
 import { StyleSheet, View, Animated, TouchableOpacity } from "react-native";
 import { ThemedText } from "../Themes/text";
+import { useAppDispatch } from "@/redux/store";
+import { getBankLinkToken } from "@/redux/slice/bank";
 
 const HomeAddNewAccount = () => {
+  const dispatch = useAppDispatch();
+
   const fadeAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
@@ -35,10 +39,10 @@ const HomeAddNewAccount = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => dispatch(getBankLinkToken())}>
         <Animated.View style={[styles.bg2, { opacity: fadeAnim }]}>
           <View style={styles.bg1}>
-            <AntDesign name="plus" size={50} color="white" />
+            <AntDesign name="plus" size={40} color="white" />
           </View>
         </Animated.View>
       </TouchableOpacity>

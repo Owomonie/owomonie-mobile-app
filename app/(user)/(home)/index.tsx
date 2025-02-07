@@ -2,7 +2,6 @@ import { Alert, BackHandler } from "react-native";
 import React, { useCallback } from "react";
 import { Stack, useFocusEffect } from "expo-router";
 import HomePage from "@/components/Home";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const Home = () => {
   const handleBackPress = () => {

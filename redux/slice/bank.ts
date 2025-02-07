@@ -9,12 +9,13 @@ interface BanksError {
 
 interface BanksState {
   loading: boolean;
+  linkTokenData: object;
   allBanks: object;
 }
 
 const axios = AxiosJSON();
 
-export const getLinkToken = createAsyncThunk(
+export const getBankLinkToken = createAsyncThunk(
   "auth/getBanksAsync",
   async (_credentials, { dispatch, rejectWithValue }) => {
     try {
@@ -25,8 +26,8 @@ export const getLinkToken = createAsyncThunk(
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       const { data } = await axios.get("/plaid/get-link-token");
-
-      dispatch(banksSuccess(data.banks));
+      console.log(data);
+      dispatch(banksLinkTokenData(data));
     } catch (error) {
       console.log("banks Error", error);
       let errorMessage = "Network Error";
@@ -88,6 +89,7 @@ export const getAllBanks = createAsyncThunk(
 const initialState: BanksState = {
   loading: false,
   allBanks: [],
+  linkTokenData: [],
 };
 
 const banksSlice = createSlice({
@@ -96,6 +98,11 @@ const banksSlice = createSlice({
   reducers: {
     banksRequest: (state) => {
       state.loading = true;
+    },
+
+    banksLinkTokenData: (state, action) => {
+      state.loading = false;
+      state.linkTokenData = action.payload;
     },
 
     banksSuccess: (state, action) => {
@@ -109,6 +116,7 @@ const banksSlice = createSlice({
   },
 });
 
-export const { banksComplete, banksRequest, banksSuccess } = banksSlice.actions;
+export const { banksComplete, banksRequest, banksSuccess, banksLinkTokenData } =
+  banksSlice.actions;
 
 export default banksSlice;

@@ -13,10 +13,11 @@ export default function UserLayout() {
   const loadingUser = useSelector(
     (state: RootState) => state.userDetails.loading
   );
+  const loadingBanks = useSelector((state: RootState) => state.banks.loading);
 
   return (
     <View style={{ flex: 1 }}>
-      {(loadingLogout || loadingUser) && <Spinner />}
+      {(loadingLogout || loadingUser || loadingBanks) && <Spinner />}
 
       <Tabs
         screenOptions={{
