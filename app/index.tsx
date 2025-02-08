@@ -35,7 +35,7 @@ const Home = () => {
 
         if (token) {
           dispatch(getUserDetails({ token }));
-          dispatch(getAllBanks({ token }));
+          //dispatch(getAllBanks({ token }));
         }
 
         const status = await AsyncStorage.getItem("completedOnboarding");

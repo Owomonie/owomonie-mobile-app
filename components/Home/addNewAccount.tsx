@@ -1,13 +1,27 @@
-import { brandColor } from "@/constants/Colors";
+import { useEffect, useRef, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Animated,
+  TouchableOpacity,
+  Modal,
+  Text,
+  Alert,
+} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { useEffect, useRef } from "react";
-import { StyleSheet, View, Animated, TouchableOpacity } from "react-native";
+import PlaidLink from "react-native-plaid-link-sdk";
+
+import { brandColor } from "@/constants/Colors";
 import { ThemedText } from "../Themes/text";
-import { useAppDispatch } from "@/redux/store";
+import { RootState, useAppDispatch } from "@/redux/store";
 import { getBankLinkToken } from "@/redux/slice/bank";
+import { useSelector } from "react-redux";
 
 const HomeAddNewAccount = () => {
   const dispatch = useAppDispatch();
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const linkToken = useSelector((state: RootState) => state.banks.linkToken);
 
   const fadeAnim = useRef(new Animated.Value(1)).current;
 
@@ -37,9 +51,43 @@ const HomeAddNewAccount = () => {
     };
   }, [fadeAnim]);
 
+  const onSuccess = async (publicToken: string, metadata: any) => {
+    console.log("Plaid Link success", metadata);
+    // Handle the success (e.g., exchange the public_token for an access token)
+    setModalVisible(false); // Close the modal
+  };
+
+  const onExit = (error: any, metadata: any) => {
+    console.log("Plaid Link exit", error, metadata);
+    setModalVisible(false); // Close the modal on exit
+  };
+
+  const handleAddBank = async () => {
+    await dispatch(getBankLinkToken());
+
+    Alert.alert(
+      "Link New Account",
+      "Do you want to link a new bank account?",
+      [
+        {
+          text: "Cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            setTimeout(() => {
+              setModalVisible(true);
+            }, 500);
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => dispatch(getBankLinkToken())}>
+      <TouchableOpacity onPress={handleAddBank}>
         <Animated.View style={[styles.bg2, { opacity: fadeAnim }]}>
           <View style={styles.bg1}>
             <AntDesign name="plus" size={40} color="white" />
@@ -47,6 +95,16 @@ const HomeAddNewAccount = () => {
         </Animated.View>
       </TouchableOpacity>
       <ThemedText style={styles.text}>Tap to link new account</ThemedText>
+
+      <Modal
+        visible={modalVisible}
+        animationType="fade"
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        {linkToken && <Text>{linkToken}</Text>}
+      </Modal>
     </View>
   );
 };

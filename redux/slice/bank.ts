@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError, AxiosJSON } from "../axios";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-toast-message";
 
 interface BanksError {
   message: string;
@@ -9,7 +10,7 @@ interface BanksError {
 
 interface BanksState {
   loading: boolean;
-  linkTokenData: object;
+  linkToken: string | undefined;
   allBanks: object;
 }
 
@@ -27,7 +28,7 @@ export const getBankLinkToken = createAsyncThunk(
 
       const { data } = await axios.get("/plaid/get-link-token");
       console.log(data);
-      dispatch(banksLinkTokenData(data));
+      dispatch(banksLinkTokenData(data?.link_token));
     } catch (error) {
       console.log("banks Error", error);
       let errorMessage = "Network Error";
@@ -46,6 +47,12 @@ export const getBankLinkToken = createAsyncThunk(
       }
 
       dispatch(banksComplete());
+
+      Toast.show({
+        type: "error",
+        text1: errorMessage,
+        visibilityTime: 5000,
+      });
 
       return rejectWithValue({ message: errorMessage });
     }
@@ -89,7 +96,7 @@ export const getAllBanks = createAsyncThunk(
 const initialState: BanksState = {
   loading: false,
   allBanks: [],
-  linkTokenData: [],
+  linkToken: undefined,
 };
 
 const banksSlice = createSlice({
@@ -102,7 +109,7 @@ const banksSlice = createSlice({
 
     banksLinkTokenData: (state, action) => {
       state.loading = false;
-      state.linkTokenData = action.payload;
+      state.linkToken = action.payload;
     },
 
     banksSuccess: (state, action) => {
