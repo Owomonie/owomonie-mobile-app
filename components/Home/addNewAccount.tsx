@@ -5,17 +5,15 @@ import {
   Animated,
   TouchableOpacity,
   Modal,
-  Text,
-  Alert,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import PlaidLink from "react-native-plaid-link-sdk";
 
 import { brandColor } from "@/constants/Colors";
 import { ThemedText } from "../Themes/text";
 import { RootState, useAppDispatch } from "@/redux/store";
 import { getBankLinkToken } from "@/redux/slice/bank";
 import { useSelector } from "react-redux";
+import Plaid from "./Plaid";
 
 const HomeAddNewAccount = () => {
   const dispatch = useAppDispatch();
@@ -51,38 +49,9 @@ const HomeAddNewAccount = () => {
     };
   }, [fadeAnim]);
 
-  const onSuccess = async (publicToken: string, metadata: any) => {
-    console.log("Plaid Link success", metadata);
-    // Handle the success (e.g., exchange the public_token for an access token)
-    setModalVisible(false); // Close the modal
-  };
-
-  const onExit = (error: any, metadata: any) => {
-    console.log("Plaid Link exit", error, metadata);
-    setModalVisible(false); // Close the modal on exit
-  };
-
   const handleAddBank = async () => {
     await dispatch(getBankLinkToken());
-
-    Alert.alert(
-      "Link New Account",
-      "Do you want to link a new bank account?",
-      [
-        {
-          text: "Cancel",
-        },
-        {
-          text: "OK",
-          onPress: () => {
-            setTimeout(() => {
-              setModalVisible(true);
-            }, 500);
-          },
-        },
-      ],
-      { cancelable: false }
-    );
+    setModalVisible(true);
   };
 
   return (
@@ -98,12 +67,12 @@ const HomeAddNewAccount = () => {
 
       <Modal
         visible={modalVisible}
-        animationType="fade"
+        animationType="slide"
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}
       >
-        {linkToken && <Text>{linkToken}</Text>}
+        {linkToken && <Plaid setModalVisible={setModalVisible} />}
       </Modal>
     </View>
   );

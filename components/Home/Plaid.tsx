@@ -1,0 +1,107 @@
+import { RootState, useAppDispatch } from "@/redux/store";
+import { Dispatch, SetStateAction, useEffect } from "react";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import {
+  create,
+  open,
+  dismissLink,
+  LinkSuccess,
+  LinkExit,
+  LinkIOSPresentationStyle,
+  LinkLogLevel,
+} from "react-native-plaid-link-sdk";
+import { useSelector } from "react-redux";
+import { ThemedText } from "../Themes/text";
+import { ThemedView } from "../Themes/view";
+import { brandColor } from "@/constants/Colors";
+import { exchangeLinkToken } from "@/redux/slice/bank";
+
+type PlaidProps = {
+  setModalVisible: Dispatch<SetStateAction<boolean>>;
+};
+
+const Plaid = ({ setModalVisible }: PlaidProps) => {
+  const dispatch = useAppDispatch();
+
+  const linkToken = useSelector((state: RootState) => state.banks.linkToken);
+
+  useEffect(() => {
+    if (linkToken) {
+      const tokenConfiguration = createLinkTokenConfiguration(linkToken);
+      create(tokenConfiguration);
+    }
+  }, [linkToken]);
+
+  const createLinkTokenConfiguration = (
+    token: string,
+    noLoadingState: boolean = false
+  ) => {
+    return {
+      token: token,
+      noLoadingState: noLoadingState,
+    };
+  };
+
+  const onSuccess = async (success: LinkSuccess) => {
+    if (success.publicToken) {
+      dispatch(
+        exchangeLinkToken({
+          publicToken: success.publicToken,
+        })
+      );
+    }
+  };
+
+  const onExit = (linkExit: LinkExit) => {
+    console.log("Exit: ", linkExit);
+    dismissLink();
+    setModalVisible(false);
+  };
+
+  const createLinkOpenProps = () => {
+    return {
+      onSuccess,
+      onExit,
+      iOSPresentationStyle: LinkIOSPresentationStyle.MODAL,
+      logLevel: LinkLogLevel.ERROR,
+    };
+  };
+
+  const handleOpenLink = () => {
+    const openProps = createLinkOpenProps();
+    open(openProps);
+  };
+
+  return (
+    <ThemedView style={styles.container}>
+      <TouchableOpacity onPress={handleOpenLink} style={styles.textCont}>
+        <ThemedText style={styles.text}>Click Here to Continue</ThemedText>
+      </TouchableOpacity>
+    </ThemedView>
+  );
+};
+
+export default Plaid;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  textCont: {
+    paddingVertical: 10,
+    backgroundColor: brandColor,
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 30,
+    borderRadius: 10,
+  },
+
+  text: {
+    fontSize: 24,
+    textAlign: "center",
+  },
+});
