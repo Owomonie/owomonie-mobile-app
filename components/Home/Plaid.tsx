@@ -43,10 +43,13 @@ const Plaid = ({ setModalVisible }: PlaidProps) => {
   };
 
   const onSuccess = async (success: LinkSuccess) => {
+    console.log(success.metadata);
     if (success.publicToken) {
-      dispatch(
+      await dispatch(
         exchangeLinkToken({
           publicToken: success.publicToken,
+          numberOfAccounts: success.metadata?.accounts?.length ?? 0,
+          bankName: success.metadata?.institution?.name.split(" -")[0],
         })
       );
     }
@@ -55,7 +58,6 @@ const Plaid = ({ setModalVisible }: PlaidProps) => {
   const onExit = (linkExit: LinkExit) => {
     console.log("Exit: ", linkExit);
     dismissLink();
-    setModalVisible(false);
   };
 
   const createLinkOpenProps = () => {
@@ -68,6 +70,7 @@ const Plaid = ({ setModalVisible }: PlaidProps) => {
   };
 
   const handleOpenLink = () => {
+    setModalVisible(false);
     const openProps = createLinkOpenProps();
     open(openProps);
   };

@@ -27,7 +27,8 @@ export const getBankLinkToken = createAsyncThunk(
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       const { data } = await axios.get("/plaid/get-link-token");
-      dispatch(banksLinkTokenData(data?.link_token));
+
+      dispatch(banksLinkTokenData(data?.data?.link_token));
     } catch (error) {
       console.log("banks Error", error);
       let errorMessage = "Network Error";
@@ -61,7 +62,15 @@ export const getBankLinkToken = createAsyncThunk(
 export const exchangeLinkToken = createAsyncThunk(
   "auth/exchangeLinkToken",
   async (
-    { publicToken }: { publicToken: string },
+    {
+      publicToken,
+      numberOfAccounts,
+      bankName,
+    }: {
+      publicToken: string;
+      numberOfAccounts: number;
+      bankName: string | undefined;
+    },
     { dispatch, rejectWithValue }
   ) => {
     try {
@@ -73,24 +82,33 @@ export const exchangeLinkToken = createAsyncThunk(
 
       const { data } = await axios.post("/plaid/exchange-public-token", {
         publicToken,
+        numberOfAccounts,
+        bankName,
       });
-      console.log(data);
+
+      dispatch(banksComplete());
+
+      Toast.show({
+        type: "success",
+        text1: data?.message,
+        visibilityTime: 5000,
+      });
     } catch (error) {
       console.log("banks Error", error);
       let errorMessage = "Network Error";
 
       const axiosError = error as AxiosError<BanksError>;
-      // if (axiosError.response) {
-      //   if (axiosError.response.status === 403) {
-      //     // Handle 403 Forbidden error
-      //     // @ts-ignore
-      //     router.push("/(auth)/(login)/(auth)"); // Redirect to login
-      //     errorMessage = "Access denied. Please log in again.";
-      //   } else if (axiosError.response.data) {
-      //     // Handle other errors
-      //     errorMessage = axiosError.response.data.message;
-      //   }
-      // }
+      if (axiosError.response) {
+        if (axiosError.response.status === 403) {
+          // Handle 403 Forbidden error
+          // @ts-ignore
+          router.push("/(auth)/(login)/(auth)"); // Redirect to login
+          errorMessage = "Access denied. Please log in again.";
+        } else if (axiosError.response.data) {
+          // Handle other errors
+          errorMessage = axiosError.response.data.message;
+        }
+      }
 
       dispatch(banksComplete());
 
