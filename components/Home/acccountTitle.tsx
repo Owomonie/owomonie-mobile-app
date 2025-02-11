@@ -1,6 +1,7 @@
 import { brandColor } from "@/constants/Colors";
 import { Entypo } from "@expo/vector-icons";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { ThemedView } from "../Themes/view";
 
 type HomeAccountTitleProps = {
   activeTitle: string;
@@ -12,7 +13,7 @@ const HomeAcccountTitle = ({
   setActiveTitle,
 }: HomeAccountTitleProps) => {
   return (
-    <View style={styles.container}>
+    <ThemedView style={styles.container}>
       {/* All Accounts Button */}
       <TouchableOpacity onPress={() => setActiveTitle("all")}>
         <Text
@@ -38,7 +39,7 @@ const HomeAcccountTitle = ({
           Individual Accounts
         </Text>
       </TouchableOpacity>
-    </View>
+    </ThemedView>
   );
 };
 
@@ -57,7 +58,6 @@ const styles = StyleSheet.create({
     gap: 5,
     paddingVertical: 5,
     paddingHorizontal: 10,
-    backgroundColor: "white",
   },
 
   text: {

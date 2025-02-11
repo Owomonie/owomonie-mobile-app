@@ -1,25 +1,18 @@
-import { useEffect, useRef, useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Animated,
-  TouchableOpacity,
-  Modal,
-} from "react-native";
+import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { StyleSheet, View, Animated, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
 import { brandColor } from "@/constants/Colors";
 import { ThemedText } from "../Themes/text";
-import { RootState, useAppDispatch } from "@/redux/store";
+import { useAppDispatch } from "@/redux/store";
 import { getBankLinkToken } from "@/redux/slice/bank";
-import { useSelector } from "react-redux";
-import Plaid from "./Plaid";
 
-const HomeAddNewAccount = () => {
+type AddAccountProps = {
+  setModalVisible: Dispatch<SetStateAction<boolean>>;
+};
+
+const HomeAddNewAccount = ({ setModalVisible }: AddAccountProps) => {
   const dispatch = useAppDispatch();
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const linkToken = useSelector((state: RootState) => state.banks.linkToken);
 
   const fadeAnim = useRef(new Animated.Value(1)).current;
 
@@ -64,16 +57,6 @@ const HomeAddNewAccount = () => {
         </Animated.View>
       </TouchableOpacity>
       <ThemedText style={styles.text}>Tap to link new account</ThemedText>
-
-      <Modal
-        visible={modalVisible}
-        animationType="slide"
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        {linkToken && <Plaid setModalVisible={setModalVisible} />}
-      </Modal>
     </View>
   );
 };

@@ -20,17 +20,24 @@ const RenderIndividualAccounts = ({ item }: { item: Account }) => {
         <Text style={[styles.title, { width: "50%" }]}>{item.bankName}</Text>
       </View>
 
-      <Text style={styles.title}>Account Balance</Text>
-      {showBalance ? (
-        <Text style={styles.balance}>£{item.balance}</Text>
-      ) : (
-        <View style={styles.balanceHiddenContainer}>
-          <Text style={styles.balance}>£</Text>
-          <View style={styles.starsContainer}>
-            <Text style={styles.balance}>******</Text>
-          </View>
+      <View style={styles.accDetails}>
+        <View>
+          {showBalance ? (
+            <Text style={styles.balance}>£{item.balance}</Text>
+          ) : (
+            <View style={styles.balanceHiddenContainer}>
+              <Text style={styles.balance}>£</Text>
+              <View style={styles.starsContainer}>
+                <Text style={styles.balance}>******</Text>
+              </View>
+            </View>
+          )}
         </View>
-      )}
+        <View>
+          <Text style={styles.accNo}>******{item.accountNo}</Text>
+        </View>
+      </View>
+
       {showBalance ? (
         <TouchableOpacity style={styles.showIcon} onPress={handleShowBalance}>
           <Ionicons name="eye-off-outline" size={24} color="white" />
@@ -45,14 +52,20 @@ const RenderIndividualAccounts = ({ item }: { item: Account }) => {
 };
 
 const HomeIndividualAccounts = () => {
-  const account = useSelector(
+  const accounts = useSelector(
     (state: RootState) => state.banks.accountData as Account[]
   );
 
-  if (account.length > 0) {
+  const sortedAccounts = [...accounts]?.sort((a, b) => {
+    const dateA = new Date(a.createdAt);
+    const dateB = new Date(b.createdAt);
+    return dateB.getTime() - dateA.getTime();
+  });
+
+  if (sortedAccounts.length > 0) {
     return (
       <FlashList
-        data={account}
+        data={sortedAccounts}
         renderItem={({ item }) => (
           <HomeBalanceCard activeTitle="individual">
             <RenderIndividualAccounts item={item} />
@@ -71,7 +84,7 @@ export default HomeIndividualAccounts;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 25,
+    padding: 20,
   },
 
   title: {
@@ -95,15 +108,27 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
 
+  accDetails: {
+    marginTop: 10,
+    flexDirection: "row-reverse",
+    justifyContent: "space-between",
+  },
+
   balance: {
     color: "white",
-    fontSize: 30,
+    fontSize: 24,
+    fontFamily: "As550",
+  },
+
+  accNo: {
+    color: "white",
+    fontSize: 16,
     fontFamily: "As550",
   },
 
   showIcon: {
     position: "absolute",
-    bottom: 0,
+    bottom: -20,
     right: 20,
   },
 

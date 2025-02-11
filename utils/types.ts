@@ -32,4 +32,5 @@ export interface Account {
   bankLogo: string;
   balance: number;
   createdAt: string;
+  accountNo: string;
 }

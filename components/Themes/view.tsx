@@ -17,3 +17,16 @@ export function ThemedSafeAreaView(props: ViewProps) {
     </SafeAreaView>
   );
 }
+
+export function ThemedView(props: ViewProps) {
+  const { style, lightColor, darkColor, ...otherProps } = props;
+
+  const backgroundColor = useThemeColor(
+    { light: lightColor, dark: darkColor },
+    "background"
+  );
+
+  const combinedStyle = [style, { backgroundColor }];
+
+  return <DefaultView style={combinedStyle} {...otherProps} />;
+}
