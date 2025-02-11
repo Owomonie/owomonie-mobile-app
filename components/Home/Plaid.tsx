@@ -12,7 +12,7 @@ import {
 } from "react-native-plaid-link-sdk";
 import { useSelector } from "react-redux";
 import { ThemedText } from "../Themes/text";
-import { ThemedView } from "../Themes/view";
+import { ThemedSafeAreaView } from "../Themes/view";
 import { brandColor } from "@/constants/Colors";
 import { exchangeLinkToken } from "@/redux/slice/bank";
 
@@ -76,11 +76,11 @@ const Plaid = ({ setModalVisible }: PlaidProps) => {
   };
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedSafeAreaView style={styles.container}>
       <TouchableOpacity onPress={handleOpenLink} style={styles.textCont}>
         <ThemedText style={styles.text}>Click Here to Continue</ThemedText>
       </TouchableOpacity>
-    </ThemedView>
+    </ThemedSafeAreaView>
   );
 };
 

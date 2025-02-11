@@ -7,7 +7,7 @@ import OTPInput from "./otp";
 import { brandColor } from "@/constants/Colors";
 import { router, useFocusEffect } from "expo-router";
 import { formatTime } from "@/utils/formatTime";
-import { ThemedView } from "@/components/Themes/view";
+import { ThemedSafeAreaView } from "@/components/Themes/view";
 import { useAppDispatch } from "@/redux/store";
 import { newUserVerify, newUserVerifyOTP } from "@/redux/slice/create-account";
 import {
@@ -91,7 +91,7 @@ const Verification = ({
   };
 
   return (
-    <ThemedView style={styles.page}>
+    <ThemedSafeAreaView style={styles.page}>
       <View>
         <ThemedText style={styles.title}>
           {endPoint === "create" ? "Email " : "Account "}
@@ -119,7 +119,7 @@ const Verification = ({
       <TouchableOpacity style={styles.verifyCont} onPress={handleVerifyEmail}>
         <Text style={styles.verifyText}>Verify Email</Text>
       </TouchableOpacity>
-    </ThemedView>
+    </ThemedSafeAreaView>
   );
 };
 

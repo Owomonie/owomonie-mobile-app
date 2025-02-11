@@ -4,7 +4,7 @@ import { TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { ThemedText } from "@/components/Themes/text";
-import { ThemedView } from "@/components/Themes/view";
+import { ThemedSafeAreaView } from "@/components/Themes/view";
 import { logOut } from "@/redux/slice/logout";
 import { useAppDispatch } from "@/redux/store";
 
@@ -25,7 +25,7 @@ const More = () => {
           headerShown: false,
         }}
       />
-      <ThemedView
+      <ThemedSafeAreaView
         style={{
           flex: 1,
           alignItems: "center",
@@ -35,7 +35,7 @@ const More = () => {
         <TouchableOpacity onPress={handleLogout}>
           <ThemedText>Logout</ThemedText>
         </TouchableOpacity>
-      </ThemedView>
+      </ThemedSafeAreaView>
     </>
   );
 };

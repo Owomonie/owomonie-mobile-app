@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import React, { useState } from "react";
-import { ThemedView } from "../Themes/view";
+import { ThemedSafeAreaView } from "../Themes/view";
 import { ThemedText, ThemedText2 } from "../Themes/text";
 import ProgressBar from "./progress-bar";
 import { brandColor } from "@/constants/Colors";
@@ -39,7 +39,7 @@ const Age = () => {
   };
 
   return (
-    <ThemedView style={styles.page}>
+    <ThemedSafeAreaView style={styles.page}>
       <View>
         <ProgressBar progress={2} />
         <View style={styles.stepsCont}>
@@ -93,7 +93,7 @@ const Age = () => {
           <Text style={styles.nextText}>Next</Text>
         </TouchableOpacity>
       </View>
-    </ThemedView>
+    </ThemedSafeAreaView>
   );
 };
 

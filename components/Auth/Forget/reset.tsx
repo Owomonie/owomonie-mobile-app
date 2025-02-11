@@ -6,7 +6,7 @@ import { ThemedInput } from "@/components/Themes/textInput";
 import { brandColor } from "@/constants/Colors";
 import { router } from "expo-router";
 import Toast from "react-native-toast-message";
-import { ThemedView } from "@/components/Themes/view";
+import { ThemedSafeAreaView } from "@/components/Themes/view";
 import { useAppDispatch } from "@/redux/store";
 import { resetPassword } from "@/redux/slice/forgot-passord";
 import { isPasswordValid } from "@/utils/passwordValidate";
@@ -52,7 +52,7 @@ const Reset = ({ email }: { email: string }) => {
   };
 
   return (
-    <ThemedView style={styles.page}>
+    <ThemedSafeAreaView style={styles.page}>
       <View style={styles.pageContent}>
         <View>
           <ThemedText style={styles.bigTitle}>Reset Password</ThemedText>
@@ -134,7 +134,7 @@ const Reset = ({ email }: { email: string }) => {
       <TouchableOpacity style={styles.nextCont} onPress={handleNextBtn}>
         <Text style={styles.nextText}>Reset Password</Text>
       </TouchableOpacity>
-    </ThemedView>
+    </ThemedSafeAreaView>
   );
 };
 

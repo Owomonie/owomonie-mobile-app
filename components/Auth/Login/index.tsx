@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useState, useEffect } from "react";
-import { ThemedView } from "@/components/Themes/view";
+import { ThemedSafeAreaView } from "@/components/Themes/view";
 import { ThemedText, ThemedText2, ThemedText3 } from "@/components/Themes/text";
 import { brandColor } from "@/constants/Colors";
 import { ThemedInput } from "@/components/Themes/textInput";
@@ -53,7 +53,7 @@ const Login = ({ regEmail }: { regEmail?: string }) => {
   };
 
   return (
-    <ThemedView style={styles.page}>
+    <ThemedSafeAreaView style={styles.page}>
       <View>
         <View>
           <ThemedText style={styles.title}>Welcome back</ThemedText>
@@ -113,7 +113,7 @@ const Login = ({ regEmail }: { regEmail?: string }) => {
           <Text style={styles.loginBtn}>Login</Text>
         </TouchableOpacity>
       </View>
-    </ThemedView>
+    </ThemedSafeAreaView>
   );
 };
 

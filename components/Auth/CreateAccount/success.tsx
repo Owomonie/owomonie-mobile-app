@@ -1,6 +1,6 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { ThemedView } from "@/components/Themes/view";
+import { ThemedSafeAreaView } from "@/components/Themes/view";
 import { ThemedText, ThemedText2 } from "@/components/Themes/text";
 import { brandColor } from "@/constants/Colors";
 import { router } from "expo-router";
@@ -12,7 +12,7 @@ const RegisterSuccess = ({ email }: { email: string }) => {
   };
 
   return (
-    <ThemedView style={styles.page}>
+    <ThemedSafeAreaView style={styles.page}>
       <View style={styles.imageCont}>
         <Image
           style={styles.image}
@@ -29,7 +29,7 @@ const RegisterSuccess = ({ email }: { email: string }) => {
       <TouchableOpacity style={styles.setupCont} onPress={handleSetUp}>
         <Text style={styles.setupText}>Setup Profile</Text>
       </TouchableOpacity>
-    </ThemedView>
+    </ThemedSafeAreaView>
   );
 };
 

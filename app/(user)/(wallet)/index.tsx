@@ -1,5 +1,5 @@
 import { ThemedText } from "@/components/Themes/text";
-import { ThemedView } from "@/components/Themes/view";
+import { ThemedSafeAreaView } from "@/components/Themes/view";
 import { Stack } from "expo-router";
 
 const Wallet = () => {
@@ -10,7 +10,7 @@ const Wallet = () => {
           headerShown: false,
         }}
       />
-      <ThemedView
+      <ThemedSafeAreaView
         style={{
           flex: 1,
           alignItems: "center",
@@ -18,7 +18,7 @@ const Wallet = () => {
         }}
       >
         <ThemedText>Wallet</ThemedText>
-      </ThemedView>
+      </ThemedSafeAreaView>
     </>
   );
 };

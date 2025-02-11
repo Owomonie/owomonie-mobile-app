@@ -8,7 +8,7 @@ import {
   ImageSourcePropType,
 } from "react-native";
 import React, { useState } from "react";
-import { ThemedView } from "../Themes/view";
+import { ThemedSafeAreaView } from "../Themes/view";
 import { ThemedText, ThemedText2 } from "../Themes/text";
 import ProgressBar from "./progress-bar";
 import { brandColor } from "@/constants/Colors";
@@ -82,7 +82,7 @@ const Avatar = () => {
   };
 
   return (
-    <ThemedView style={styles.page}>
+    <ThemedSafeAreaView style={styles.page}>
       <View>
         <ProgressBar progress={5} />
         <View style={styles.stepsCont}>
@@ -145,7 +145,7 @@ const Avatar = () => {
           <Text style={styles.nextText}>Let's go</Text>
         </TouchableOpacity>
       </View>
-    </ThemedView>
+    </ThemedSafeAreaView>
   );
 };
 

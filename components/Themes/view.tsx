@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export type ViewProps = ThemeProps & DefaultView["props"];
 
-export function ThemedView(props: ViewProps) {
+export function ThemedSafeAreaView(props: ViewProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
   const backgroundColor = useThemeColor(
     { light: lightColor, dark: darkColor },

@@ -1,7 +1,6 @@
 import { StyleSheet } from "react-native";
 import { useState } from "react";
 
-import { ThemedView } from "../Themes/view";
 import HomeHeader from "./header";
 import HomeAcccountTitle from "./acccountTitle";
 import HomeIndividualAccounts from "./individualAccount";
@@ -10,6 +9,7 @@ import { RootState } from "@/redux/store";
 import { Bank } from "@/utils/types";
 import HomeAddNewAccount from "./addNewAccount";
 import HomeAllAccounts from "./allAccount";
+import { ThemedSafeAreaView } from "../Themes/view";
 
 const HomePage = () => {
   const [activeTitle, setActiveTitle] = useState("all");
@@ -18,7 +18,7 @@ const HomePage = () => {
   );
 
   return (
-    <ThemedView style={styles.page}>
+    <ThemedSafeAreaView style={styles.page}>
       <HomeHeader />
       {banks.length > 0 ? (
         <>
@@ -32,7 +32,7 @@ const HomePage = () => {
       ) : (
         <HomeAddNewAccount />
       )}
-    </ThemedView>
+    </ThemedSafeAreaView>
   );
 };
 

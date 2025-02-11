@@ -5,7 +5,7 @@ import { useState } from "react";
 import { onboardingSteps } from "./data";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-import { ThemedView } from "../Themes/view";
+import { ThemedSafeAreaView } from "../Themes/view";
 import { brandColor } from "@/constants/Colors";
 import { ThemedText } from "../Themes/text";
 import { useTheme } from "@/context/ThemeContext";
@@ -45,7 +45,7 @@ const Onboarding = () => {
   };
 
   return (
-    <ThemedView style={styles.page}>
+    <ThemedSafeAreaView style={styles.page}>
       <OnboardingGestures
         onBack={onBack}
         onContinue={onContinue}
@@ -96,7 +96,7 @@ const Onboarding = () => {
           </View>
         </View>
       )}
-    </ThemedView>
+    </ThemedSafeAreaView>
   );
 };
 

@@ -1,5 +1,5 @@
 import { ThemedText } from "@/components/Themes/text";
-import { ThemedView } from "@/components/Themes/view";
+import { ThemedSafeAreaView } from "@/components/Themes/view";
 import { Stack } from "expo-router";
 
 const Analytics = () => {
@@ -10,7 +10,7 @@ const Analytics = () => {
           headerShown: false,
         }}
       />
-      <ThemedView
+      <ThemedSafeAreaView
         style={{
           flex: 1,
           alignItems: "center",
@@ -18,7 +18,7 @@ const Analytics = () => {
         }}
       >
         <ThemedText>Analytics</ThemedText>
-      </ThemedView>
+      </ThemedSafeAreaView>
     </>
   );
 };

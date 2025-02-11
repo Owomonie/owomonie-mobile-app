@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
-import { ThemedView } from "@/components/Themes/view";
+import { ThemedSafeAreaView } from "@/components/Themes/view";
 import { ThemedText, ThemedText2 } from "@/components/Themes/text";
 import { ThemedInput } from "@/components/Themes/textInput";
 import { brandColor } from "@/constants/Colors";
@@ -37,7 +37,7 @@ const ForgetEmail = () => {
   };
 
   return (
-    <ThemedView style={styles.page}>
+    <ThemedSafeAreaView style={styles.page}>
       <View>
         <View>
           <ThemedText style={styles.bigTitle}>Forgotten Password</ThemedText>
@@ -58,7 +58,7 @@ const ForgetEmail = () => {
       <TouchableOpacity style={styles.verifyCont} onPress={handleSendOTP}>
         <Text style={styles.verifyText}>Send OTP</Text>
       </TouchableOpacity>
-    </ThemedView>
+    </ThemedSafeAreaView>
   );
 };
 
