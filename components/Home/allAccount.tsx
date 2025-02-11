@@ -1,5 +1,5 @@
 import { RootState } from "@/redux/store";
-import { BankDetails } from "@/utils/types";
+import { Bank } from "@/utils/types";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -12,7 +12,11 @@ const HomeAllAccounts = () => {
   const handleShowBalance = () => setShowBalance(!showBalance);
 
   const banks = useSelector(
-    (state: RootState) => state.banks.allBanks as BankDetails[]
+    (state: RootState) => state.banks.bankData?.banks as Bank[]
+  );
+
+  const totalBalance = useSelector(
+    (state: RootState) => state.banks.bankData?.balance
   );
 
   const firstEightBanks = banks?.slice(0, 8);
@@ -24,8 +28,8 @@ const HomeAllAccounts = () => {
         <View style={styles.logoContainer}>
           {firstEightBanks?.map((bank) => (
             <Image
-              key={bank._id}
-              source={{ uri: bank.bankLogo }}
+              key={bank.id}
+              source={{ uri: bank.logo }}
               style={styles.logos}
             />
           ))}
@@ -38,10 +42,10 @@ const HomeAllAccounts = () => {
           )}
         </View>
         {showBalance ? (
-          <Text style={styles.balance}>₦134,623,896.00</Text>
+          <Text style={styles.balance}>£{totalBalance}</Text>
         ) : (
           <View style={styles.balanceHiddenContainer}>
-            <Text style={styles.balance}>₦</Text>
+            <Text style={styles.balance}>£</Text>
             <View style={styles.starsContainer}>
               <Text style={styles.balance}>******</Text>
             </View>
@@ -82,8 +86,8 @@ const styles = StyleSheet.create({
   },
 
   logos: {
-    height: 24,
-    width: 24,
+    height: 30,
+    width: 30,
     borderRadius: 4,
     padding: 4,
     backgroundColor: "white",

@@ -15,7 +15,7 @@ export const toastConfig = {
       }}
       contentContainerStyle={{ paddingHorizontal: 15 }}
       text1Style={{
-        fontSize: 12,
+        fontSize: 16,
         fontFamily: "As700",
         textAlign: "center",
         paddingVertical: 10,
@@ -34,7 +34,7 @@ export const toastConfig = {
       }}
       contentContainerStyle={{ paddingHorizontal: 15 }}
       text1Style={{
-        fontSize: 12,
+        fontSize: 16,
         fontFamily: "As700",
         textAlign: "center",
         paddingVertical: 10,

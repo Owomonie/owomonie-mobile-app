@@ -7,14 +7,14 @@ import HomeAcccountTitle from "./acccountTitle";
 import HomeIndividualAccounts from "./individualAccount";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { BankDetails } from "@/utils/types";
+import { Bank } from "@/utils/types";
 import HomeAddNewAccount from "./addNewAccount";
 import HomeAllAccounts from "./allAccount";
 
 const HomePage = () => {
   const [activeTitle, setActiveTitle] = useState("all");
   const banks = useSelector(
-    (state: RootState) => state.banks.allBanks as BankDetails[]
+    (state: RootState) => state.banks.bankData?.banks as Bank[]
   );
 
   return (

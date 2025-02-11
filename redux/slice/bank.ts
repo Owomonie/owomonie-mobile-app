@@ -11,7 +11,10 @@ interface BanksError {
 interface BanksState {
   loading: boolean;
   linkToken: string | undefined;
-  allBanks: object;
+  bankData: {
+    banks: object;
+    balance: string;
+  };
 }
 
 const axios = AxiosJSON();
@@ -34,17 +37,17 @@ export const getBankLinkToken = createAsyncThunk(
       let errorMessage = "Network Error";
 
       const axiosError = error as AxiosError<BanksError>;
-      // if (axiosError.response) {
-      //   if (axiosError.response.status === 403) {
-      //     // Handle 403 Forbidden error
-      //     // @ts-ignore
-      //     router.push("/(auth)/(login)/(auth)"); // Redirect to login
-      //     errorMessage = "Access denied. Please log in again.";
-      //   } else if (axiosError.response.data) {
-      //     // Handle other errors
-      //     errorMessage = axiosError.response.data.message;
-      //   }
-      // }
+      if (axiosError.response) {
+        if (axiosError.response.status === 403) {
+          // Handle 403 Forbidden error
+          // @ts-ignore
+          router.push("/(auth)/(login)/(auth)"); // Redirect to login
+          errorMessage = "Access denied. Please log in again.";
+        } else if (axiosError.response.data) {
+          // Handle other errors
+          errorMessage = axiosError.response.data.message;
+        }
+      }
 
       dispatch(banksComplete());
 
@@ -123,7 +126,7 @@ export const exchangeLinkToken = createAsyncThunk(
   }
 );
 
-export const getAllBanks = createAsyncThunk(
+export const getBanks = createAsyncThunk(
   "auth/getBanksAsync",
   async ({ token }: { token: string }, { dispatch, rejectWithValue }) => {
     try {
@@ -131,25 +134,25 @@ export const getAllBanks = createAsyncThunk(
 
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-      const { data } = await axios.get("banks");
+      const { data } = await axios.get("plaid/get-user-banks");
 
-      dispatch(banksSuccess(data.banks));
+      dispatch(banksSuccess(data?.data));
     } catch (error) {
       console.log("banks Error", error);
       let errorMessage = "Network Error";
 
       const axiosError = error as AxiosError<BanksError>;
-      // if (axiosError.response) {
-      //   if (axiosError.response.status === 403) {
-      //     // Handle 403 Forbidden error
-      //     // @ts-ignore
-      //     router.push("/(auth)/(login)/(auth)"); // Redirect to login
-      //     errorMessage = "Access denied. Please log in again.";
-      //   } else if (axiosError.response.data) {
-      //     // Handle other errors
-      //     errorMessage = axiosError.response.data.message;
-      //   }
-      // }
+      if (axiosError.response) {
+        if (axiosError.response.status === 403) {
+          // Handle 403 Forbidden error
+          // @ts-ignore
+          router.push("/(auth)/(login)/(auth)"); // Redirect to login
+          errorMessage = "Access denied. Please log in again.";
+        } else if (axiosError.response.data) {
+          // Handle other errors
+          errorMessage = axiosError.response.data.message;
+        }
+      }
 
       dispatch(banksComplete());
 
@@ -160,7 +163,10 @@ export const getAllBanks = createAsyncThunk(
 
 const initialState: BanksState = {
   loading: false,
-  allBanks: [],
+  bankData: {
+    banks: [],
+    balance: "",
+  },
   linkToken: undefined,
 };
 
@@ -179,7 +185,7 @@ const banksSlice = createSlice({
 
     banksSuccess: (state, action) => {
       state.loading = false;
-      state.allBanks = action.payload;
+      state.bankData = action.payload;
     },
 
     banksComplete: (state) => {

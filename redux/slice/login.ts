@@ -4,7 +4,7 @@ import Toast from "react-native-toast-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getUserDetails } from "./get-user-details";
 import { registerForPushNotificationsAsync } from "@/config/notification";
-import { getAllBanks } from "./bank";
+import { getBanks } from "./bank";
 
 interface LoginError {
   message: string;
@@ -49,7 +49,7 @@ export const loginUser = createAsyncThunk(
       );
 
       await dispatch(
-        getAllBanks({
+        getBanks({
           token: data?.token,
         })
       );

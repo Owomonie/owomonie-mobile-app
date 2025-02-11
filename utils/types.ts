@@ -20,10 +20,8 @@ export interface UserDetails {
   pushToken: string;
 }
 
-export interface BankDetails {
-  _id: string;
-  bankLogo: string;
-  bankName: string;
-  bankSortCode: string;
+export interface Bank {
+  id: string;
+  logo: string;
   createdAt: string;
 }
