@@ -25,3 +25,11 @@ export interface Bank {
   logo: string;
   createdAt: string;
 }
+
+export interface Account {
+  id: string;
+  bankName: string;
+  bankLogo: string;
+  balance: number;
+  createdAt: string;
+}

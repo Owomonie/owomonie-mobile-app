@@ -19,21 +19,27 @@ const HomeAllAccounts = () => {
     (state: RootState) => state.banks.bankData?.balance
   );
 
-  const firstEightBanks = banks?.slice(0, 8);
+  const sortedBanks = [...banks]?.sort((a, b) => {
+    const dateA = new Date(a.createdAt);
+    const dateB = new Date(b.createdAt);
+    return dateB.getTime() - dateA.getTime();
+  });
+
+  const showedBanks = sortedBanks?.slice(0, 5);
 
   return (
     <HomeBalanceCard activeTitle="all">
       <View style={styles.container}>
         <Text style={styles.title}>Total Balance</Text>
         <View style={styles.logoContainer}>
-          {firstEightBanks?.map((bank) => (
+          {showedBanks?.map((bank) => (
             <Image
               key={bank.id}
               source={{ uri: bank.logo }}
               style={styles.logos}
             />
           ))}
-          {banks?.length > 8 && (
+          {banks?.length > 5 && (
             <MaterialCommunityIcons
               name="dots-horizontal"
               size={20}
