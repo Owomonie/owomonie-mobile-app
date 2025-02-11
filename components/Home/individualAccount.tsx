@@ -5,10 +5,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 
 import { RootState } from "@/redux/store";
-import { BankDetails } from "@/utils/types";
 import HomeBalanceCard from "./balanceCard";
+import { Account } from "@/utils/types";
 
-const RenderIndividualAccounts = ({ item }: { item: BankDetails }) => {
+const RenderIndividualAccounts = ({ item }: { item: Account }) => {
   const [showBalance, setShowBalance] = useState(false);
 
   const handleShowBalance = () => setShowBalance(!showBalance);
@@ -17,15 +17,15 @@ const RenderIndividualAccounts = ({ item }: { item: BankDetails }) => {
     <View style={styles.container}>
       <View style={styles.logoContainer}>
         <Image source={{ uri: item.bankLogo }} style={styles.logos} />
-        <Text style={styles.title}>{item.bankName}</Text>
+        <Text style={[styles.title, { width: "50%" }]}>{item.bankName}</Text>
       </View>
 
       <Text style={styles.title}>Account Balance</Text>
       {showBalance ? (
-        <Text style={styles.balance}>₦29,873,465.50</Text>
+        <Text style={styles.balance}>£{item.balance}</Text>
       ) : (
         <View style={styles.balanceHiddenContainer}>
-          <Text style={styles.balance}>₦</Text>
+          <Text style={styles.balance}>£</Text>
           <View style={styles.starsContainer}>
             <Text style={styles.balance}>******</Text>
           </View>
@@ -45,21 +45,21 @@ const RenderIndividualAccounts = ({ item }: { item: BankDetails }) => {
 };
 
 const HomeIndividualAccounts = () => {
-  const banks = useSelector(
-    (state: RootState) => state.banks.allBanks as BankDetails[]
+  const account = useSelector(
+    (state: RootState) => state.banks.accountData as Account[]
   );
 
-  if (banks.length > 0) {
+  if (account.length > 0) {
     return (
       <FlashList
-        data={banks}
+        data={account}
         renderItem={({ item }) => (
           <HomeBalanceCard activeTitle="individual">
             <RenderIndividualAccounts item={item} />
           </HomeBalanceCard>
         )}
         estimatedItemSize={200}
-        keyExtractor={(item, index) => item._id?.toString() || index.toString()}
+        keyExtractor={(item) => item.id?.toString()}
         horizontal
         showsHorizontalScrollIndicator={false}
       />

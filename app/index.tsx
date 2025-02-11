@@ -8,7 +8,7 @@ import { getUserDetails } from "@/redux/slice/get-user-details";
 import { useSelector } from "react-redux";
 import { registerForPushNotificationsAsync } from "@/config/notification";
 import { saveExpoPushToken } from "@/redux/slice/push-notification";
-import { getBanks } from "@/redux/slice/bank";
+import { getAccounts, getBanks } from "@/redux/slice/bank";
 
 const Home = () => {
   const [tokenExist, setTokenExist] = useState<boolean | null>(null);
@@ -34,8 +34,9 @@ const Home = () => {
         setTokenExist(!!token);
 
         if (token) {
-          dispatch(getUserDetails({ token }));
-          dispatch(getBanks({ token }));
+          await dispatch(getUserDetails({ token }));
+          await dispatch(getBanks({ token }));
+          await dispatch(getAccounts({ token }));
         }
 
         const status = await AsyncStorage.getItem("completedOnboarding");
