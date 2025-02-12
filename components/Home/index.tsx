@@ -46,9 +46,11 @@ const HomePage = () => {
       ) : (
         <HomeAddNewAccount setModalVisible={setModalVisible} />
       )}
-      <TouchableOpacity onPress={handleAddBank} style={styles.addBg}>
-        <AntDesign name="plus" size={30} color="white" />
-      </TouchableOpacity>
+      {banks.length > 0 && (
+        <TouchableOpacity onPress={handleAddBank} style={styles.addBg}>
+          <AntDesign name="plus" size={30} color="white" />
+        </TouchableOpacity>
+      )}
       <Modal
         visible={modalVisible}
         animationType="slide"

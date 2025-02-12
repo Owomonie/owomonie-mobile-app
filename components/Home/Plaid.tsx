@@ -1,6 +1,6 @@
 import { RootState, useAppDispatch } from "@/redux/store";
 import { Dispatch, SetStateAction, useEffect } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, Text } from "react-native";
 import {
   create,
   open,
@@ -11,7 +11,6 @@ import {
   LinkLogLevel,
 } from "react-native-plaid-link-sdk";
 import { useSelector } from "react-redux";
-import { ThemedText } from "../Themes/text";
 import { ThemedSafeAreaView } from "../Themes/view";
 import { brandColor } from "@/constants/Colors";
 import { exchangeLinkToken } from "@/redux/slice/bank";
@@ -43,7 +42,7 @@ const Plaid = ({ setModalVisible }: PlaidProps) => {
   };
 
   const onSuccess = async (success: LinkSuccess) => {
-    console.log(success.metadata);
+    // console.log(success.metadata);
     if (success.publicToken) {
       await dispatch(
         exchangeLinkToken({
@@ -56,7 +55,7 @@ const Plaid = ({ setModalVisible }: PlaidProps) => {
   };
 
   const onExit = (linkExit: LinkExit) => {
-    console.log("Exit: ", linkExit);
+    // console.log("Exit: ", linkExit);
     dismissLink();
   };
 
@@ -78,7 +77,7 @@ const Plaid = ({ setModalVisible }: PlaidProps) => {
   return (
     <ThemedSafeAreaView style={styles.container}>
       <TouchableOpacity onPress={handleOpenLink} style={styles.textCont}>
-        <ThemedText style={styles.text}>Click Here to Continue</ThemedText>
+        <Text style={styles.text}>Click Here to Continue</Text>
       </TouchableOpacity>
     </ThemedSafeAreaView>
   );
@@ -106,5 +105,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 24,
     textAlign: "center",
+    color: "#FFFFFF",
   },
 });

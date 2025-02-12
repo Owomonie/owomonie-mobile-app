@@ -96,13 +96,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 10,
-    marginBottom: 20,
+    marginBottom: 10,
     alignItems: "center",
   },
 
   logos: {
-    height: 50,
-    width: 50,
+    height: 40,
+    width: 40,
     borderRadius: 10,
     padding: 4,
     backgroundColor: "white",

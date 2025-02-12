@@ -52,12 +52,6 @@ export const getBankLinkToken = createAsyncThunk(
 
       dispatch(banksComplete());
 
-      Toast.show({
-        type: "error",
-        text1: errorMessage,
-        visibilityTime: 5000,
-      });
-
       return rejectWithValue({ message: errorMessage });
     }
   }
