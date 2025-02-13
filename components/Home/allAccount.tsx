@@ -51,9 +51,7 @@ const HomeAllAccounts = () => {
         ) : (
           <View style={styles.balanceHiddenContainer}>
             <Text style={styles.balance}>£</Text>
-            <View style={styles.starsContainer}>
-              <Text style={styles.balance}>******</Text>
-            </View>
+            <Text style={[styles.balance, { marginTop: 7 }]}>******</Text>
           </View>
         )}
         {showBalance ? (
@@ -87,7 +85,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexWrap: "wrap",
     gap: 4,
-    marginTop: 15,
+    marginTop: 9,
     marginBottom: 15,
   },
 
@@ -113,12 +111,6 @@ const styles = StyleSheet.create({
 
   balanceHiddenContainer: {
     flexDirection: "row",
-    alignItems: "center",
-    gap: 5,
-  },
-
-  starsContainer: {
-    justifyContent: "center",
     alignItems: "center",
   },
 });
