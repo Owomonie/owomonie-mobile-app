@@ -16,7 +16,16 @@ const RenderIndividualAccounts = ({ item }: { item: Account }) => {
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        <Image source={{ uri: item.bankLogo }} style={styles.logos} />
+        <Image
+          source={{ uri: item.bankLogo }}
+          style={[
+            styles.logos,
+            {
+              backgroundColor:
+                item?.bankName === "Revolut (UK)" ? "white" : undefined,
+            },
+          ]}
+        />
         <Text style={[styles.title, { width: "50%" }]}>{item.bankName}</Text>
       </View>
 
@@ -101,15 +110,14 @@ const styles = StyleSheet.create({
   },
 
   logos: {
-    height: 40,
-    width: 40,
+    height: 50,
+    width: 50,
     borderRadius: 10,
-    padding: 4,
-    backgroundColor: "white",
+    objectFit: "contain",
   },
 
   accDetails: {
-    marginTop: 10,
+    marginTop: 20,
     flexDirection: "row-reverse",
     justifyContent: "space-between",
   },
@@ -128,7 +136,7 @@ const styles = StyleSheet.create({
 
   showIcon: {
     position: "absolute",
-    bottom: -20,
+    bottom: -25,
     right: 20,
   },
 

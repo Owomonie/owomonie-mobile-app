@@ -25,27 +25,26 @@ const HomeAllAccounts = () => {
     return dateB.getTime() - dateA.getTime();
   });
 
-  const showedBanks = sortedBanks?.slice(0, 5);
-
   return (
     <HomeBalanceCard activeTitle="all">
       <View style={styles.container}>
         <Text style={styles.title}>Total Balance</Text>
         <View style={styles.logoContainer}>
-          {showedBanks?.map((bank) => (
-            <Image
-              key={bank.id}
-              source={{ uri: bank.logo }}
-              style={styles.logos}
-            />
-          ))}
-          {banks?.length > 5 && (
-            <MaterialCommunityIcons
-              name="dots-horizontal"
-              size={20}
-              color="white"
-            />
-          )}
+          {sortedBanks.length > 0 &&
+            sortedBanks?.map((bank) => (
+              <Image
+                key={bank.id}
+                source={{ uri: bank.logo }}
+                style={[
+                  styles.logos,
+                  {
+                    backgroundColor: bank?.logo?.includes("revolut")
+                      ? "white"
+                      : undefined,
+                  },
+                ]}
+              />
+            ))}
         </View>
         {showBalance ? (
           <Text style={styles.balance}>£{totalBalance}</Text>
@@ -85,18 +84,19 @@ const styles = StyleSheet.create({
 
   logoContainer: {
     flexDirection: "row",
+    alignItems: "center",
     flexWrap: "wrap",
-    gap: 7,
+    gap: 4,
     marginTop: 15,
-    marginBottom: 20,
+    marginBottom: 15,
   },
 
   logos: {
     height: 30,
     width: 30,
     borderRadius: 4,
-    padding: 4,
-    backgroundColor: "white",
+    objectFit: "contain",
+    marginBottom: 5,
   },
 
   balance: {
