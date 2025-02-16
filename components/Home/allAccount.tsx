@@ -31,7 +31,7 @@ const HomeAllAccounts = () => {
         <Text style={styles.title}>Total Balance</Text>
         <View style={styles.logoContainer}>
           {sortedBanks.length > 0 &&
-            sortedBanks?.map((bank) => (
+            sortedBanks.slice(0, 5).map((bank) => (
               <Image
                 key={bank.id}
                 source={{ uri: bank.logo }}

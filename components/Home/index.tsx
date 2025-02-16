@@ -14,6 +14,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { brandColor } from "@/constants/Colors";
 import { getBankLinkToken } from "@/redux/slice/bank";
 import Plaid from "./Plaid";
+import HomeTransactions from "./transaction";
 
 const HomePage = () => {
   const [activeTitle, setActiveTitle] = useState("all");
@@ -42,15 +43,17 @@ const HomePage = () => {
           />
           {activeTitle === "all" && <HomeAllAccounts />}
           {activeTitle === "individual" && <HomeIndividualAccounts />}
+
+          <HomeTransactions />
+
+          <TouchableOpacity onPress={handleAddBank} style={styles.addBg}>
+            <AntDesign name="plus" size={30} color="white" />
+          </TouchableOpacity>
         </>
       ) : (
         <HomeAddNewAccount setModalVisible={setModalVisible} />
       )}
-      {banks.length > 0 && (
-        <TouchableOpacity onPress={handleAddBank} style={styles.addBg}>
-          <AntDesign name="plus" size={30} color="white" />
-        </TouchableOpacity>
-      )}
+
       <Modal
         visible={modalVisible}
         animationType="slide"

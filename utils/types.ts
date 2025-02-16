@@ -34,3 +34,14 @@ export interface Account {
   createdAt: string;
   accountNo: string;
 }
+
+export interface Transaction {
+  id: string;
+  category: string;
+  amount: number;
+  date: string;
+  categoryUri: string;
+  bankName: string;
+  type: string;
+  createdAt: string;
+}

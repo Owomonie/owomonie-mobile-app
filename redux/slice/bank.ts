@@ -16,6 +16,7 @@ interface BanksState {
     balance: string;
   };
   accountData: object;
+  transactionData: object;
 }
 
 const axios = AxiosJSON();
@@ -67,7 +68,7 @@ export const exchangeLinkToken = createAsyncThunk(
     }: {
       publicToken: string;
       numberOfAccounts: number;
-      bankName: string | undefined;
+      bankName: string;
     },
     { dispatch, rejectWithValue }
   ) => {
@@ -196,6 +197,41 @@ export const getAccounts = createAsyncThunk(
   }
 );
 
+export const getTransactions = createAsyncThunk(
+  "auth/getBanksAsync",
+  async ({ token }: { token: string }, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(banksRequest());
+
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+      const { data } = await axios.get("plaid/get-user-transactions");
+
+      dispatch(banksAccountTransactionsSuccess(data?.data));
+    } catch (error) {
+      console.log("banks Error", error);
+      let errorMessage = "Network Error";
+
+      const axiosError = error as AxiosError<BanksError>;
+      if (axiosError.response) {
+        if (axiosError.response.status === 403) {
+          // Handle 403 Forbidden error
+          // @ts-ignore
+          router.push("/(auth)/(login)/(auth)"); // Redirect to login
+          errorMessage = "Access denied. Please log in again.";
+        } else if (axiosError.response.data) {
+          // Handle other errors
+          errorMessage = axiosError.response.data.message;
+        }
+      }
+
+      dispatch(banksComplete());
+
+      return rejectWithValue({ message: errorMessage });
+    }
+  }
+);
+
 const initialState: BanksState = {
   loading: false,
   bankData: {
@@ -204,6 +240,7 @@ const initialState: BanksState = {
   },
   linkToken: undefined,
   accountData: [],
+  transactionData: [],
 };
 
 const banksSlice = createSlice({
@@ -229,6 +266,11 @@ const banksSlice = createSlice({
       state.accountData = action.payload;
     },
 
+    banksAccountTransactionsSuccess: (state, action) => {
+      state.loading = false;
+      state.transactionData = action.payload;
+    },
+
     banksComplete: (state) => {
       state.loading = false;
     },
@@ -241,6 +283,7 @@ export const {
   banksSuccess,
   banksLinkTokenData,
   banksAccountSuccess,
+  banksAccountTransactionsSuccess,
 } = banksSlice.actions;
 
 export default banksSlice;
