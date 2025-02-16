@@ -31,10 +31,7 @@ const HomeBalanceCard = ({ children, activeTitle }: HomeBalanceType) => {
       style={{
         borderRadius: 12,
         overflow: "hidden",
-        marginRight:
-          loading || (skeletalLoading && activeTitle === "individual")
-            ? 10
-            : undefined,
+        marginHorizontal: activeTitle === "individual" ? 7 : 20,
       }}
     >
       <Skeleton
@@ -47,7 +44,7 @@ const HomeBalanceCard = ({ children, activeTitle }: HomeBalanceType) => {
             styles.card,
             {
               width: activeTitle === "individual" ? 280 : undefined,
-              height: activeTitle === "individual" ? 180 : undefined,
+              height: activeTitle === "individual" ? 180 : 160,
             },
           ]}
         >
@@ -92,7 +89,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: "hidden",
     position: "relative",
-    marginHorizontal: 5,
   },
   svgBackground1: {
     position: "absolute",

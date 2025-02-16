@@ -71,7 +71,6 @@ export default HomePage;
 
 const styles = StyleSheet.create({
   page: {
-    paddingHorizontal: 20,
     paddingVertical: 10,
   },
 

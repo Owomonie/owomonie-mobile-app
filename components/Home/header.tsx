@@ -85,7 +85,8 @@ export default HomeHeader;
 
 const styles = StyleSheet.create({
   headerCont: {
-    paddingVertical: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
     flexDirection: "row",
     justifyContent: "space-between",
   },
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 12,
     fontFamily: "As350",
-    marginVertical: 5,
+    marginVertical: 2,
     minHeight: 15,
   },
 
@@ -110,8 +111,8 @@ const styles = StyleSheet.create({
 
   avatarCont: {
     backgroundColor: brandColor,
-    width: 44,
-    height: 44,
+    width: 35,
+    height: 35,
     borderRadius: 50,
   },
 
