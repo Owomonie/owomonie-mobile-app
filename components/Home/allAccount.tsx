@@ -49,10 +49,7 @@ const HomeAllAccounts = () => {
         {showBalance ? (
           <Text style={styles.balance}>£{totalBalance}</Text>
         ) : (
-          <View style={styles.balanceHiddenContainer}>
-            <Text style={styles.balance}>£</Text>
-            <Text style={[styles.balance, { marginTop: 7 }]}>******</Text>
-          </View>
+          <Text style={styles.balance}>******</Text>
         )}
         {showBalance ? (
           <TouchableOpacity style={styles.showIcon} onPress={handleShowBalance}>
@@ -99,18 +96,13 @@ const styles = StyleSheet.create({
 
   balance: {
     color: "white",
-    fontSize: 30,
+    fontSize: 25,
     fontFamily: "As550",
   },
 
   showIcon: {
     position: "absolute",
-    bottom: 10,
+    bottom: 4,
     right: 20,
-  },
-
-  balanceHiddenContainer: {
-    flexDirection: "row",
-    alignItems: "center",
   },
 });

@@ -30,3 +30,16 @@ export function ThemedView(props: ViewProps) {
 
   return <DefaultView style={combinedStyle} {...otherProps} />;
 }
+
+export function ThemedView2(props: ViewProps) {
+  const { style, lightColor, darkColor, ...otherProps } = props;
+
+  const backgroundColor = useThemeColor(
+    { light: lightColor, dark: darkColor },
+    "background2"
+  );
+
+  const combinedStyle = [style, { backgroundColor }];
+
+  return <DefaultView style={combinedStyle} {...otherProps} />;
+}

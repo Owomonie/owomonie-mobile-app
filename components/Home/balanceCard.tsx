@@ -45,6 +45,7 @@ const HomeBalanceCard = ({ children, activeTitle }: HomeBalanceType) => {
             {
               width: activeTitle === "individual" ? 280 : undefined,
               height: activeTitle === "individual" ? 180 : 160,
+              borderColor: isDarkMode ? "grey" : "white",
             },
           ]}
         >
@@ -86,6 +87,7 @@ export default HomeBalanceCard;
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "black",
+    borderWidth: 1,
     borderRadius: 12,
     overflow: "hidden",
     position: "relative",

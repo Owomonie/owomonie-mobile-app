@@ -34,11 +34,7 @@ const RenderIndividualAccounts = ({ item }: { item: Account }) => {
           {showBalance ? (
             <Text style={styles.balance}>£{item.balance}</Text>
           ) : (
-            <View style={styles.balanceHiddenContainer}>
-              <Text style={styles.balance}>£</Text>
-
-              <Text style={[styles.balance, { marginTop: 7 }]}>****</Text>
-            </View>
+            <Text style={styles.balance}>****</Text>
           )}
         </View>
         <View>
@@ -135,13 +131,7 @@ const styles = StyleSheet.create({
 
   showIcon: {
     position: "absolute",
-    bottom: -18,
+    bottom: -24,
     right: 20,
-  },
-
-  balanceHiddenContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
   },
 });

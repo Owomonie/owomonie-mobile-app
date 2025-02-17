@@ -80,6 +80,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     position: "absolute",
     bottom: 20,
-    right: 0,
+    right: 20,
   },
 });
