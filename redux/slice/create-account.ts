@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError, AxiosJSON } from "../axios";
 import Toast from "react-native-toast-message";
 import { router } from "expo-router";
+import { registerForPushNotificationsAsync } from "@/config/notification";
 
 interface CreateAccountError {
   message: string;
@@ -62,15 +63,13 @@ export const newUserVerify = createAsyncThunk(
 export const newUserVerifyOTP = createAsyncThunk(
   "auth/createAccountAsync",
   async (
-    {
-      email,
-      OTP,
-      pushToken,
-    }: { email: string; OTP: string; pushToken: string | null },
+    { email, OTP }: { email: string; OTP: string },
     { dispatch, rejectWithValue }
   ) => {
     try {
       dispatch(createAccountRequest());
+
+      const pushToken = await registerForPushNotificationsAsync();
 
       const { data } = await axios.post("new-user-verification/verify-otp", {
         email,

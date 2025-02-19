@@ -5,7 +5,7 @@ export type FileDoc = {
 };
 
 export interface UserDetails {
-  _id: string;
+  id: string;
   ageRange: string;
   avatar: string;
   createdAt: string;
@@ -17,7 +17,6 @@ export interface UserDetails {
   status: number;
   userName: string;
   workType: string;
-  pushToken: string;
 }
 
 export interface Bank {

@@ -38,31 +38,33 @@ export const loginUser = createAsyncThunk(
 
       const { data } = await axios.post("login", loginData);
 
-      await AsyncStorage.setItem("token", data?.token);
+      const token = data?.data;
+
+      await AsyncStorage.setItem("token", token);
       await AsyncStorage.setItem("email", email);
       await AsyncStorage.setItem("password", password);
 
       await dispatch(
         getUserDetails({
-          token: data?.token,
+          token,
         })
       );
 
       await dispatch(
         getBanks({
-          token: data?.token,
+          token,
         })
       );
 
       await dispatch(
         getAccounts({
-          token: data?.token,
+          token,
         })
       );
 
       await dispatch(
         getTransactions({
-          token: data?.token,
+          token,
         })
       );
 

@@ -23,9 +23,9 @@ export const getUserDetails = createAsyncThunk(
 
       const { data } = await axios.get("get-user-details");
 
-      dispatch(getUserDetailsSuccess(data.user));
+      dispatch(getUserDetailsSuccess(data.data));
 
-      if (!data.user.gender) {
+      if (!data.data.gender) {
         // @ts-ignore
         router.push("/(predetails)/gender");
       } else {

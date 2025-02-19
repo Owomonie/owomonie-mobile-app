@@ -14,7 +14,6 @@ import { useSelector } from "react-redux";
 import { UserDetails } from "@/utils/types";
 
 type NotificationContextType = {
-  pushToken: string | null;
   notification: Notifications.Notification | undefined;
 };
 
@@ -23,8 +22,7 @@ export const NotificationContext = createContext<
 >(undefined);
 
 export const NotificationProvider = ({ children }: { children: ReactNode }) => {
-  const dispatch = useAppDispatch();
-  const [pushToken, setPushToken] = useState<string | null>(null);
+  const dispatch = useAppDispatch;
   const [notification, setNotification] = useState<
     Notifications.Notification | undefined
   >(undefined);
@@ -48,14 +46,13 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
           Notifications.addNotificationResponseReceivedListener((response) => {
             const { notification } = response;
 
-            if (!user._id) {
+            if (!user.id) {
               router.push("/(auth)/(login)/(auth)");
             } else {
               if (!user.gender) {
                 router.push("/(predetails)/gender");
               } else {
                 router.push("/(user)/(home)");
-                // Navigate user to any screen based on the notification.
               }
             }
           });
@@ -77,7 +74,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   }, [dispatch]);
 
   return (
-    <NotificationContext.Provider value={{ pushToken, notification }}>
+    <NotificationContext.Provider value={{ notification }}>
       {children}
     </NotificationContext.Provider>
   );
