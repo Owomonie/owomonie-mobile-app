@@ -86,7 +86,7 @@ export const loginUser = createAsyncThunk(
 
       Toast.show({
         type: "error",
-        text1: errorMessage,
+        text1: errorMessage ?? "Server Error",
         visibilityTime: 5000,
       });
 

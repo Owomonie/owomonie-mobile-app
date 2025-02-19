@@ -1,13 +1,23 @@
-import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  RefreshControl,
+} from "react-native";
 import { useSelector } from "react-redux";
 import { FlashList } from "@shopify/flash-list";
 import { format, isToday, isYesterday, parseISO } from "date-fns";
 
-import { RootState } from "@/redux/store";
+import { RootState, useAppDispatch } from "@/redux/store";
 import { Transaction } from "@/utils/types";
 import { brandColor } from "@/constants/Colors";
 import { ThemedView2 } from "./../Themes/view";
 import { ThemedText } from "../Themes/text";
+import { useState, useCallback } from "react";
+import { getTransactions } from "@/redux/slice/bank";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const formatDate = (date: Date): string => {
   if (isToday(date)) return "Today";
@@ -74,6 +84,9 @@ const RenderTransactions = ({ transaction }: { transaction: Transaction }) => {
 };
 
 const HomeTransactions = () => {
+  const [refreshing, setRefreshing] = useState(false);
+
+  const dispatch = useAppDispatch();
   const transactions = useSelector(
     (state: RootState) => state.banks.transactionData as Transaction[]
   );
@@ -81,6 +94,17 @@ const HomeTransactions = () => {
   const groupedTransactions = groupTransactionsByDate(transactions);
 
   // const recentTransactions = groupedTransactions?.slice(0,5);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+
+    const token = await AsyncStorage.getItem("token");
+    if (token) {
+      await dispatch(getTransactions({ token }));
+    }
+
+    setRefreshing(false);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -113,6 +137,9 @@ const HomeTransactions = () => {
           <ThemedText style={styles.noTrans}>
             No Transaction Availiable
           </ThemedText>
+        }
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       />
     </View>
@@ -195,7 +222,7 @@ const styles = StyleSheet.create({
 
   bankText: {
     fontFamily: "As450",
-    fontSize: 12,
+    fontSize: 10,
     color: "#898989",
     minHeight: 15,
   },

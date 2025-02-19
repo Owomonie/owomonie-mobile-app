@@ -42,7 +42,6 @@ const Plaid = ({ setModalVisible }: PlaidProps) => {
   };
 
   const onSuccess = async (success: LinkSuccess) => {
-    // console.log(success.metadata);
     if (success.metadata.institution && success.publicToken) {
       await dispatch(
         exchangeLinkToken({

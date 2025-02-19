@@ -47,7 +47,7 @@ const HomePage = () => {
           <HomeTransactions />
 
           <TouchableOpacity onPress={handleAddBank} style={styles.addBg}>
-            <AntDesign name="plus" size={30} color="white" />
+            <AntDesign name="plus" size={24} color="white" />
           </TouchableOpacity>
         </>
       ) : (
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   },
 
   addBg: {
-    padding: 10,
+    padding: 15,
     backgroundColor: brandColor,
     borderRadius: 50,
     position: "absolute",

@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     borderColor: brandColor,
     justifyContent: "center",
     marginVertical: 40,
+    marginHorizontal: 20,
     alignItems: "center",
     borderStyle: "dashed",
     borderRadius: 6,

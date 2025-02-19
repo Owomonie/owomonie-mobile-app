@@ -88,6 +88,7 @@ export const exchangeLinkToken = createAsyncThunk(
       if (token) {
         dispatch(getBanks({ token }));
         dispatch(getAccounts({ token }));
+        dispatch(getTransactions({ token }));
       }
 
       dispatch(banksComplete());
