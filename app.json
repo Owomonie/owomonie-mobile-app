@@ -18,7 +18,10 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.owomonie.owomonie"
+      "bundleIdentifier": "com.owomonie.owomonie",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -27,7 +30,11 @@
       },
       "package": "com.owomonie.owomonie",
       "googleServicesFile": "./google-services.json",
-      "permissions": ["USE_BIOMETRIC"]
+      "permissions": [
+        "USE_BIOMETRIC",
+        "android.permission.USE_BIOMETRIC",
+        "android.permission.USE_FINGERPRINT"
+      ]
     },
     "web": {
       "bundler": "metro",
