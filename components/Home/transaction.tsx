@@ -15,9 +15,11 @@ import { Transaction } from "@/utils/types";
 import { brandColor } from "@/constants/Colors";
 import { ThemedView2 } from "./../Themes/view";
 import { ThemedText } from "../Themes/text";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useLayoutEffect } from "react";
 import { getTransactions } from "@/redux/slice/bank";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useTheme } from "@/context/ThemeContext";
+import { Skeleton } from "moti/skeleton";
 
 const formatDate = (date: Date): string => {
   if (isToday(date)) return "Today";
@@ -51,45 +53,71 @@ const groupTransactionsByDate = (
   return sortedGroupedTransactions;
 };
 
-const RenderTransactions = ({ transaction }: { transaction: Transaction }) => {
+const RenderTransactions = ({
+  transaction,
+  loading,
+  colorMode,
+}: {
+  transaction: Transaction;
+  loading: boolean;
+  colorMode: "light" | "dark";
+}) => {
   return (
     <View style={styles.transactionCont}>
       <View style={styles.descCont}>
-        <ThemedView2 style={styles.transImgCont}>
-          <Image
-            source={{ uri: transaction.categoryUri }}
-            style={styles.transImg}
-          />
-        </ThemedView2>
+        <Skeleton show={loading} radius={"round"} colorMode={colorMode}>
+          <ThemedView2 style={styles.transImgCont}>
+            <Image
+              source={{ uri: transaction.categoryUri }}
+              style={styles.transImg}
+            />
+          </ThemedView2>
+        </Skeleton>
         <View style={styles.descTextCont}>
-          <ThemedText style={styles.categoryText}>
-            {transaction.category}
-          </ThemedText>
-          <Text style={styles.bankText}>{transaction.bankName}</Text>
+          <Skeleton show={loading} radius={"square"} colorMode={colorMode}>
+            <ThemedText style={styles.categoryText}>
+              {transaction.category}
+            </ThemedText>
+          </Skeleton>
+          <Skeleton show={loading} radius={"square"} colorMode={colorMode}>
+            <Text style={styles.bankText}>{transaction.bankName}</Text>
+          </Skeleton>
         </View>
       </View>
-
-      <Text
-        style={[
-          styles.amount,
-          {
-            color: transaction.type === "Debit" ? "#C93232" : "#1FB03F",
-          },
-        ]}
-      >
-        {transaction.type === "Debit" ? "-" : "+"}£{transaction.amount}
-      </Text>
+      <Skeleton show={loading} radius={"square"} colorMode={colorMode}>
+        <Text
+          style={[
+            styles.amount,
+            {
+              color: transaction.type === "Debit" ? "#C93232" : "#1FB03F",
+            },
+          ]}
+        >
+          {transaction.type === "Debit" ? "-" : "+"}£{transaction.amount}
+        </Text>
+      </Skeleton>
     </View>
   );
 };
 
 const HomeTransactions = () => {
-  const [refreshing, setRefreshing] = useState(false);
+  const [skeletalLoading, setSkeletalLoading] = useState<boolean>(true);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const { isDarkMode } = useTheme();
+  const colorMode: "light" | "dark" = isDarkMode ? "dark" : "light";
 
   const dispatch = useAppDispatch();
+
+  const loading = useSelector((state: RootState) => state.banks.loading);
+
   const transactions = useSelector(
     (state: RootState) => state.banks.transactionData as Transaction[]
   );
+
+  useLayoutEffect(() => {
+    const timer = setTimeout(() => setSkeletalLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const groupedTransactions = groupTransactionsByDate(transactions);
 
@@ -120,13 +148,23 @@ const HomeTransactions = () => {
         renderItem={({ item }) => (
           <>
             <ThemedView2 style={styles.dateCont}>
-              <ThemedText style={styles.dateTitle}>{item.date}</ThemedText>
+              <Skeleton
+                show={loading || skeletalLoading}
+                radius={"square"}
+                colorMode={colorMode}
+              >
+                <ThemedText style={styles.dateTitle}>{item.date}</ThemedText>
+              </Skeleton>
             </ThemedView2>
             <FlashList
               data={item.transactions}
               keyExtractor={(transaction) => transaction.id}
               renderItem={({ item: transaction }) =>
-                RenderTransactions({ transaction })
+                RenderTransactions({
+                  transaction,
+                  loading: loading || skeletalLoading,
+                  colorMode,
+                })
               }
               estimatedItemSize={200}
             />
