@@ -1,9 +1,6 @@
 import {
   Alert,
   BackHandler,
-  ScrollView,
-  StyleSheet,
-  Text,
   Image,
   TouchableOpacity,
   View,
@@ -61,6 +58,7 @@ const CreateAccountScreen = () => {
 
       <Stack.Screen
         options={{
+          // headerShown: false,
           headerStyle: {
             backgroundColor: isDarkMode ? "#0E0E0E" : "#F6F5FF",
           },

@@ -6,12 +6,11 @@ import ProgressBar from "./progress-bar";
 import { brandColor } from "@/constants/Colors";
 import { AntDesign } from "@expo/vector-icons";
 import { useTheme } from "@/context/ThemeContext";
-import { router } from "expo-router";
 import Toast from "react-native-toast-message";
 import { useAppDispatch } from "@/redux/store";
 import { updateUserGender } from "@/redux/slice/update-user-details";
 
-const genderList = ["Male", "Female", "Others"];
+const genderList = ["Male", "Female"];
 
 const Gender = () => {
   const [selectedGender, setSelectedGender] = useState("");

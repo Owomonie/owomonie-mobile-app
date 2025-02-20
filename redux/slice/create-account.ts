@@ -129,12 +129,15 @@ export const registerNewUser = createAsyncThunk(
     try {
       dispatch(createAccountRequest());
 
+      const pushToken = await registerForPushNotificationsAsync();
+
       const { data } = await axios.patch("register-user", {
         email,
         userName,
         lastName,
         password,
         firstName,
+        pushToken,
       });
 
       dispatch(createAccountComplete());

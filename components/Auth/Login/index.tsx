@@ -40,7 +40,7 @@ const Login = ({ regEmail }: { regEmail?: string }) => {
     setSecureTextEntry((prev) => !prev);
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email || !password) {
       Toast.show({
         type: "info",
@@ -48,7 +48,9 @@ const Login = ({ regEmail }: { regEmail?: string }) => {
         visibilityTime: 5000,
       });
     } else {
-      dispatch(loginUser({ email, password }));
+      await dispatch(loginUser({ email, password }));
+      setPassword("");
+      setSecureTextEntry(false);
     }
   };
 

@@ -22,7 +22,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icon.png",
+        "foregroundImage": "./assets/images/test.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.owomonie.owomonie",

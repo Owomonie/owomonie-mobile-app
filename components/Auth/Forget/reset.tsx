@@ -14,7 +14,8 @@ import { isPasswordValid } from "@/utils/passwordValidate";
 const Reset = ({ email }: { email: string }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [secureTextEntry, setSecureTextEntry] = useState(false);
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [secureConfirmTextEntry, setSecureConfirmTextEntry] = useState(true);
 
   const dispatch = useAppDispatch();
 
@@ -22,8 +23,12 @@ const Reset = ({ email }: { email: string }) => {
     setSecureTextEntry((prev) => !prev);
   };
 
-  const handleNextBtn = () => {
-    if (!email || !password || !confirmPassword) {
+  const toggleSecureConfirmEntry = () => {
+    setSecureConfirmTextEntry((prev) => !prev);
+  };
+
+  const handleNextBtn = async () => {
+    if (!password || !confirmPassword) {
       Toast.show({
         type: "info",
         text1: "Input All fields",
@@ -42,12 +47,16 @@ const Reset = ({ email }: { email: string }) => {
         visibilityTime: 5000,
       });
     } else {
-      dispatch(
+      await dispatch(
         resetPassword({
           email,
           password,
         })
       );
+      setSecureTextEntry(false);
+      setSecureConfirmTextEntry(false);
+      setPassword("");
+      setConfirmPassword("");
     }
   };
 
@@ -106,10 +115,26 @@ const Reset = ({ email }: { email: string }) => {
                   paddingRight: 50,
                 },
               ]}
-              secureTextEntry={secureTextEntry}
+              secureTextEntry={secureConfirmTextEntry}
               value={confirmPassword}
               onChangeText={setConfirmPassword}
             />
+            <TouchableOpacity
+              onPress={toggleSecureConfirmEntry}
+              style={{
+                position: "absolute",
+                right: 8,
+                top: 6,
+              }}
+            >
+              <Ionicons
+                name={
+                  secureConfirmTextEntry ? "eye-off-outline" : "eye-outline"
+                }
+                size={24}
+                color="#888"
+              />
+            </TouchableOpacity>
           </View>
         </View>
         <TouchableOpacity

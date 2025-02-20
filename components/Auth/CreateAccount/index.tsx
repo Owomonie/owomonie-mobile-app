@@ -17,6 +17,7 @@ const CreateAccount = ({ email }: { email: string }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [secureConfirmTextEntry, setSecureConfirmTextEntry] = useState(true);
 
   const dispatch = useAppDispatch();
 
@@ -24,7 +25,11 @@ const CreateAccount = ({ email }: { email: string }) => {
     setSecureTextEntry((prev) => !prev);
   };
 
-  const handleNextBtn = () => {
+  const toggleSecureConfirmEntry = () => {
+    setSecureConfirmTextEntry((prev) => !prev);
+  };
+
+  const handleNextBtn = async () => {
     if (
       !userName ||
       !email ||
@@ -51,7 +56,7 @@ const CreateAccount = ({ email }: { email: string }) => {
         visibilityTime: 5000,
       });
     } else {
-      dispatch(
+      await dispatch(
         registerNewUser({
           email,
           userName,
@@ -60,6 +65,13 @@ const CreateAccount = ({ email }: { email: string }) => {
           password,
         })
       );
+      setSecureTextEntry(false);
+      setSecureConfirmTextEntry(false);
+      setPassword("");
+      setConfirmPassword("");
+      setUserName("");
+      setFirstName("");
+      setLastName("");
     }
   };
 
@@ -146,10 +158,26 @@ const CreateAccount = ({ email }: { email: string }) => {
                   paddingRight: 50,
                 },
               ]}
-              secureTextEntry={secureTextEntry}
+              secureTextEntry={secureConfirmTextEntry}
               value={confirmPassword}
               onChangeText={setConfirmPassword}
             />
+            <TouchableOpacity
+              onPress={toggleSecureConfirmEntry}
+              style={{
+                position: "absolute",
+                right: 8,
+                top: 6,
+              }}
+            >
+              <Ionicons
+                name={
+                  secureConfirmTextEntry ? "eye-off-outline" : "eye-outline"
+                }
+                size={24}
+                color="#888"
+              />
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -172,6 +200,7 @@ const styles = StyleSheet.create({
 
   pageContent: {
     gap: 20,
+    marginHorizontal: 20,
   },
 
   bigTitle: {
@@ -210,6 +239,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginTop: 100,
     marginBottom: 30,
+    marginHorizontal: 20,
   },
 
   nextText: {
@@ -217,5 +247,6 @@ const styles = StyleSheet.create({
     fontFamily: "As700",
     color: "#FFFFFF",
     fontSize: 16,
+    minHeight: 20,
   },
 });
