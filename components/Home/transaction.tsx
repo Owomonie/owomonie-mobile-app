@@ -144,9 +144,9 @@ const HomeTransactions = () => {
       </View>
       <FlashList
         data={groupedTransactions}
-        keyExtractor={(item, index) => item.date + index.toString()}
+        keyExtractor={(item) => item.date}
         renderItem={({ item }) => (
-          <>
+          <View>
             <ThemedView2 style={styles.dateCont}>
               <Skeleton
                 show={loading || skeletalLoading}
@@ -156,6 +156,7 @@ const HomeTransactions = () => {
                 <ThemedText style={styles.dateTitle}>{item.date}</ThemedText>
               </Skeleton>
             </ThemedView2>
+
             <FlashList
               data={item.transactions}
               keyExtractor={(transaction) => transaction.id}
@@ -168,12 +169,12 @@ const HomeTransactions = () => {
               }
               estimatedItemSize={200}
             />
-          </>
+          </View>
         )}
         estimatedItemSize={200}
         ListEmptyComponent={
           <ThemedText style={styles.noTrans}>
-            No Transaction Availiable
+            No Transaction Available
           </ThemedText>
         }
         refreshControl={

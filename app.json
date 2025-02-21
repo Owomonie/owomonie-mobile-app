@@ -8,12 +8,12 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/icon.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "notification": {
-      "icon": "./assets/images/icon.png",
+      "icon": "./assets/images/adaptive-icon.png",
       "color": "#000000"
     },
     "ios": {
@@ -25,7 +25,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/test.png",
+        "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.owomonie.owomonie",
