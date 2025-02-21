@@ -51,7 +51,8 @@
     "react-native-toast-message": "^2.2.1",
     "react-native-web": "~0.19.13",
     "react-redux": "^9.2.0",
-    "redux-thunk": "^3.1.0"
+    "redux-thunk": "^3.1.0",
+    "expo-updates": "~0.26.19"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
