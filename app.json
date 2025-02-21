@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "owomoney",
+    "name": "owomonie",
     "slug": "owomonie",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#1F79B0"
     },
     "notification": {
       "icon": "./assets/images/adaptive-icon.png",
