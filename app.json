@@ -13,7 +13,7 @@
       "backgroundColor": "#1F79B0"
     },
     "notification": {
-      "icon": "./assets/images/notification.png",
+      "icon": "./assets/images/icon.png",
       "color": "#000000"
     },
     "ios": {
