@@ -63,7 +63,7 @@ const RenderTransactions = ({
   colorMode: "light" | "dark";
 }) => {
   return (
-    <View style={styles.transactionCont}>
+    <View style={styles.transactionCont} key={transaction.id}>
       <View style={styles.descCont}>
         <Skeleton show={loading} radius={"round"} colorMode={colorMode}>
           <ThemedView2 style={styles.transImgCont}>
@@ -156,19 +156,13 @@ const HomeTransactions = () => {
                 <ThemedText style={styles.dateTitle}>{item.date}</ThemedText>
               </Skeleton>
             </ThemedView2>
-
-            <FlashList
-              data={item.transactions}
-              keyExtractor={(transaction) => transaction.id}
-              renderItem={({ item: transaction }) =>
-                RenderTransactions({
-                  transaction,
-                  loading: loading || skeletalLoading,
-                  colorMode,
-                })
-              }
-              estimatedItemSize={200}
-            />
+            {item.transactions.map((transaction) =>
+              RenderTransactions({
+                transaction,
+                loading: loading || skeletalLoading,
+                colorMode,
+              })
+            )}
           </View>
         )}
         estimatedItemSize={200}
