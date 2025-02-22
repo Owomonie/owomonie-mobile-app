@@ -21,12 +21,12 @@
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/native": "^7.0.14",
     "@reduxjs/toolkit": "^2.5.0",
-    "@shopify/flash-list": "1.7.1",
+    "@shopify/flash-list": "1.7.3",
     "axios": "^1.7.9",
     "date-fns": "^4.1.0",
-    "expo": "~52.0.31",
+    "expo": "~52.0.36",
     "expo-constants": "~17.0.5",
-    "expo-dev-client": "~5.0.11",
+    "expo-dev-client": "~5.0.12",
     "expo-device": "~7.0.2",
     "expo-font": "~13.0.3",
     "expo-linear-gradient": "~14.0.2",
@@ -34,7 +34,7 @@
     "expo-local-authentication": "~15.0.2",
     "expo-notifications": "~0.29.13",
     "expo-router": "~4.0.17",
-    "expo-splash-screen": "~0.29.21",
+    "expo-splash-screen": "~0.29.22",
     "expo-status-bar": "~2.0.1",
     "expo-system-ui": "~4.0.8",
     "expo-web-browser": "~14.0.2",
@@ -52,7 +52,7 @@
     "react-native-web": "~0.19.13",
     "react-redux": "^9.2.0",
     "redux-thunk": "^3.1.0",
-    "expo-updates": "~0.26.19"
+    "expo-updates": "~0.27.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
