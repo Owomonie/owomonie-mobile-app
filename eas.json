@@ -24,6 +24,11 @@
 
 // Production
 {
+  "cli": {
+    "version": ">= 14.2.0",
+    "appVersionSource": "remote",
+    "requireCommit": true
+  },
   "build": {
     "preview": {
       "android": {
@@ -43,7 +48,8 @@
     },
     "production": {
       "android": {
-        "buildType": "apk"
+        "buildType": "apk",
+        "autoIncrement": true
       }
     }
   }
