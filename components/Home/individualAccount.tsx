@@ -55,7 +55,11 @@ const RenderIndividualAccounts = ({ item }: { item: Account }) => {
   );
 };
 
-const HomeIndividualAccounts = () => {
+const HomeIndividualAccounts = ({
+  skeletalLoading,
+}: {
+  skeletalLoading: boolean;
+}) => {
   const accounts = useSelector(
     (state: RootState) => state.banks.accountData as Account[]
   );
@@ -71,7 +75,10 @@ const HomeIndividualAccounts = () => {
       <FlashList
         data={sortedAccounts}
         renderItem={({ item }) => (
-          <HomeBalanceCard activeTitle="individual">
+          <HomeBalanceCard
+            activeTitle="individual"
+            skeletalLoading={skeletalLoading}
+          >
             <RenderIndividualAccounts item={item} />
           </HomeBalanceCard>
         )}

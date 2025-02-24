@@ -15,11 +15,12 @@ import { Transaction } from "@/utils/types";
 import { brandColor } from "@/constants/Colors";
 import { ThemedView2 } from "./../Themes/view";
 import { ThemedText } from "../Themes/text";
-import { useState, useCallback, useLayoutEffect } from "react";
+import { useState, useCallback } from "react";
 import { getTransactions } from "@/redux/slice/bank";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTheme } from "@/context/ThemeContext";
 import { Skeleton } from "moti/skeleton";
+import { AntDesign } from "@expo/vector-icons";
 
 const formatDate = (date: Date): string => {
   if (isToday(date)) return "Today";
@@ -63,7 +64,7 @@ const RenderTransactions = ({
   colorMode: "light" | "dark";
 }) => {
   return (
-    <View style={styles.transactionCont} key={transaction.id}>
+    <View style={styles.transactionCont}>
       <View style={styles.descCont}>
         <Skeleton show={loading} radius={"round"} colorMode={colorMode}>
           <ThemedView2 style={styles.transImgCont}>
@@ -100,9 +101,14 @@ const RenderTransactions = ({
   );
 };
 
-const HomeTransactions = () => {
-  const [skeletalLoading, setSkeletalLoading] = useState<boolean>(true);
+const HomeTransactions = ({
+  skeletalLoading,
+}: {
+  skeletalLoading: boolean;
+}) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const { isDarkMode } = useTheme();
   const colorMode: "light" | "dark" = isDarkMode ? "dark" : "light";
 
@@ -111,36 +117,76 @@ const HomeTransactions = () => {
   const loading = useSelector((state: RootState) => state.banks.loading);
 
   const transactions = useSelector(
-    (state: RootState) => state.banks.transactionData as Transaction[]
+    (state: RootState) =>
+      state.banks.transactionData.transactions as Transaction[]
   );
 
-  useLayoutEffect(() => {
-    const timer = setTimeout(() => setSkeletalLoading(false), 2000);
-    return () => clearTimeout(timer);
-  }, []);
+  const totalPages = parseInt(
+    useSelector((state: RootState) => state.banks.transactionData.totalPages)
+  );
+
+  console.log(totalPages);
 
   const groupedTransactions = groupTransactionsByDate(transactions);
-
-  // const recentTransactions = groupedTransactions?.slice(0,5);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
 
     const token = await AsyncStorage.getItem("token");
     if (token) {
-      await dispatch(getTransactions({ token }));
+      await dispatch(getTransactions({ token, page: currentPage }));
     }
 
     setRefreshing(false);
-  }, []);
+  }, [currentPage, dispatch]);
+
+  const loadPrevTransactions = async () => {
+    const token = await AsyncStorage.getItem("token");
+
+    if (token && currentPage >= 1) {
+      await dispatch(getTransactions({ token, page: currentPage - 1 }));
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const loadNextTransactions = async () => {
+    const token = await AsyncStorage.getItem("token");
+
+    if (token && currentPage <= totalPages) {
+      await dispatch(getTransactions({ token, page: currentPage + 1 }));
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.txnHeader}>
         <ThemedText style={styles.txnHeaderText1}>Transactions</ThemedText>
-        {/* <TouchableOpacity>
-          <Text style={styles.txnHeaderText2}>See all</Text>
-        </TouchableOpacity> */}
+        {transactions.length > 0 && (
+          <View style={styles.paginationCont}>
+            <TouchableOpacity
+              disabled={currentPage <= 1}
+              onPress={loadPrevTransactions}
+            >
+              <AntDesign
+                name="caretleft"
+                size={20}
+                color={currentPage <= 1 ? "grey" : brandColor}
+              />
+            </TouchableOpacity>
+            <ThemedText style={styles.pageNo}>{currentPage}</ThemedText>
+            <TouchableOpacity
+              disabled={currentPage >= totalPages}
+              onPress={loadNextTransactions}
+            >
+              <AntDesign
+                name="caretright"
+                size={20}
+                color={currentPage >= totalPages ? "grey" : brandColor}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
       <FlashList
         data={groupedTransactions}
@@ -156,21 +202,23 @@ const HomeTransactions = () => {
                 <ThemedText style={styles.dateTitle}>{item.date}</ThemedText>
               </Skeleton>
             </ThemedView2>
-            {item.transactions.map((transaction) =>
-              RenderTransactions({
-                transaction,
-                loading: loading || skeletalLoading,
-                colorMode,
-              })
-            )}
+            {item.transactions.map((transaction) => (
+              <RenderTransactions
+                key={transaction.id}
+                colorMode={colorMode}
+                transaction={transaction}
+                loading={loading || skeletalLoading}
+              />
+            ))}
           </View>
         )}
-        estimatedItemSize={200}
+        estimatedItemSize={100}
         ListEmptyComponent={
           <ThemedText style={styles.noTrans}>
             No Transaction Available
           </ThemedText>
         }
+        showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
@@ -269,5 +317,15 @@ const styles = StyleSheet.create({
     fontFamily: "As450",
     fontSize: 20,
     paddingVertical: 100,
+  },
+
+  paginationCont: {
+    flexDirection: "row",
+    gap: 10,
+    alignItems: "center",
+    marginRight: 20,
+  },
+  pageNo: {
+    fontSize: 18,
   },
 });

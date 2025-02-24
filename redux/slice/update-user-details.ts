@@ -4,7 +4,6 @@ import Toast from "react-native-toast-message";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FileDoc } from "@/utils/types";
-import { getUserDetails } from "./get-user-details";
 
 interface UpdateUserDetailsError {
   message: string;
@@ -265,8 +264,6 @@ export const updateUserAvatar = createAsyncThunk(
 
         console.log(data, "User");
 
-        token && (await dispatch(getUserDetails({ token })));
-
         dispatch(updateUserDetailsComplete());
 
         Toast.show({
@@ -280,8 +277,6 @@ export const updateUserAvatar = createAsyncThunk(
         const { data } = await axios.patch("update/avatar", {
           avatarNum,
         });
-
-        token && (await dispatch(getUserDetails({ token })));
 
         dispatch(updateUserDetailsComplete());
 

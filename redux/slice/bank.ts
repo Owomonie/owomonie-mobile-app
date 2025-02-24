@@ -16,7 +16,10 @@ interface BanksState {
     balance: string;
   };
   accountData: object;
-  transactionData: object;
+  transactionData: {
+    transactions: object;
+    totalPages: string;
+  };
 }
 
 const axios = AxiosJSON();
@@ -200,13 +203,22 @@ export const getAccounts = createAsyncThunk(
 
 export const getTransactions = createAsyncThunk(
   "auth/getBanksAsync",
-  async ({ token }: { token: string }, { dispatch, rejectWithValue }) => {
+  async (
+    {
+      token,
+      page = 1,
+      limit = 20,
+    }: { token: string; page?: number; limit?: number },
+    { dispatch, rejectWithValue }
+  ) => {
     try {
       dispatch(banksRequest());
 
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-      const { data } = await axios.get("plaid/get-user-transactions");
+      const { data } = await axios.get(
+        `plaid/get-user-transactions?page=${page}&limit=${limit}`
+      );
 
       dispatch(banksAccountTransactionsSuccess(data?.data));
     } catch (error) {
@@ -241,7 +253,10 @@ const initialState: BanksState = {
   },
   linkToken: undefined,
   accountData: [],
-  transactionData: [],
+  transactionData: {
+    transactions: [],
+    totalPages: "",
+  },
 };
 
 const banksSlice = createSlice({

@@ -1,5 +1,5 @@
 import { StyleSheet, TouchableOpacity, Modal } from "react-native";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 import HomeHeader from "./header";
 import HomeAcccountTitle from "./acccountTitle";
@@ -15,12 +15,33 @@ import { brandColor } from "@/constants/Colors";
 import { getBankLinkToken } from "@/redux/slice/bank";
 import Plaid from "./Plaid";
 import HomeTransactions from "./transaction";
+import { useTheme } from "@/context/ThemeContext";
+import { getUserDetails } from "@/redux/slice/get-user-details";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomePage = () => {
   const [activeTitle, setActiveTitle] = useState("all");
   const [modalVisible, setModalVisible] = useState(false);
+  const [skeletalLoading, setSkeletalLoading] = useState<boolean>(true);
 
   const dispatch = useAppDispatch();
+
+  useLayoutEffect(() => {
+    // Simulate loading delay
+    const timer = setTimeout(() => setSkeletalLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useLayoutEffect(() => {
+    const fetchData = async () => {
+      const token = await AsyncStorage.getItem("token");
+      if (token) {
+        dispatch(getUserDetails({ token }));
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
 
   const banks = useSelector(
     (state: RootState) => state.banks.bankData?.banks as Bank[]
@@ -34,17 +55,21 @@ const HomePage = () => {
 
   return (
     <ThemedSafeAreaView style={styles.page}>
-      <HomeHeader />
+      <HomeHeader skeletalLoading={skeletalLoading} />
       {banks.length > 0 ? (
         <>
           <HomeAcccountTitle
             activeTitle={activeTitle}
             setActiveTitle={setActiveTitle}
           />
-          {activeTitle === "all" && <HomeAllAccounts />}
-          {activeTitle === "individual" && <HomeIndividualAccounts />}
+          {activeTitle === "all" && (
+            <HomeAllAccounts skeletalLoading={skeletalLoading} />
+          )}
+          {activeTitle === "individual" && (
+            <HomeIndividualAccounts skeletalLoading={skeletalLoading} />
+          )}
 
-          <HomeTransactions />
+          <HomeTransactions skeletalLoading={skeletalLoading} />
 
           <TouchableOpacity onPress={handleAddBank} style={styles.addBg}>
             <AntDesign name="plus" size={24} color="white" />

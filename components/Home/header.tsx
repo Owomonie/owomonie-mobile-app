@@ -1,15 +1,12 @@
 import { Image, StyleSheet, View } from "react-native";
-import React, { useLayoutEffect, useState } from "react";
 import { ThemedText } from "../Themes/text";
 import { Ionicons } from "@expo/vector-icons";
-import { useTheme } from "@/context/ThemeContext";
-import { RootState, useAppDispatch } from "@/redux/store";
+import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { brandColor } from "@/constants/Colors";
 import { UserDetails } from "@/utils/types";
 import { Skeleton } from "moti/skeleton";
-import { getUserDetails } from "@/redux/slice/get-user-details";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useTheme } from "@/context/ThemeContext";
 
 const avatarList = [
   require("../../assets/preDetails/avatars/1.png"),
@@ -26,30 +23,9 @@ const avatarList = [
   require("../../assets/preDetails/avatars/12.png"),
 ];
 
-const HomeHeader = () => {
+const HomeHeader = ({ skeletalLoading }: { skeletalLoading: boolean }) => {
   const { isDarkMode } = useTheme();
-  const [skeletalLoading, setSkeletalLoading] = useState<boolean>(true);
   const colorMode: "light" | "dark" = isDarkMode ? "dark" : "light";
-
-  const dispatch = useAppDispatch();
-
-  useLayoutEffect(() => {
-    // Simulate loading delay
-    const timer = setTimeout(() => setSkeletalLoading(false), 2000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  useLayoutEffect(() => {
-    const fetchData = async () => {
-      const token = await AsyncStorage.getItem("token");
-      if (token) {
-        dispatch(getUserDetails({ token }));
-      }
-    };
-
-    fetchData();
-  }, [dispatch]);
-
   const user = useSelector(
     (state: RootState) => state.userDetails.data as UserDetails
   );

@@ -6,7 +6,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 import HomeBalanceCard from "./balanceCard";
 
-const HomeAllAccounts = () => {
+const HomeAllAccounts = ({ skeletalLoading }: { skeletalLoading: boolean }) => {
   const [showBalance, setShowBalance] = useState(false);
 
   const handleShowBalance = () => setShowBalance(!showBalance);
@@ -26,7 +26,7 @@ const HomeAllAccounts = () => {
   });
 
   return (
-    <HomeBalanceCard activeTitle="all">
+    <HomeBalanceCard activeTitle="all" skeletalLoading={skeletalLoading}>
       <View style={styles.container}>
         <Text style={styles.title}>Total Balance</Text>
         <View style={styles.logoContainer}>

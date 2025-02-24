@@ -10,21 +10,19 @@ import { RootState } from "@/redux/store";
 type HomeBalanceType = {
   children: React.ReactNode;
   activeTitle: string;
+  skeletalLoading: boolean;
 };
 
-const HomeBalanceCard = ({ children, activeTitle }: HomeBalanceType) => {
+const HomeBalanceCard = ({
+  children,
+  activeTitle,
+  skeletalLoading,
+}: HomeBalanceType) => {
   const { isDarkMode } = useTheme();
 
-  const [skeletalLoading, setSkeletalLoading] = useState<boolean>(true);
   const colorMode: "light" | "dark" = isDarkMode ? "dark" : "light";
 
   const loading = useSelector((state: RootState) => state.banks.loading);
-
-  useLayoutEffect(() => {
-    // Simulate loading delay
-    const timer = setTimeout(() => setSkeletalLoading(false), 2000);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <View
