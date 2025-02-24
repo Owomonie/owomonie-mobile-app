@@ -84,7 +84,7 @@ export default HomeBalanceCard;
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "black",
+    backgroundColor: "red",
     borderWidth: 1,
     borderRadius: 12,
     overflow: "hidden",
