@@ -1,28 +1,3 @@
-// Development
-// {
-//   "cli": {
-//     "version": ">= 14.2.0",
-//     "appVersionSource": "remote",
-//     "requireCommit": true
-//   },
-//   "build": {
-//     "development": {
-//       "developmentClient": true,
-//       "distribution": "internal"
-//     },
-//     "preview": {
-//       "distribution": "internal"
-//     },
-//     "production": {
-//       "autoIncrement": true
-//     }
-//   },
-//   "submit": {
-//     "production": {}
-//   }
-// }
-
-// Production
 {
   "cli": {
     "version": ">= 14.2.0",
@@ -31,11 +6,13 @@
   },
   "build": {
     "preview": {
+      "distribution": "internal",
       "android": {
         "buildType": "apk"
       },
       "channel": "preview"
     },
+
     "preview2": {
       "android": {
         "gradleCommand": ":app:assembleRelease"
@@ -49,6 +26,11 @@
     "preview4": {
       "distribution": "internal",
       "channel": "preview4"
+    },
+
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
     },
     "production": {
       "android": {

@@ -1,7 +1,7 @@
 import { useFonts } from "expo-font";
-import { Redirect, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "react-native-reanimated";
 import { Antonio_700Bold } from "@expo-google-fonts/antonio";
 import { ThemeProvider } from "@/providers/ThemeProvider";
