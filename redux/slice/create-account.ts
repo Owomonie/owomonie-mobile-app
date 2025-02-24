@@ -40,7 +40,7 @@ export const newUserVerify = createAsyncThunk(
       });
     } catch (error) {
       console.log("New User Verify", error);
-      let errorMessage = "Network Error";
+      let errorMessage = "Unexpected Error Occured";
 
       const axiosError = error as AxiosError<CreateAccountError>;
       if (axiosError.response && axiosError.response.data) {
@@ -51,7 +51,7 @@ export const newUserVerify = createAsyncThunk(
 
       Toast.show({
         type: "error",
-        text1: errorMessage ? errorMessage : "Network Error",
+        text1: errorMessage ? errorMessage : "Unexpected Error Occured",
         visibilityTime: 5000,
       });
 
