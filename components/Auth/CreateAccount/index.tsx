@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { ThemedText, ThemedText2 } from "@/components/Themes/text";
 import { ThemedInput } from "@/components/Themes/textInput";
 import { brandColor } from "@/constants/Colors";
@@ -84,7 +84,6 @@ const CreateAccount = ({ email }: { email: string }) => {
             Fill in your details below
           </ThemedText2>
         </View>
-
         <View style={styles.nameContainer}>
           <View style={{ flex: 1, gap: 10 }}>
             <ThemedText2 style={styles.label}>First Name</ThemedText2>
@@ -103,7 +102,6 @@ const CreateAccount = ({ email }: { email: string }) => {
             />
           </View>
         </View>
-
         <View style={{ gap: 10 }}>
           <ThemedText2 style={styles.label}>Username</ThemedText2>
           <ThemedInput
@@ -111,13 +109,18 @@ const CreateAccount = ({ email }: { email: string }) => {
             value={userName}
             onChangeText={setUserName}
           />
+          <View style={styles.passwordRequirement}>
+            <MaterialIcons name="check-circle" size={16} color="#4CAF50" />
+            <Text style={styles.passwordInfoText}>
+              At least 4 characters long
+            </Text>
+          </View>
         </View>
 
         <View style={{ gap: 10, marginVertical: 10 }}>
           <ThemedText2 style={styles.label}>Email Addresss</ThemedText2>
           <ThemedText style={styles.input}>{email}</ThemedText>
         </View>
-
         <View style={{ gap: 10 }}>
           <ThemedText2 style={styles.label}>Password</ThemedText2>
           <View>
@@ -180,6 +183,48 @@ const CreateAccount = ({ email }: { email: string }) => {
             </TouchableOpacity>
           </View>
         </View>
+
+        <View style={styles.passwordInfoBox}>
+          <ThemedText2 style={styles.passwordInfoTitle}>
+            Password Requirements:
+          </ThemedText2>
+
+          <View style={styles.passwordRequirement}>
+            <MaterialIcons name="check-circle" size={16} color="#4CAF50" />
+            <Text style={styles.passwordInfoText}>
+              At least 8 characters long
+            </Text>
+          </View>
+
+          <View style={styles.passwordRequirement}>
+            <MaterialIcons name="check-circle" size={16} color="#4CAF50" />
+            <Text style={styles.passwordInfoText}>
+              At least one uppercase letter (A-Z)
+            </Text>
+          </View>
+
+          <View style={styles.passwordRequirement}>
+            <MaterialIcons name="check-circle" size={16} color="#4CAF50" />
+            <Text style={styles.passwordInfoText}>
+              At least one number (0-9)
+            </Text>
+          </View>
+
+          <View style={styles.passwordRequirement}>
+            <MaterialIcons name="check-circle" size={16} color="#4CAF50" />
+            <Text style={styles.passwordInfoText}>
+              At least one special character
+            </Text>
+          </View>
+
+          <View style={styles.passwordRequirement}>
+            <MaterialIcons name="check-circle" size={16} color="#4CAF50" />
+            <Text style={styles.passwordInfoText}>
+              Can include letters, numbers, special characters, and underscores
+              (_)
+            </Text>
+          </View>
+        </View>
       </View>
       <TouchableOpacity style={styles.nextCont} onPress={handleNextBtn}>
         <Text style={styles.nextText}>Register</Text>
@@ -195,7 +240,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 20,
     paddingHorizontal: 20,
-    paddingBottom: 50,
   },
 
   pageContent: {
@@ -237,8 +281,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     backgroundColor: brandColor,
     borderRadius: 50,
-    marginTop: 100,
-    marginBottom: 30,
+    marginBottom: 20,
     marginHorizontal: 20,
   },
 
@@ -248,5 +291,28 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 16,
     minHeight: 20,
+  },
+
+  passwordInfoBox: {
+    marginBottom: 30,
+  },
+
+  passwordInfoTitle: {
+    fontSize: 14,
+    fontFamily: "As700",
+    marginBottom: 5,
+  },
+
+  passwordRequirement: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginVertical: 1,
+  },
+
+  passwordInfoText: {
+    fontSize: 10,
+    fontFamily: "As500",
+    color: "grey",
   },
 });

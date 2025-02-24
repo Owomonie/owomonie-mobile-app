@@ -107,7 +107,7 @@ const Login = ({ regEmail }: { regEmail?: string }) => {
       <View>
         <TouchableOpacity
           // @ts-ignore
-          onPress={() => router.push("(auth)/(register)/new-email")}
+          onPress={() => router.push("(auth)/(register)/create-account")}
         >
           <Text style={styles.create}>Create new account</Text>
         </TouchableOpacity>
