@@ -6,6 +6,7 @@ import { Skeleton } from "moti/skeleton";
 import { useTheme } from "@/context/ThemeContext";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { brandColor } from "@/constants/Colors";
 
 type HomeBalanceType = {
   children: React.ReactNode;
@@ -84,7 +85,7 @@ export default HomeBalanceCard;
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "black",
+    backgroundColor: brandColor,
     borderWidth: 1,
     borderRadius: 12,
     overflow: "hidden",
