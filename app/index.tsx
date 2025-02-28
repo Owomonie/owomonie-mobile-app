@@ -34,14 +34,23 @@ const Home = () => {
         setTokenExist(!!token);
 
         if (token) {
-          await dispatch(getUserDetails({ token }));
-          await dispatch(getBanks({ token }));
-          await dispatch(getAccounts({ token }));
-          await dispatch(getTransactions({ token }));
+          await Promise.all([
+            dispatch(getUserDetails({ token })),
+            dispatch(getBanks({ token })),
+            dispatch(getAccounts({ token })),
+            dispatch(getTransactions({ token })),
+          ]);
         }
 
         const status = await AsyncStorage.getItem("completedOnboarding");
         setIsOnboardingComplete(status === "Done");
+
+        if (!isOnboardingComplete) {
+          const pushToken = await registerForPushNotificationsAsync();
+          if (pushToken) {
+            await dispatch(saveExpoPushToken({ pushToken }));
+          }
+        }
       } catch (error) {
         console.error("Failed to fetch token or onboarding status", error);
       } finally {
@@ -50,18 +59,6 @@ const Home = () => {
     };
 
     checkTokenAndOnboarding();
-  }, []);
-
-  useEffect(() => {
-    if (!isOnboardingComplete) {
-      const saveNewDevicePushToken = async () => {
-        const token = await registerForPushNotificationsAsync();
-        if (token) {
-          await dispatch(saveExpoPushToken({ pushToken: token }));
-        }
-      };
-      saveNewDevicePushToken();
-    }
   }, []);
 
   if (

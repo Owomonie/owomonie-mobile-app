@@ -8,25 +8,20 @@ import {
 } from "react-native";
 import { useSelector } from "react-redux";
 import { FlashList } from "@shopify/flash-list";
-import { format, isToday, isYesterday, parseISO } from "date-fns";
+import { parseISO } from "date-fns";
 
 import { RootState, useAppDispatch } from "@/redux/store";
 import { Transaction } from "@/utils/types";
 import { brandColor } from "@/constants/Colors";
 import { ThemedView2 } from "./../Themes/view";
 import { ThemedText } from "../Themes/text";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { getTransactions } from "@/redux/slice/bank";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTheme } from "@/context/ThemeContext";
 import { Skeleton } from "moti/skeleton";
 import { AntDesign } from "@expo/vector-icons";
-
-const formatDate = (date: Date): string => {
-  if (isToday(date)) return "Today";
-  if (isYesterday(date)) return "Yesterday";
-  return format(date, "MMMM dd, yyyy");
-};
+import { formatDate } from "@/utils/formatTime";
 
 const groupTransactionsByDate = (
   transactions: Transaction[]
@@ -125,9 +120,10 @@ const HomeTransactions = ({
     useSelector((state: RootState) => state.banks.transactionData.totalPages)
   );
 
-  console.log(totalPages);
-
-  const groupedTransactions = groupTransactionsByDate(transactions);
+  const groupedTransactions = useMemo(
+    () => groupTransactionsByDate(transactions),
+    [transactions]
+  );
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
