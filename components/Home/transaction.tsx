@@ -1,100 +1,72 @@
 import {
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   Image,
   RefreshControl,
+  ActivityIndicator,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { FlashList } from "@shopify/flash-list";
-import { parseISO } from "date-fns";
-
 import { RootState, useAppDispatch } from "@/redux/store";
 import { Transaction } from "@/utils/types";
-import { brandColor } from "@/constants/Colors";
-import { ThemedView2 } from "./../Themes/view";
+import { ThemedView2 } from "../Themes/view";
 import { ThemedText } from "../Themes/text";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, memo } from "react";
 import { getTransactions } from "@/redux/slice/bank";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTheme } from "@/context/ThemeContext";
 import { Skeleton } from "moti/skeleton";
-import { AntDesign } from "@expo/vector-icons";
 import { formatDate } from "@/utils/formatTime";
 
-const groupTransactionsByDate = (
-  transactions: Transaction[]
-): { date: string; transactions: Transaction[]; actualDate: Date }[] => {
-  const grouped = transactions.reduce((acc, transaction) => {
-    const date = parseISO(transaction.date);
-    const formattedDate = formatDate(date);
-
-    if (!acc[formattedDate]) {
-      acc[formattedDate] = {
-        date: formattedDate,
-        transactions: [],
-        actualDate: date,
-      };
-    }
-
-    acc[formattedDate].transactions.push(transaction);
-    return acc;
-  }, {} as { [key: string]: { date: string; transactions: Transaction[]; actualDate: Date } });
-
-  const sortedGroupedTransactions = Object.values(grouped).sort((a, b) => {
-    return b.actualDate.getTime() - a.actualDate.getTime();
-  });
-
-  return sortedGroupedTransactions;
-};
-
-const RenderTransactions = ({
-  transaction,
-  loading,
-  colorMode,
-}: {
-  transaction: Transaction;
-  loading: boolean;
-  colorMode: "light" | "dark";
-}) => {
-  return (
-    <View style={styles.transactionCont}>
-      <View style={styles.descCont}>
-        <Skeleton show={loading} radius={"round"} colorMode={colorMode}>
-          <ThemedView2 style={styles.transImgCont}>
-            <Image
-              source={{ uri: transaction.categoryUri }}
-              style={styles.transImg}
-            />
-          </ThemedView2>
-        </Skeleton>
-        <View style={styles.descTextCont}>
-          <Skeleton show={loading} radius={"square"} colorMode={colorMode}>
-            <ThemedText style={styles.categoryText}>
-              {transaction.category}
-            </ThemedText>
+const RenderTransactions = memo(
+  ({
+    transaction,
+    loading,
+    colorMode,
+  }: {
+    transaction: Transaction;
+    loading: boolean;
+    colorMode: "light" | "dark";
+  }) => {
+    return (
+      <View style={styles.transactionCont}>
+        <View style={styles.descCont}>
+          <Skeleton show={loading} radius={"round"} colorMode={colorMode}>
+            <ThemedView2 style={styles.transImgCont}>
+              <Image
+                source={{ uri: transaction.categoryUri }}
+                style={styles.transImg}
+              />
+            </ThemedView2>
           </Skeleton>
-          <Skeleton show={loading} radius={"square"} colorMode={colorMode}>
-            <Text style={styles.bankText}>{transaction.bankName}</Text>
-          </Skeleton>
+          <View style={styles.descTextCont}>
+            <Skeleton show={loading} radius={"square"} colorMode={colorMode}>
+              <ThemedText style={styles.categoryText}>
+                {transaction.category}
+              </ThemedText>
+            </Skeleton>
+            <Skeleton show={loading} radius={"square"} colorMode={colorMode}>
+              <Text style={styles.bankText}>{transaction.bankName}</Text>
+            </Skeleton>
+          </View>
         </View>
+        <Skeleton show={loading} radius={"square"} colorMode={colorMode}>
+          <Text
+            style={[
+              styles.amount,
+              {
+                color: transaction.type === "Debit" ? "#C93232" : "#1FB03F",
+              },
+            ]}
+          >
+            {transaction.type === "Debit" ? "-" : "+"}£{transaction.amount}
+          </Text>
+        </Skeleton>
       </View>
-      <Skeleton show={loading} radius={"square"} colorMode={colorMode}>
-        <Text
-          style={[
-            styles.amount,
-            {
-              color: transaction.type === "Debit" ? "#C93232" : "#1FB03F",
-            },
-          ]}
-        >
-          {transaction.type === "Debit" ? "-" : "+"}£{transaction.amount}
-        </Text>
-      </Skeleton>
-    </View>
-  );
-};
+    );
+  }
+);
 
 const HomeTransactions = ({
   skeletalLoading,
@@ -109,7 +81,9 @@ const HomeTransactions = ({
 
   const dispatch = useAppDispatch();
 
-  const loading = useSelector((state: RootState) => state.banks.loading);
+  const loadingTransactions = useSelector(
+    (state: RootState) => state.banks.transactionLoading
+  );
 
   const transactions = useSelector(
     (state: RootState) =>
@@ -120,105 +94,93 @@ const HomeTransactions = ({
     useSelector((state: RootState) => state.banks.transactionData.totalPages)
   );
 
-  const groupedTransactions = useMemo(
-    () => groupTransactionsByDate(transactions),
-    [transactions]
-  );
-
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-
     const token = await AsyncStorage.getItem("token");
     if (token) {
-      await dispatch(getTransactions({ token, page: currentPage }));
+      await dispatch(getTransactions({ token, page: 1 }));
+      setCurrentPage(1);
     }
-
     setRefreshing(false);
-  }, [currentPage, dispatch]);
+  }, [dispatch]);
 
-  const loadPrevTransactions = async () => {
+  const loadNextTransactions = useCallback(async () => {
     const token = await AsyncStorage.getItem("token");
-
-    if (token && currentPage >= 1) {
-      await dispatch(getTransactions({ token, page: currentPage - 1 }));
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const loadNextTransactions = async () => {
-    const token = await AsyncStorage.getItem("token");
-
-    if (token && currentPage <= totalPages) {
+    if (token && currentPage < totalPages) {
       await dispatch(getTransactions({ token, page: currentPage + 1 }));
       setCurrentPage(currentPage + 1);
     }
-  };
+  }, [dispatch, currentPage, totalPages]);
+
+  const groupedTransactions = useMemo(() => {
+    const groups: { [key: string]: Transaction[] } = {};
+    transactions.forEach((transaction) => {
+      if (!groups[transaction.date]) {
+        groups[transaction.date] = [];
+      }
+      groups[transaction.date].push(transaction);
+    });
+    return groups;
+  }, [transactions]);
+
+  const renderItem = useCallback(
+    ({ item }: { item: { date: string; transactions: Transaction[] } }) => (
+      <>
+        <ThemedView2 style={styles.dateCont}>
+          <Skeleton
+            show={loadingTransactions || skeletalLoading}
+            radius={"square"}
+            colorMode={colorMode}
+          >
+            <ThemedText style={styles.dateTitle}>
+              {formatDate(item.date)}
+            </ThemedText>
+          </Skeleton>
+        </ThemedView2>
+        {item.transactions.map((transaction) => (
+          <RenderTransactions
+            key={transaction.id}
+            colorMode={colorMode}
+            transaction={transaction}
+            loading={loadingTransactions || skeletalLoading}
+          />
+        ))}
+      </>
+    ),
+    [colorMode, loadingTransactions, skeletalLoading]
+  );
+
+  const data = useMemo(() => {
+    return Object.keys(groupedTransactions).map((date) => ({
+      date,
+      transactions: groupedTransactions[date],
+    }));
+  }, [groupedTransactions]);
 
   return (
     <View style={styles.container}>
       <View style={styles.txnHeader}>
         <ThemedText style={styles.txnHeaderText1}>Transactions</ThemedText>
-        {transactions.length > 0 && (
-          <View style={styles.paginationCont}>
-            <TouchableOpacity
-              disabled={currentPage <= 1}
-              onPress={loadPrevTransactions}
-            >
-              <AntDesign
-                name="caretleft"
-                size={20}
-                color={currentPage <= 1 ? "grey" : brandColor}
-              />
-            </TouchableOpacity>
-            <ThemedText style={styles.pageNo}>{currentPage}</ThemedText>
-            <TouchableOpacity
-              disabled={currentPage >= totalPages}
-              onPress={loadNextTransactions}
-            >
-              <AntDesign
-                name="caretright"
-                size={20}
-                color={currentPage >= totalPages ? "grey" : brandColor}
-              />
-            </TouchableOpacity>
-          </View>
-        )}
       </View>
+
       <FlashList
-        data={groupedTransactions}
+        data={data}
         keyExtractor={(item) => item.date}
-        renderItem={({ item }) => (
-          <View>
-            <ThemedView2 style={styles.dateCont}>
-              <Skeleton
-                show={loading || skeletalLoading}
-                radius={"square"}
-                colorMode={colorMode}
-              >
-                <ThemedText style={styles.dateTitle}>{item.date}</ThemedText>
-              </Skeleton>
-            </ThemedView2>
-            {item.transactions.map((transaction) => (
-              <RenderTransactions
-                key={transaction.id}
-                colorMode={colorMode}
-                transaction={transaction}
-                loading={loading || skeletalLoading}
-              />
-            ))}
-          </View>
-        )}
-        estimatedItemSize={100}
+        renderItem={renderItem}
         ListEmptyComponent={
           <ThemedText style={styles.noTrans}>
             No Transaction Available
           </ThemedText>
         }
         showsVerticalScrollIndicator={false}
+        estimatedItemSize={2000}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
+        onEndReached={loadNextTransactions}
+        onEndReachedThreshold={0.8}
       />
+      {loadingTransactions && <ActivityIndicator />}
     </View>
   );
 };
@@ -244,15 +206,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 
-  txnHeaderText2: {
-    fontFamily: "As450",
-    fontSize: 13,
-    color: brandColor,
-  },
-
   dateCont: {
     paddingHorizontal: 20,
     paddingVertical: 8,
+    marginVertical: 5,
   },
 
   dateTitle: {
@@ -313,15 +270,5 @@ const styles = StyleSheet.create({
     fontFamily: "As450",
     fontSize: 20,
     paddingVertical: 100,
-  },
-
-  paginationCont: {
-    flexDirection: "row",
-    gap: 10,
-    alignItems: "center",
-    marginRight: 20,
-  },
-  pageNo: {
-    fontSize: 18,
   },
 });

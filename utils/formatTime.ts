@@ -6,7 +6,7 @@ export const formatTime = (seconds: number) => {
   return `${minutes}:${secs < 10 ? `0${secs}` : secs}`;
 };
 
-export const formatDate = (date: Date): string => {
+export const formatDate = (date: string): string => {
   if (isToday(date)) return "Today";
   if (isYesterday(date)) return "Yesterday";
   return format(date, "MMMM dd, yyyy");
