@@ -1,23 +1,23 @@
 import { StyleSheet, TouchableOpacity, Modal } from "react-native";
 import { useLayoutEffect, useState } from "react";
-
-import HomeHeader from "./header";
-import HomeAcccountTitle from "./acccountTitle";
-import HomeIndividualAccounts from "./individualAccount";
-import { useSelector } from "react-redux";
-import { RootState, useAppDispatch } from "@/redux/store";
-import { Bank } from "@/utils/types";
-import HomeAddNewAccount from "./addNewAccount";
-import HomeAllAccounts from "./allAccount";
-import { ThemedSafeAreaView } from "../Themes/view";
 import { AntDesign } from "@expo/vector-icons";
-import { brandColor } from "@/constants/Colors";
-import { getBankLinkToken } from "@/redux/slice/bank";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useSelector } from "react-redux";
+
+import HomeHeader from "./Header";
+import HomeAcccountTitle from "./AcccountTitle";
+import HomeIndividualAccounts from "./IndividualAccount";
+import HomeAddNewAccount from "./AddNewAccount";
+import HomeAllAccounts from "./AllAccount";
 import Plaid from "./Plaid";
 import HomeTransactions from "./transaction";
-import { useTheme } from "@/context/ThemeContext";
+
+import { RootState, useAppDispatch } from "@/redux/store";
+import { Bank } from "@/utils/types";
+import { ThemedSafeAreaView } from "../Themes/view";
+import { brandColor } from "@/constants/Colors";
+import { getBankLinkToken } from "@/redux/slice/bank";
 import { getUserDetails } from "@/redux/slice/get-user-details";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomePage = () => {
   const [activeTitle, setActiveTitle] = useState("all");
@@ -28,8 +28,8 @@ const HomePage = () => {
 
   useLayoutEffect(() => {
     // Simulate loading delay
-    const timer = setTimeout(() => setSkeletalLoading(false), 2000);
-    return () => clearTimeout(timer);
+    const timer = setTimeout(() => setSkeletalLoading(false), 1000);
+    // return () => clearTimeout(timer);
   }, []);
 
   useLayoutEffect(() => {

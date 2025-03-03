@@ -1,4 +1,3 @@
-import { RootState, useAppDispatch } from "@/redux/store";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { StyleSheet, TouchableOpacity, Text } from "react-native";
 import {
@@ -11,8 +10,10 @@ import {
   LinkLogLevel,
 } from "react-native-plaid-link-sdk";
 import { useSelector } from "react-redux";
+
 import { ThemedSafeAreaView } from "../Themes/view";
 import { brandColor } from "@/constants/Colors";
+import { RootState, useAppDispatch } from "@/redux/store";
 import { exchangeLinkToken } from "@/redux/slice/bank";
 
 type PlaidProps = {

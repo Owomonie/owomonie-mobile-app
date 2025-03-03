@@ -1,8 +1,8 @@
-export type FileDoc = {
+export interface FileDoc {
   fileName: string;
   uri: string;
   mimeType: string;
-};
+}
 
 export interface UserDetails {
   id: string;
@@ -43,4 +43,9 @@ export interface Transaction {
   bankName: string;
   type: string;
   createdAt: string;
+}
+
+export interface TransactionData {
+  date: string;
+  transactions: Transaction[];
 }

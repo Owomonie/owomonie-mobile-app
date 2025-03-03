@@ -3,7 +3,7 @@ import { AxiosError, AxiosJSON } from "../axios";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
-import { Transaction } from "@/utils/types";
+import { Transaction, TransactionData } from "@/utils/types";
 
 interface BanksError {
   message: string;
@@ -19,7 +19,7 @@ interface BanksState {
   };
   accountData: object;
   transactionData: {
-    transactions: Transaction[];
+    transactionsData: TransactionData[];
     totalPages: string;
   };
 }
@@ -154,7 +154,7 @@ export const getTransactions = createAsyncThunk(
       const { data } = await axios.get(
         `plaid/get-user-transactions?page=${page}&limit=${limit}`
       );
-      dispatch(banksAccountTransactionsSuccess(data?.data));
+      dispatch(banksAccountTransactionsSuccess({ data: data?.data, page }));
     } catch (error) {
       console.log("banks Error", error);
       const errorMessage = handleAxiosError(error);
@@ -174,7 +174,7 @@ const initialState: BanksState = {
   linkToken: undefined,
   accountData: [],
   transactionData: {
-    transactions: [],
+    transactionsData: [],
     totalPages: "",
   },
 };
@@ -192,38 +192,46 @@ const banksSlice = createSlice({
     },
 
     banksLinkTokenData: (state, action) => {
-      state.loading = false;
       state.linkToken = action.payload;
+      state.loading = false;
     },
 
     banksSuccess: (state, action) => {
-      state.loading = false;
       state.bankData = action.payload;
+      state.loading = false;
     },
 
     banksAccountSuccess: (state, action) => {
-      state.loading = false;
       state.accountData = action.payload;
+      state.loading = false;
     },
 
     banksAccountTransactionsSuccess: (state, action) => {
+      const { data, page } = action.payload;
+
+      if (page === 1) {
+        state.transactionData.transactionsData = data.transactionsData;
+      } else {
+        const existingTransactionIds = new Set(
+          state.transactionData.transactionsData.flatMap((tx) =>
+            tx.transactions.map((txn) => txn.id)
+          )
+        );
+
+        const newTransactions = data.transactionsData.filter(
+          (tx: TransactionData) =>
+            !tx.transactions.some((txn: Transaction) =>
+              existingTransactionIds.has(txn.id)
+            )
+        );
+
+        state.transactionData.transactionsData = [
+          ...state.transactionData.transactionsData,
+          ...newTransactions,
+        ];
+      }
+      state.transactionData.totalPages = data.totalPages;
       state.transactionLoading = false;
-
-      const existingTransactionIds = new Set(
-        state.transactionData.transactions.map((tx) => tx.id)
-      );
-
-      const newTransactions = action.payload.transactions.filter(
-        (tx: Transaction) => !existingTransactionIds.has(tx.id)
-      );
-
-      // Append new unique transactions to the existing ones
-      state.transactionData.transactions = [
-        ...state.transactionData.transactions,
-        ...newTransactions,
-      ];
-
-      state.transactionData.totalPages = action.payload.totalPages;
     },
 
     banksComplete: (state) => {

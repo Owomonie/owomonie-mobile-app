@@ -1,10 +1,11 @@
-import { RootState } from "@/redux/store";
-import { Bank } from "@/utils/types";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
-import HomeBalanceCard from "./balanceCard";
+import { Ionicons } from "@expo/vector-icons";
+
+import { RootState } from "@/redux/store";
+import { Bank } from "@/utils/types";
+import HomeBalanceCard from "./BalanceCard";
 
 const HomeAllAccounts = ({ skeletalLoading }: { skeletalLoading: boolean }) => {
   const [showBalance, setShowBalance] = useState(false);

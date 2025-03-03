@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 
 import { RootState } from "@/redux/store";
-import HomeBalanceCard from "./balanceCard";
+import HomeBalanceCard from "./BalanceCard";
 import { Account } from "@/utils/types";
 
 const RenderIndividualAccounts = ({ item }: { item: Account }) => {

@@ -1,11 +1,12 @@
 import { Image, StyleSheet, View } from "react-native";
-import { ThemedText } from "../Themes/text";
-import { Ionicons } from "@expo/vector-icons";
-import { RootState } from "@/redux/store";
+import { Skeleton } from "moti/skeleton";
 import { useSelector } from "react-redux";
+import { Ionicons } from "@expo/vector-icons";
+
+import { ThemedText } from "../Themes/text";
+import { RootState } from "@/redux/store";
 import { brandColor } from "@/constants/Colors";
 import { UserDetails } from "@/utils/types";
-import { Skeleton } from "moti/skeleton";
 import { useTheme } from "@/context/ThemeContext";
 
 const avatarList = [

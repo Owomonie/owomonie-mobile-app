@@ -1,6 +1,7 @@
-import { brandColor } from "@/constants/Colors";
 import { Entypo } from "@expo/vector-icons";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
+
+import { brandColor } from "@/constants/Colors";
 import { ThemedView } from "../Themes/view";
 
 type HomeAccountTitleProps = {

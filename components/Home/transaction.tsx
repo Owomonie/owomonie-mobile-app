@@ -2,71 +2,27 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   RefreshControl,
   ActivityIndicator,
+  TouchableOpacity,
+  SectionList,
 } from "react-native";
 import { useSelector } from "react-redux";
-import { FlashList } from "@shopify/flash-list";
-import { RootState, useAppDispatch } from "@/redux/store";
-import { Transaction } from "@/utils/types";
+import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useState, useCallback } from "react";
+import { Skeleton } from "moti/skeleton";
+
 import { ThemedView2 } from "../Themes/view";
 import { ThemedText } from "../Themes/text";
-import { useState, useCallback, useMemo, memo } from "react";
+import { RootState, useAppDispatch } from "@/redux/store";
+import { Transaction, TransactionData } from "@/utils/types";
 import { getTransactions } from "@/redux/slice/bank";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTheme } from "@/context/ThemeContext";
-import { Skeleton } from "moti/skeleton";
-import { formatDate } from "@/utils/formatTime";
+import { brandColor } from "@/constants/Colors";
 
-const RenderTransactions = memo(
-  ({
-    transaction,
-    loading,
-    colorMode,
-  }: {
-    transaction: Transaction;
-    loading: boolean;
-    colorMode: "light" | "dark";
-  }) => {
-    return (
-      <View style={styles.transactionCont}>
-        <View style={styles.descCont}>
-          <Skeleton show={loading} radius={"round"} colorMode={colorMode}>
-            <ThemedView2 style={styles.transImgCont}>
-              <Image
-                source={{ uri: transaction.categoryUri }}
-                style={styles.transImg}
-              />
-            </ThemedView2>
-          </Skeleton>
-          <View style={styles.descTextCont}>
-            <Skeleton show={loading} radius={"square"} colorMode={colorMode}>
-              <ThemedText style={styles.categoryText}>
-                {transaction.category}
-              </ThemedText>
-            </Skeleton>
-            <Skeleton show={loading} radius={"square"} colorMode={colorMode}>
-              <Text style={styles.bankText}>{transaction.bankName}</Text>
-            </Skeleton>
-          </View>
-        </View>
-        <Skeleton show={loading} radius={"square"} colorMode={colorMode}>
-          <Text
-            style={[
-              styles.amount,
-              {
-                color: transaction.type === "Debit" ? "#C93232" : "#1FB03F",
-              },
-            ]}
-          >
-            {transaction.type === "Debit" ? "-" : "+"}£{transaction.amount}
-          </Text>
-        </Skeleton>
-      </View>
-    );
-  }
-);
+import { RenderTransactions } from "./RenderTransactions";
+import { formatDate } from "@/utils/formatTime";
 
 const HomeTransactions = ({
   skeletalLoading,
@@ -74,7 +30,6 @@ const HomeTransactions = ({
   skeletalLoading: boolean;
 }) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const [currentPage, setCurrentPage] = useState(1);
 
   const { isDarkMode } = useTheme();
   const colorMode: "light" | "dark" = isDarkMode ? "dark" : "light";
@@ -87,11 +42,28 @@ const HomeTransactions = ({
 
   const transactions = useSelector(
     (state: RootState) =>
-      state.banks.transactionData.transactions as Transaction[]
+      state.banks.transactionData.transactionsData as TransactionData[]
   );
 
-  const totalPages = parseInt(
-    useSelector((state: RootState) => state.banks.transactionData.totalPages)
+  const recentTransactions = transactions.slice(0, 20);
+
+  const sectionedData = recentTransactions.map((group) => ({
+    title: formatDate(group.date),
+    data: group.transactions,
+  }));
+
+  const renderTransaction = useCallback(
+    ({ item }: { item: Transaction }) => {
+      return (
+        <RenderTransactions
+          key={item.id}
+          colorMode={colorMode}
+          transaction={item}
+          loading={false}
+        />
+      );
+    },
+    [colorMode, loadingTransactions]
   );
 
   const onRefresh = useCallback(async () => {
@@ -99,88 +71,50 @@ const HomeTransactions = ({
     const token = await AsyncStorage.getItem("token");
     if (token) {
       await dispatch(getTransactions({ token, page: 1 }));
-      setCurrentPage(1);
     }
     setRefreshing(false);
   }, [dispatch]);
 
-  const loadNextTransactions = useCallback(async () => {
-    const token = await AsyncStorage.getItem("token");
-    if (token && currentPage < totalPages) {
-      await dispatch(getTransactions({ token, page: currentPage + 1 }));
-      setCurrentPage(currentPage + 1);
-    }
-  }, [dispatch, currentPage, totalPages]);
-
-  const groupedTransactions = useMemo(() => {
-    const groups: { [key: string]: Transaction[] } = {};
-    transactions.forEach((transaction) => {
-      if (!groups[transaction.date]) {
-        groups[transaction.date] = [];
-      }
-      groups[transaction.date].push(transaction);
-    });
-    return groups;
-  }, [transactions]);
-
-  const renderItem = useCallback(
-    ({ item }: { item: { date: string; transactions: Transaction[] } }) => (
-      <>
-        <ThemedView2 style={styles.dateCont}>
-          <Skeleton
-            show={loadingTransactions || skeletalLoading}
-            radius={"square"}
-            colorMode={colorMode}
-          >
-            <ThemedText style={styles.dateTitle}>
-              {formatDate(item.date)}
-            </ThemedText>
-          </Skeleton>
-        </ThemedView2>
-        {item.transactions.map((transaction) => (
-          <RenderTransactions
-            key={transaction.id}
-            colorMode={colorMode}
-            transaction={transaction}
-            loading={loadingTransactions || skeletalLoading}
-          />
-        ))}
-      </>
-    ),
-    [colorMode, loadingTransactions, skeletalLoading]
-  );
-
-  const data = useMemo(() => {
-    return Object.keys(groupedTransactions).map((date) => ({
-      date,
-      transactions: groupedTransactions[date],
-    }));
-  }, [groupedTransactions]);
-
   return (
     <View style={styles.container}>
       <View style={styles.txnHeader}>
-        <ThemedText style={styles.txnHeaderText1}>Transactions</ThemedText>
+        <ThemedText style={styles.txnHeaderText1}>
+          Recent Transactions
+        </ThemedText>
+        <TouchableOpacity
+          onPress={() =>
+            // @ts-ignore
+            router.push("/(user)/(home)/(all-transactions)")
+          }
+        >
+          <Text style={styles.txnHeaderText2}>See all</Text>
+        </TouchableOpacity>
       </View>
 
-      <FlashList
-        data={data}
-        keyExtractor={(item) => item.date}
-        renderItem={renderItem}
+      <SectionList
+        sections={sectionedData}
+        keyExtractor={(item, index) => item.id + index.toString()}
+        renderItem={renderTransaction}
+        renderSectionHeader={({ section: { title } }) => (
+          <ThemedView2 style={styles.dateCont}>
+            <Skeleton show={false} radius={"square"} colorMode={colorMode}>
+              <ThemedText style={styles.dateTitle}>{title}</ThemedText>
+            </Skeleton>
+          </ThemedView2>
+        )}
         ListEmptyComponent={
           <ThemedText style={styles.noTrans}>
             No Transaction Available
           </ThemedText>
         }
         showsVerticalScrollIndicator={false}
-        estimatedItemSize={2000}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        onEndReached={loadNextTransactions}
-        onEndReachedThreshold={0.8}
+        initialNumToRender={20}
+        maxToRenderPerBatch={20}
       />
-      {loadingTransactions && <ActivityIndicator />}
+      {loadingTransactions && <ActivityIndicator size="large" />}
     </View>
   );
 };
@@ -204,6 +138,12 @@ const styles = StyleSheet.create({
   txnHeaderText1: {
     fontFamily: "As550",
     fontSize: 18,
+  },
+
+  txnHeaderText2: {
+    fontFamily: "As450",
+    fontSize: 12,
+    color: brandColor,
   },
 
   dateCont: {

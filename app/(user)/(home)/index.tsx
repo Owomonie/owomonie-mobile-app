@@ -1,5 +1,5 @@
 import { Alert, BackHandler } from "react-native";
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import { Stack, useFocusEffect } from "expo-router";
 import HomePage from "@/components/Home";
 

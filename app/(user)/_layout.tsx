@@ -29,7 +29,7 @@ export default function UserLayout() {
         }}
       >
         <Tabs.Screen
-          name="(home)/index"
+          name="(home)"
           options={{
             headerShown: false,
             tabBarLabel: ({ focused }) => (

@@ -1,10 +1,9 @@
-import { useLayoutEffect, useState } from "react";
 import Svg, { Path } from "react-native-svg";
 import { StyleSheet, View } from "react-native";
+import { useSelector } from "react-redux";
 import { Skeleton } from "moti/skeleton";
 
 import { useTheme } from "@/context/ThemeContext";
-import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
 type HomeBalanceType = {
